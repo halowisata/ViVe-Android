@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flowOf
 
 class OnboardingRepository {
 
-    fun getAllOnBoardingData(): Flow<List<Onboarding>> =
+    fun getAllOnboardingData(): Flow<List<Onboarding>> =
         flowOf(FakeOnboardingDataSource.dummyOnboardings)
 
     companion object {
