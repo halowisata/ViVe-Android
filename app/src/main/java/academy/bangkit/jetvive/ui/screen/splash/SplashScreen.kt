@@ -35,7 +35,7 @@ fun SplashContent(
 }
 @Preview(showBackground = true)
 @Composable
-fun SplashScreenPreview() {
+fun SplashContentPreview() {
     JetViVeTheme {
         SplashContent()
     }
