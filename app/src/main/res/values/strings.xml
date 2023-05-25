@@ -3,4 +3,5 @@
     <string name="logo">Logo</string>
     <string name="headline_onboarding">Headline Onboarding</string>
     <string name="body_onboarding">Body onboarding</string>
+    <string name="button_name">Button Name</string>
 </resources>
