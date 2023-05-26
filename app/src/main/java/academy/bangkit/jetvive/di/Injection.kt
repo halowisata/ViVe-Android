@@ -6,7 +6,7 @@ import academy.bangkit.jetvive.data.repository.UserRepository
 
 
 object Injection {
-    fun provideOnBoardingRepository(): OnboardingRepository {
+    fun provideOnboardingRepository(): OnboardingRepository {
         return OnboardingRepository.getInstance()
     }
 
