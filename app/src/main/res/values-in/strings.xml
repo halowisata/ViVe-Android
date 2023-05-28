@@ -9,4 +9,8 @@
     <string name="get_started">Mulai</string>
     <string name="continue_text">Lanjutkan</string>
     <string name="skip">Lewati</string>
+    <string name="sign_in">Sign In</string>
+    <string name="text_field_label">Label TextField</string>
+    <string name="text_field_placeholder">Placeholder TextField</string>
+    <string name="forget_password">Lupa kata sandi?</string>
 </resources>

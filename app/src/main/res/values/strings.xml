@@ -8,4 +8,8 @@
     <string name="get_started">Get Started</string>
     <string name="continue_text">Continue</string>
     <string name="skip">Skip</string>
+    <string name="sign_in">Sign In</string>
+    <string name="text_field_label">TextField Label</string>
+    <string name="text_field_placeholder">TextField Placeholder</string>
+    <string name="forget_password">Forget password?</string>
 </resources>
