@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JetViVe</string>
+    <string name="logo">Logo</string>
+    <string name="headline_onboarding">Judul Orientasi</string>
+    <string name="body_onboarding">Isi Orientasi</string>
+    <string name="button_name">Nama Tombol</string>
+    <string name="onboarding_image">Gambar Onboarding</string>
+    <string name="get_started">Mulai</string>
+    <string name="continue_text">Lanjutkan</string>
+    <string name="skip">Lewati</string>
+    <string name="sign_in">Sign In</string>
+    <string name="text_field_label">Label TextField</string>
+    <string name="text_field_placeholder">Placeholder TextField</string>
+    <string name="forget_password">Lupa kata sandi?</string>
+</resources>

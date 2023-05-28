@@ -33,12 +33,12 @@ fun OnBoardingItem(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp),
+            .padding(horizontal = 75.dp),
     ) {
         Image(
             painter = painterResource(image),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
+            contentDescription = stringResource(R.string.onboarding_image),
+            contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .size(250.dp)
         )
@@ -57,8 +57,7 @@ fun OnBoardingItem(
             lineHeight = 30.sp,
             letterSpacing = 0.25.sp,
             fontWeight = FontWeight.W400,
-            modifier = Modifier
-                .padding(horizontal = 25.dp),
+            modifier = modifier,
             textAlign = TextAlign.Center
         )
     }

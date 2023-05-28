@@ -28,7 +28,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
-import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,7 +54,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnboardingScreen(
     viewModel: OnboardingViewModel = viewModel(
-        factory = ViewModelFactory(Injection.provideOnBoardingRepository())
+        factory = ViewModelFactory(Injection.provideOnboardingRepository())
     )
 ) {
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
@@ -86,7 +86,7 @@ fun OnboardingContent(
             .fillMaxSize()
     ) {
         TopSection(
-            pageState = pageState.currentPage,
+            state = pageState.currentPage,
             count = onboardings.size,
             onBackClick = {
                 if (pageState.currentPage + 1 > 1) scope.launch {
@@ -115,8 +115,8 @@ fun OnboardingContent(
         }
 
         BottomSection(
-            pageState = pageState.currentPage,
-            size = onboardings.size,
+            state = pageState.currentPage,
+            count = onboardings.size,
             index = pageState.currentPage,
             onButtonClick = {
                 if (pageState.currentPage + 1 < onboardings.size) scope.launch {
@@ -129,7 +129,7 @@ fun OnboardingContent(
 
 @Composable
 fun TopSection(
-    pageState: Int,
+    state: Int,
     count: Int,
     onBackClick: () -> Unit = {},
     onSkipClick: () -> Unit = {}
@@ -139,7 +139,7 @@ fun TopSection(
             .fillMaxWidth()
             .padding(12.dp)
     ) {
-        if (pageState != 0) {
+        if (state != 0) {
             IconButton(
                 onClick = onBackClick,
                 modifier = Modifier.align(Alignment.CenterStart)
@@ -150,14 +150,14 @@ fun TopSection(
                 )
             }
         }
-        if (pageState != count - 1) {
+        if (state != count - 1) {
             TextButton(
                 onClick = onSkipClick,
                 modifier = Modifier.align(Alignment.CenterEnd),
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Text(
-                    text = "Skip",
+                    text = stringResource(R.string.skip),
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
@@ -167,8 +167,8 @@ fun TopSection(
 
 @Composable
 fun BottomSection(
-    pageState: Int,
-    size: Int,
+    state: Int,
+    count: Int,
     index: Int,
     onButtonClick: () -> Unit = {}
 ) {
@@ -177,28 +177,40 @@ fun BottomSection(
             .fillMaxWidth()
             .padding(12.dp)
     ) {
-        Indicators(size, index)
+        Indicators(
+            count,
+            index
+        )
         FloatingActionButton(
             onClick = onButtonClick,
             containerColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .clip(RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp))
+                .clip(RoundedCornerShape(100.dp))
         ) {
-            if (pageState == size - 1) {
+            if (state == count - 1) {
                 Text(
-                    text = "Get Stated",
+                    text = stringResource(R.string.get_started),
                     style = TextStyle(
                         color = Color.White
                     ),
                     modifier = Modifier
-                        .padding(horizontal = 20.dp)
+                        .padding(
+                            horizontal = 24.dp,
+                            vertical = 10.dp
+                        )
                 )
             } else {
-                Icon(
-                    Icons.Outlined.KeyboardArrowRight,
-                    tint = Color.White,
-                    contentDescription = "Localized description"
+                Text(
+                    text = stringResource(R.string.continue_text),
+                    style = TextStyle(
+                        color = Color.White
+                    ),
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 24.dp,
+                            vertical = 10.dp
+                        )
                 )
             }
         }
@@ -234,7 +246,7 @@ fun Indicator(
             .clip(CircleShape)
             .background(
                 color =
-                if (isSelected) MaterialTheme.colorScheme.primary else Color(0XFFF8E2E7)
+                if (isSelected) MaterialTheme.colorScheme.primary else Color(0xFFD9D9D9)
             )
     ) {
 
