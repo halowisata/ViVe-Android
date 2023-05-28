@@ -13,4 +13,5 @@
     <string name="text_field_label">Label TextField</string>
     <string name="text_field_placeholder">Placeholder TextField</string>
     <string name="forget_password">Lupa kata sandi?</string>
+    <string name="sign_up">Daftar</string>
 </resources>
