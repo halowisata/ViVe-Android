@@ -1,7 +1,7 @@
 package academy.bangkit.jetvive.data.repository
 
-import academy.bangkit.jetvive.model.FakeOnboardingDataSource
-import academy.bangkit.jetvive.model.Onboarding
+import academy.bangkit.jetvive.model.onboarding.FakeOnboardingDataSource
+import academy.bangkit.jetvive.model.onboarding.Onboarding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
