@@ -13,4 +13,8 @@
     <string name="text_field_placeholder">TextField Placeholder</string>
     <string name="forget_password">Forget password?</string>
     <string name="sign_up">Sign Up</string>
+    <string name="new_to_vive">New to ViVe?</string>
+    <string name="or">or</string>
+    <string name="sign_in_with_google">Sign In with Google</string>
+    <string name="joined_us_before">Joined us before?</string>
 </resources>
