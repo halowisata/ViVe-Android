@@ -1,12 +1,17 @@
 package academy.bangkit.jetvive.helper
 
 import academy.bangkit.jetvive.data.repository.OnboardingRepository
+import academy.bangkit.jetvive.data.repository.UserRepository
+import academy.bangkit.jetvive.di.Injection
+import academy.bangkit.jetvive.ui.screen.login.LoginViewModel
 import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingViewModel
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 class ViewModelFactory(
-    private val onboardingRepository: OnboardingRepository
+    private val onboardingRepository: OnboardingRepository,
+    private val userRepository: UserRepository
     ): ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -15,7 +20,23 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(OnboardingViewModel::class.java) -> {
                 OnboardingViewModel(onboardingRepository) as T
             }
+            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
+                LoginViewModel(userRepository) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
+    }
+
+    companion object {
+        @Volatile
+        private var instance: ViewModelFactory? = null
+
+        fun getInstance(context: Context) : ViewModelFactory =
+            instance ?: synchronized(this) {
+                instance ?: ViewModelFactory(
+                    Injection.provideOnboardingRepository(),
+                    Injection.provideUserRepository(context)
+                )
+            }.also { instance = it }
     }
 }
