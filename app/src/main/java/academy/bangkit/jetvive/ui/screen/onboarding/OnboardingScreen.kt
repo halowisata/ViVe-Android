@@ -1,10 +1,9 @@
 package academy.bangkit.jetvive.ui.screen.onboarding
 
 import academy.bangkit.jetvive.R
-import academy.bangkit.jetvive.di.Injection
 import academy.bangkit.jetvive.helper.ViewModelFactory
-import academy.bangkit.jetvive.model.FakeOnboardingDataSource
-import academy.bangkit.jetvive.model.Onboarding
+import academy.bangkit.jetvive.model.onboarding.FakeOnboardingDataSource
+import academy.bangkit.jetvive.model.onboarding.Onboarding
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.OnBoardingItem
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
@@ -41,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,8 +54,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnboardingScreen(
     viewModel: OnboardingViewModel = viewModel(
-        factory = ViewModelFactory(Injection.provideOnboardingRepository())
-    )
+        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+    ),
+    navigateToLogin: () -> Unit
 ) {
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
@@ -65,7 +66,10 @@ fun OnboardingScreen(
             is UiState.Success -> {
                 val onboarding = uiState.data
 
-                OnboardingContent(onboarding)
+                OnboardingContent(
+                    onboardings = onboarding,
+                    navigateToLogin = navigateToLogin
+                )
             }
             is UiState.Error -> {}
         }
@@ -76,6 +80,7 @@ fun OnboardingScreen(
 @Composable
 fun OnboardingContent(
     onboardings: List<Onboarding>,
+    navigateToLogin: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -108,7 +113,7 @@ fun OnboardingContent(
                 .fillMaxHeight(.9f)
         ) { page ->
             OnBoardingItem(
-                image = R.drawable.jetpack_compose,
+                image = onboardings[page].image,
                 headline = onboardings[page].headline,
                 body = onboardings[page].body
             )
@@ -121,6 +126,8 @@ fun OnboardingContent(
             onButtonClick = {
                 if (pageState.currentPage + 1 < onboardings.size) scope.launch {
                     pageState.scrollToPage(pageState.currentPage + 1)
+                } else {
+                    navigateToLogin()
                 }
             }
         )
@@ -258,7 +265,8 @@ fun Indicator(
 fun OnboardingContentPreview() {
     JetViVeTheme {
         OnboardingContent(
-            FakeOnboardingDataSource.dummyOnboardings
+            FakeOnboardingDataSource.dummyOnboardings,
+            navigateToLogin = {}
         )
     }
 }
