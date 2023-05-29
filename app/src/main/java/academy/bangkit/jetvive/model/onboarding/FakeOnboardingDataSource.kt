@@ -1,4 +1,4 @@
-package academy.bangkit.jetvive.model
+package academy.bangkit.jetvive.model.onboarding
 
 import academy.bangkit.jetvive.R
 
