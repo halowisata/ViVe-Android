@@ -1,4 +1,6 @@
 package academy.bangkit.jetvive.ui.screen.detail
 
-class DetailViewModel {
+import androidx.lifecycle.ViewModel
+
+class DetailViewModel: ViewModel() {
 }

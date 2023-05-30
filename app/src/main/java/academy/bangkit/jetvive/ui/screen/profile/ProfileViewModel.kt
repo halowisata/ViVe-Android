@@ -1,4 +1,6 @@
 package academy.bangkit.jetvive.ui.screen.profile
 
-class ProfileViewModel {
+import androidx.lifecycle.ViewModel
+
+class ProfileViewModel: ViewModel() {
 }

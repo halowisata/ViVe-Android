@@ -3,7 +3,6 @@ package academy.bangkit.jetvive.data.repository
 import academy.bangkit.jetvive.data.local.datastore.UserPreferences
 import academy.bangkit.jetvive.data.local.entity.UserEntity
 import academy.bangkit.jetvive.model.user.FakeUserDataSource
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 
 class UserRepository(private val userPreferences: UserPreferences) {

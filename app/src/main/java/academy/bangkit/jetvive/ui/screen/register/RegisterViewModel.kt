@@ -1,4 +1,6 @@
 package academy.bangkit.jetvive.ui.screen.register
 
-class RegisterViewModel {
+import androidx.lifecycle.ViewModel
+
+class RegisterViewModel: ViewModel() {
 }

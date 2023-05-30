@@ -229,7 +229,7 @@ fun LoginForm(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.google),
+                        painter = painterResource(R.drawable.google_icon),
                         contentDescription = null,
                         modifier = Modifier
                             .size(24.dp)

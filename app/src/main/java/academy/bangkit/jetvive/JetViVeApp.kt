@@ -24,7 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun JetViVeApp(
     navController: NavHostController = rememberNavController(),
-    viewModel: ViewModel = viewModel(
+    mainViewModel: MainViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
     modifier: Modifier = Modifier

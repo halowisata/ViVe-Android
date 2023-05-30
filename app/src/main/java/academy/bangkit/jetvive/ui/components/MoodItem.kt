@@ -69,7 +69,7 @@ fun MoodItemPreview() {
     JetViVeTheme {
         MoodItem(
             color = Color(0xFFE5F4F6),
-            image = R.drawable.happy,
+            image = R.drawable.mood_happy,
             text = "Happy"
         )
     }

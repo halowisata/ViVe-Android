@@ -20,8 +20,8 @@ class ViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(academy.bangkit.jetvive.ViewModel::class.java) -> {
-                academy.bangkit.jetvive.ViewModel(userRepository) as T
+            modelClass.isAssignableFrom(academy.bangkit.jetvive.MainViewModel::class.java) -> {
+                academy.bangkit.jetvive.MainViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(OnboardingViewModel::class.java) -> {
                 OnboardingViewModel(onboardingRepository) as T

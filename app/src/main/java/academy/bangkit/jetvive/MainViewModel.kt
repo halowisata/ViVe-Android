@@ -1,4 +1,4 @@
-    package academy.bangkit.jetvive
+package academy.bangkit.jetvive
 
 import academy.bangkit.jetvive.data.local.entity.UserEntity
 import academy.bangkit.jetvive.data.repository.UserRepository
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ViewModel(private val userRepository: UserRepository): ViewModel() {
+class MainViewModel(private val userRepository: UserRepository): ViewModel() {
 
     private val mutableStateFlow = MutableStateFlow(true)
     val isLoading = mutableStateFlow.asStateFlow()
