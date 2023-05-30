@@ -1,7 +1,7 @@
 package academy.bangkit.jetvive.ui.screen.onboarding
 
 import academy.bangkit.jetvive.data.repository.OnboardingRepository
-import academy.bangkit.jetvive.model.Onboarding
+import academy.bangkit.jetvive.model.onboarding.Onboarding
 import academy.bangkit.jetvive.ui.common.UiState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
