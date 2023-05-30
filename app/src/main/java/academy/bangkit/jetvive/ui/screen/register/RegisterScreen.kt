@@ -1,9 +1,7 @@
-package academy.bangkit.jetvive.ui.screen.login
+package academy.bangkit.jetvive.ui.screen.register
 
 import academy.bangkit.jetvive.R
-import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,16 +10,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,12 +28,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -50,61 +45,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(
-    navigateToSignUp: () -> Unit,
-    navigateToHome: () -> Unit
-) {
-    LoginContent(navigateToSignUp, navigateToHome)
+fun RegisterScreen(navigateToSignIn: () -> Unit) {
+    RegisterContent(navigateToSignIn)
 }
 
 @Composable
-fun LoginContent(
-    navigateToSignUp: () -> Unit,
-    navigateToHome: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun RegisterContent(navigateToSignIn: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
         TopSection()
-        LoginForm(navigateToHome)
-        BottomSection(navigateToSignUp)
+        RegisterForm()
+        BottomSection(navigateToSignIn)
     }
-}
-
-@Composable
-fun TopSection(
-    modifier: Modifier = Modifier
-) {
-    Image(
-        painter = painterResource(R.drawable.sign_in),
-        contentDescription = null,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                start = 30.dp,
-                end = 30.dp,
-                top = 90.dp,
-                bottom = 30.dp
-            )
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginForm(
-    navigateToHome: () -> Unit,
-    viewModel: LoginViewModel = viewModel(
-        factory = ViewModelFactory.getInstance(context = LocalContext.current)
-    ),
-    modifier: Modifier = Modifier
-) {
+fun RegisterForm() {
     Column(
         modifier = Modifier
             .padding(30.dp)
@@ -113,9 +75,27 @@ fun LoginForm(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(R.string.sign_in),
+            text = stringResource(R.string.sign_up),
             fontSize = 26.sp,
             lineHeight = 35.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        var nama by remember { mutableStateOf(TextFieldValue("")) }
+        OutlinedTextField(
+            shape = RoundedCornerShape(10.dp),
+            value = nama,
+            leadingIcon = { Icon(imageVector = Icons.Default.AccountCircle, contentDescription = null) },
+            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+            onValueChange = {
+                nama = it
+            },
+            label = { Text(text = "Name") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -152,7 +132,7 @@ fun LoginForm(
             visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Next
             ),
             trailingIcon = {
                 if (showPassword) {
@@ -175,73 +155,76 @@ fun LoginForm(
             modifier = Modifier
                 .fillMaxWidth()
         )
-        Text(
-            text = stringResource(R.string.forget_password),
-            fontWeight = FontWeight.Bold,
-            fontSize = 14.sp,
-            lineHeight = 18.sp,
-            letterSpacing = .25.sp,
-            style = TextStyle(color = Color(0xFF576CBC)),
-            textAlign = TextAlign.End,
+        var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
+        var showConfirmPassword by remember { mutableStateOf(value = false) }
+        OutlinedTextField(
+            shape = RoundedCornerShape(10.dp),
+            value = confirmPassword,
+            leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
+            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+            onValueChange = {
+                confirmPassword = it
+            },
+            label = { Text(text = "Confirm Password") },
+            singleLine = true,
+            visualTransformation = if (showConfirmPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            ),
+            trailingIcon = {
+                if (showConfirmPassword) {
+                    IconButton(onClick = { showConfirmPassword = false }) {
+                        Icon(
+                            imageVector = Icons.Filled.Visibility,
+                            contentDescription = "hide_password"
+                        )
+                    }
+                } else {
+                    IconButton(
+                        onClick = { showConfirmPassword = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.VisibilityOff,
+                            contentDescription = "hide_password"
+                        )
+                    }
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
         )
-        Column(
-            verticalArrangement = Arrangement.spacedBy(5.dp)
+        Button(
+            onClick = {},
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
-            val coroutineScope = rememberCoroutineScope()
-            Button(
-                onClick = {
-                  coroutineScope.launch {
-                      val state = viewModel.login(email.text, password.text)
-                      if (state) {
-                          navigateToHome()
-                      }
-                  }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(R.string.sign_in),
-                    style = TextStyle(
-                        color = Color.White
-                    )
-                )
-            }
             Text(
-                text = stringResource(R.string.or),
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
+                text = stringResource(R.string.sign_up),
+                style = TextStyle(
+                    color = Color.White
+                )
             )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFFFFF)),
-                border = BorderStroke(1.dp, Color(0xFF79747E)),
-                onClick = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(5.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.google_icon),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(24.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.sign_in_with_google),
-                        color = Color(0xFF79747E)
-                    )
-                }
-            }
         }
     }
+}
+
+@Composable
+fun TopSection(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(R.drawable.sign_up),
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = 30.dp,
+                end = 30.dp,
+                top = 90.dp,
+                bottom = 30.dp
+            )
+    )
 }
 
 @Composable
@@ -255,7 +238,7 @@ fun BottomSection(
             .fillMaxWidth()
     ) {
         Text(
-            text = stringResource(R.string.new_to_vive),
+            text = stringResource(R.string.joined_us_before),
             fontSize = 14.sp,
             lineHeight = 18.sp,
             letterSpacing = .25.sp,
@@ -263,7 +246,7 @@ fun BottomSection(
             modifier = Modifier.padding(end = 3.dp)
         )
         Text(
-            text = stringResource(R.string.sign_up),
+            text = stringResource(R.string.sign_in),
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp,
             textAlign = TextAlign.Center,
@@ -280,8 +263,8 @@ fun BottomSection(
 
 @Preview(showBackground = true)
 @Composable
-fun LoginContentPreview() {
+fun RegisterContentPreview() {
     JetViVeTheme {
-        LoginContent(navigateToSignUp = {}, navigateToHome = {})
+        RegisterContent(navigateToSignIn = {})
     }
 }
