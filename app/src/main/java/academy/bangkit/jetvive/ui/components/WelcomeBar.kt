@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun WelcomeItem(
+fun WelcomeBar(
     name: String,
     modifier: Modifier = Modifier
 ) {
@@ -72,9 +71,9 @@ fun WelcomeItem(
 
 @Preview(showBackground = true)
 @Composable
-fun WelcomeItemPreview() {
+fun WelcomeBarPreview() {
     JetViVeTheme {
-        WelcomeItem(
+        WelcomeBar(
             name = "John Doe"
         )
     }
