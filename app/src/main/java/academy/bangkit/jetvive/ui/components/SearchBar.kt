@@ -4,7 +4,6 @@ import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -46,7 +45,6 @@ fun SearchBar(
             Text(stringResource(R.string.placeholder_search))
         },
         modifier = modifier
-            .padding(16.dp)
             .fillMaxWidth()
             .heightIn(min = 48.dp)
             .clip(RoundedCornerShape(16.dp))
