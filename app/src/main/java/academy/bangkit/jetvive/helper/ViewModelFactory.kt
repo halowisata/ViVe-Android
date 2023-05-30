@@ -2,6 +2,7 @@ package academy.bangkit.jetvive.helper
 
 import academy.bangkit.jetvive.data.repository.MoodRepository
 import academy.bangkit.jetvive.data.repository.OnboardingRepository
+import academy.bangkit.jetvive.data.repository.TouristAttractionRepository
 import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.di.Injection
 import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
@@ -14,7 +15,8 @@ import androidx.lifecycle.ViewModelProvider
 class ViewModelFactory(
     private val onboardingRepository: OnboardingRepository,
     private val userRepository: UserRepository,
-    private val moodRepository: MoodRepository
+    private val moodRepository: MoodRepository,
+    private val touristAttractionRepository: TouristAttractionRepository
     ): ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -30,7 +32,7 @@ class ViewModelFactory(
                 LoginViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(moodRepository) as T
+                HomeViewModel(moodRepository, touristAttractionRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
@@ -45,7 +47,8 @@ class ViewModelFactory(
                 instance ?: ViewModelFactory(
                     Injection.provideOnboardingRepository(),
                     Injection.provideUserRepository(context),
-                    Injection.provideMoodRepository()
+                    Injection.provideMoodRepository(),
+                    Injection.provideTouristAttractionRepository()
                 )
             }.also { instance = it }
     }
