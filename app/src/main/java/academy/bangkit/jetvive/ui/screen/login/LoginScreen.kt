@@ -55,14 +55,16 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
-    navigateToSignUp: () -> Unit
+    navigateToSignUp: () -> Unit,
+    navigateToHome: () -> Unit
 ) {
-    LoginContent(navigateToSignUp)
+    LoginContent(navigateToSignUp, navigateToHome)
 }
 
 @Composable
 fun LoginContent(
     navigateToSignUp: () -> Unit,
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -71,7 +73,7 @@ fun LoginContent(
             .fillMaxHeight()
     ) {
         TopSection()
-        LoginForm()
+        LoginForm(navigateToHome)
         BottomSection(navigateToSignUp)
     }
 }
@@ -97,6 +99,7 @@ fun TopSection(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginForm(
+    navigateToHome: () -> Unit,
     viewModel: LoginViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
@@ -191,7 +194,10 @@ fun LoginForm(
             Button(
                 onClick = {
                   coroutineScope.launch {
-                      viewModel.login(email.text, password.text)
+                      val state = viewModel.login(email.text, password.text)
+                      if (state) {
+                          navigateToHome()
+                      }
                   }
                 },
                 modifier = Modifier
@@ -276,6 +282,6 @@ fun BottomSection(
 @Composable
 fun LoginContentPreview() {
     JetViVeTheme {
-        LoginContent(navigateToSignUp = {})
+        LoginContent(navigateToSignUp = {}, navigateToHome = {})
     }
 }
