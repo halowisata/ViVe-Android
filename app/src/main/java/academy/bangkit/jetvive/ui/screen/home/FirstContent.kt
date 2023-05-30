@@ -6,7 +6,7 @@ import academy.bangkit.jetvive.model.mood.FakeMoodDataSource
 import academy.bangkit.jetvive.model.mood.Mood
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.MoodItem
-import academy.bangkit.jetvive.ui.components.WelcomeItem
+import academy.bangkit.jetvive.ui.components.WelcomeBar
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -73,7 +73,7 @@ fun Content(
     ) {
         Box(
             modifier = modifier
-                .fillMaxHeight(0.4f)
+                .height(335.dp)
         ) {
             Box(
                 modifier = Modifier
@@ -111,7 +111,7 @@ fun Content(
                     .align(Alignment.BottomCenter)
                     .shadow(8.dp, shape = RoundedCornerShape(15.dp))
             ) {
-                WelcomeItem(
+                WelcomeBar(
                     name = "John Doe",
                 )
             }
