@@ -48,13 +48,13 @@ fun FirstContent(
     ),
     modifier: Modifier = Modifier
 ) {
-    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
-        when (uiState) {
+    viewModel.uiMoodState.collectAsState(initial = UiState.Loading).value.let { uiMoodState ->
+        when (uiMoodState) {
             is UiState.Loading -> {
                 viewModel.getAllMoods()
             }
             is UiState.Success -> {
-                Content(uiState.data)
+                Content(uiMoodState.data)
             }
             is UiState.Error -> {}
         }
