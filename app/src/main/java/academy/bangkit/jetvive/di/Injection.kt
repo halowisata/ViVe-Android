@@ -17,9 +17,7 @@ object Injection {
         name = "user_preferences"
     )
 
-    fun provideOnboardingRepository(): OnboardingRepository {
-        return OnboardingRepository.getInstance()
-    }
+    fun provideOnboardingRepository(): OnboardingRepository = OnboardingRepository.getInstance()
 
     private fun provideUserPreferences(context: Context): UserPreferences {
         val dataStore = context.dataStore
@@ -27,15 +25,11 @@ object Injection {
         return UserPreferences.getInstance(dataStore)
     }
 
-    fun provideUserRepository(context: Context): UserRepository {
-        return UserRepository.getInstance(provideUserPreferences(context))
-    }
+    fun provideUserRepository(context: Context): UserRepository =
+        UserRepository.getInstance(provideUserPreferences(context))
 
-    fun provideMoodRepository(): MoodRepository {
-        return MoodRepository.getInstance()
-    }
+    fun provideMoodRepository(): MoodRepository = MoodRepository.getInstance()
 
-    fun provideTouristAttractionRepository(): TouristAttractionRepository {
-        return TouristAttractionRepository.getInstance()
-    }
+    fun provideTouristAttractionRepository(): TouristAttractionRepository =
+        TouristAttractionRepository.getInstance()
 }
