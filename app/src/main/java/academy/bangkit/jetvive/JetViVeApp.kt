@@ -1,6 +1,8 @@
 package academy.bangkit.jetvive
 
+import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.navigation.Screen
+import academy.bangkit.jetvive.ui.screen.home.HomeScreen
 import academy.bangkit.jetvive.ui.screen.login.LoginScreen
 import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingScreen
 import academy.bangkit.jetvive.ui.screen.register.RegisterScreen
@@ -10,16 +12,21 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun JetViVeApp(
     navController: NavHostController = rememberNavController(),
+    viewModel: ViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+    ),
     modifier: Modifier = Modifier
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -46,6 +53,13 @@ fun JetViVeApp(
                 LoginScreen(
                     navigateToSignUp = {
                         navController.navigate(Screen.Register.route)
+                    },
+                    navigateToHome = {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Login.route) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
@@ -60,6 +74,9 @@ fun JetViVeApp(
                         }
                     }
                 )
+            }
+            composable(Screen.Home.route) {
+                HomeScreen()
             }
         }
     }
