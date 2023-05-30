@@ -3,13 +3,13 @@ package academy.bangkit.jetvive.ui.screen.register
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -28,28 +28,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
-fun RegisterScreen() {
-    RegisterContent()
+fun RegisterScreen(navigateToSignIn: () -> Unit) {
+    RegisterContent(navigateToSignIn)
 }
 
 @Composable
-fun RegisterContent() {
+fun RegisterContent(navigateToSignIn: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,6 +60,7 @@ fun RegisterContent() {
     ) {
         TopSection()
         RegisterForm()
+        BottomSection(navigateToSignIn)
     }
 }
 
@@ -65,32 +69,39 @@ fun RegisterContent() {
 fun RegisterForm() {
     Column(
         modifier = Modifier
-            .padding(30.dp),
-        verticalArrangement = Arrangement.spacedBy(15.dp)
+            .padding(30.dp)
+            .fillMaxHeight(.9f),
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = stringResource(R.string.sign_up),
+            fontSize = 26.sp,
+            lineHeight = 35.sp,
             modifier = Modifier
                 .fillMaxWidth()
         )
-        var name by remember { mutableStateOf(TextFieldValue("")) }
+        var nama by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
-            value = name,
+            shape = RoundedCornerShape(10.dp),
+            value = nama,
             leadingIcon = { Icon(imageVector = Icons.Default.AccountCircle, contentDescription = null) },
             //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
             onValueChange = {
-                name = it
+                nama = it
             },
             label = { Text(text = "Name") },
-            placeholder = { Text(text = "johndoe@example.com") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next
+            ),
             modifier = Modifier
-                .clip(RoundedCornerShape(5.dp))
                 .fillMaxWidth()
         )
         var email by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
+            shape = RoundedCornerShape(10.dp),
             value = email,
             leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
             //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
@@ -98,16 +109,18 @@ fun RegisterForm() {
                 email = it
             },
             label = { Text(text = "Email") },
-            placeholder = { Text(text = "johndoe@example.com") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next
+            ),
             modifier = Modifier
-                .clip(RoundedCornerShape(5.dp))
                 .fillMaxWidth()
         )
         var password by remember { mutableStateOf(TextFieldValue("")) }
-        var passwordVisible by rememberSaveable { mutableStateOf(false) }
+        var showPassword by remember { mutableStateOf(value = false) }
         OutlinedTextField(
+            shape = RoundedCornerShape(10.dp),
             value = password,
             leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
             //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
@@ -115,28 +128,37 @@ fun RegisterForm() {
                 password = it
             },
             label = { Text(text = "Password") },
-            placeholder = { Text(text = "********") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Next
+            ),
             trailingIcon = {
-                val image = if (passwordVisible)
-                    Icons.Filled.Visibility
-                else Icons.Filled.VisibilityOff
-
-                // Please provide localized description for accessibility services
-                val description = if (passwordVisible) "Hide password" else "Show password"
-
-                IconButton(onClick = {passwordVisible = !passwordVisible}){
-                    Icon(imageVector  = image, description)
+                if (showPassword) {
+                    IconButton(onClick = { showPassword = false }) {
+                        Icon(
+                            imageVector = Icons.Filled.Visibility,
+                            contentDescription = "hide_password"
+                        )
+                    }
+                } else {
+                    IconButton(
+                        onClick = { showPassword = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.VisibilityOff,
+                            contentDescription = "hide_password"
+                        )
+                    }
                 }
             },
             modifier = Modifier
-                .clip(RoundedCornerShape(5.dp))
                 .fillMaxWidth()
         )
         var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
-        var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
+        var showConfirmPassword by remember { mutableStateOf(value = false) }
         OutlinedTextField(
+            shape = RoundedCornerShape(10.dp),
             value = confirmPassword,
             leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
             //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
@@ -144,70 +166,105 @@ fun RegisterForm() {
                 confirmPassword = it
             },
             label = { Text(text = "Confirm Password") },
-            placeholder = { Text(text = "********") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            visualTransformation = if (showConfirmPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            ),
             trailingIcon = {
-                val image = if (confirmPasswordVisible)
-                    Icons.Filled.Visibility
-                else Icons.Filled.VisibilityOff
-
-                // Please provide localized description for accessibility services
-                val description = if (confirmPasswordVisible) "Hide password" else "Show password"
-
-                IconButton(onClick = {confirmPasswordVisible = !confirmPasswordVisible}){
-                    Icon(imageVector  = image, description)
+                if (showConfirmPassword) {
+                    IconButton(onClick = { showConfirmPassword = false }) {
+                        Icon(
+                            imageVector = Icons.Filled.Visibility,
+                            contentDescription = "hide_password"
+                        )
+                    }
+                } else {
+                    IconButton(
+                        onClick = { showConfirmPassword = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.VisibilityOff,
+                            contentDescription = "hide_password"
+                        )
+                    }
                 }
             },
             modifier = Modifier
-                .clip(RoundedCornerShape(5.dp))
                 .fillMaxWidth()
+                .padding(bottom = 10.dp)
         )
-        Column(
+        Button(
+            onClick = {},
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Button(
-                onClick = {},
-
-                ) {
-                Text(
-                    text = "Register",
-                    style = TextStyle(
-                        color = Color.White
-                    )
+            Text(
+                text = stringResource(R.string.sign_up),
+                style = TextStyle(
+                    color = Color.White
                 )
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(7.dp)
-            ) {
-                Text(text = "Joined us before?")
-                Text(text = "Sign Up")
-            }
+            )
         }
     }
 }
 
 @Composable
-fun TopSection() {
+fun TopSection(
+    modifier: Modifier = Modifier
+) {
     Image(
-        painter = painterResource(R.drawable.jetpack_compose),
+        painter = painterResource(R.drawable.sign_up),
         contentDescription = null,
         modifier = Modifier
             .fillMaxWidth()
-            .size(300.dp)
+            .padding(
+                start = 30.dp,
+                end = 30.dp,
+                top = 90.dp,
+                bottom = 30.dp
+            )
     )
+}
+
+@Composable
+fun BottomSection(
+    navigateToSignUp: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = stringResource(R.string.joined_us_before),
+            fontSize = 14.sp,
+            lineHeight = 18.sp,
+            letterSpacing = .25.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(end = 3.dp)
+        )
+        Text(
+            text = stringResource(R.string.sign_in),
+            fontWeight = FontWeight.Bold,
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center,
+            lineHeight = 18.sp,
+            letterSpacing = .25.sp,
+            style = TextStyle(color = Color(0xFF576CBC)),
+            modifier = Modifier
+                .clickable {
+                    navigateToSignUp()
+                }
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun RegisterContentPreview() {
-    JetViVeTheme() {
-        JetViVeTheme {
-            RegisterContent()
-        }
+    JetViVeTheme {
+        RegisterContent(navigateToSignIn = {})
     }
 }
