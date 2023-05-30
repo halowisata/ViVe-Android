@@ -1,6 +1,7 @@
 package academy.bangkit.jetvive.di
 
 import academy.bangkit.jetvive.data.local.datastore.UserPreferences
+import academy.bangkit.jetvive.data.repository.MoodRepository
 import academy.bangkit.jetvive.data.repository.OnboardingRepository
 import academy.bangkit.jetvive.data.repository.TouristAttractionRepository
 import academy.bangkit.jetvive.data.repository.UserRepository
@@ -28,6 +29,10 @@ object Injection {
 
     fun provideUserRepository(context: Context): UserRepository {
         return UserRepository.getInstance(provideUserPreferences(context))
+    }
+
+    fun provideMoodRepository(): MoodRepository {
+        return MoodRepository.getInstance()
     }
 
     fun provideTouristAttractionRepository(): TouristAttractionRepository {
