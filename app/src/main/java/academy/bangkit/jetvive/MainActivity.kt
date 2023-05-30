@@ -13,12 +13,12 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class MainActivity : ComponentActivity() {
 
-    private val mainViewModel: MainViewModel by viewModels()
+    private val viewModel: ViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-            .setKeepOnScreenCondition { mainViewModel.isLoading.value }
+            .setKeepOnScreenCondition { viewModel.isLoading.value }
         setContent {
             JetViVeTheme {
                 Surface(
