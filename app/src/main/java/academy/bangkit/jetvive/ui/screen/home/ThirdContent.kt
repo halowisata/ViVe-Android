@@ -73,7 +73,6 @@ fun Content(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .padding(20.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -90,7 +89,7 @@ fun Content(
             Text(
                 text = "Happy",
                 modifier = Modifier
-                    .padding(start = 17.dp)
+                    .padding(start = 20.dp)
             )
             IconButton(
                 onClick = {}
@@ -101,7 +100,7 @@ fun Content(
         Divider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
         LazyVerticalGrid(
             columns = GridCells.Adaptive(160.dp),
-            contentPadding = PaddingValues(vertical = 16.dp),
+            contentPadding = PaddingValues(vertical = 16.dp, horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
