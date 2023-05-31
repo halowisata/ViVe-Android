@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,7 +55,8 @@ fun OnboardingScreen(
     viewModel: OnboardingViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
-    navigateToLogin: () -> Unit
+    navigateToLogin: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
@@ -137,7 +137,8 @@ fun TopSection(
     pageState: Int,
     pageSize: Int,
     onBackClick: () -> Unit = {},
-    onSkipClick: () -> Unit = {}
+    onSkipClick: () -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = Modifier
@@ -152,7 +153,7 @@ fun TopSection(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
-                    contentDescription = null
+                    contentDescription = stringResource(R.string.back)
                 )
             }
         }
@@ -160,8 +161,7 @@ fun TopSection(
             TextButton(
                 onClick = onSkipClick,
                 modifier = Modifier
-                    .align(Alignment.CenterEnd),
-                contentPadding = PaddingValues(0.dp)
+                    .align(Alignment.CenterEnd)
             ) {
                 Text(
                     text = stringResource(R.string.skip),
@@ -177,7 +177,8 @@ fun BottomSection(
     pageState: Int,
     pageSize: Int,
     index: Int,
-    onButtonClick: () -> Unit = {}
+    onButtonClick: () -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = Modifier
@@ -225,7 +226,10 @@ fun BottomSection(
 }
 
 @Composable
-fun BoxScope.Indicators(size: Int, index: Int) {
+fun BoxScope.Indicators(
+    size: Int,
+    index: Int
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -233,14 +237,17 @@ fun BoxScope.Indicators(size: Int, index: Int) {
             .align(Alignment.CenterStart)
     ) {
         repeat(size) {
-            Indicator(isSelected = it == index)
+            Indicator(
+                isSelected = it == index
+            )
         }
     }
 }
 
 @Composable
 fun Indicator(
-    isSelected: Boolean
+    isSelected: Boolean,
+    modifier: Modifier = Modifier
 ) {
     val width = animateDpAsState(
         targetValue = if (isSelected) 25.dp else 10.dp,

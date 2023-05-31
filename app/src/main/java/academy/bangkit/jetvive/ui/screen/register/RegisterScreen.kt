@@ -47,12 +47,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun RegisterScreen(navigateToSignIn: () -> Unit) {
-    RegisterContent(navigateToSignIn)
+fun RegisterScreen(
+    navigateToSignIn: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    RegisterContent(
+        navigateToSignIn
+    )
 }
 
 @Composable
-fun RegisterContent(navigateToSignIn: () -> Unit) {
+fun RegisterContent(
+    navigateToSignIn: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,19 +68,23 @@ fun RegisterContent(navigateToSignIn: () -> Unit) {
     ) {
         TopSection()
         RegisterForm()
-        BottomSection(navigateToSignIn)
+        BottomSection(
+            navigateToSignIn
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterForm() {
+fun RegisterForm(
+    modifier: Modifier = Modifier
+) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(30.dp)
-            .fillMaxHeight(.9f),
-        verticalArrangement = Arrangement.spacedBy(15.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxHeight(.9f)
     ) {
         Text(
             text = stringResource(R.string.sign_up),
@@ -81,16 +93,22 @@ fun RegisterForm() {
             modifier = Modifier
                 .fillMaxWidth()
         )
+
         var nama by remember { mutableStateOf(TextFieldValue("")) }
+        
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = nama,
-            leadingIcon = { Icon(imageVector = Icons.Default.AccountCircle, contentDescription = null) },
-            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+            leadingIcon = { Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = stringResource(R.string.name)
+            ) },
             onValueChange = {
                 nama = it
             },
-            label = { Text(text = "Name") },
+            label = { Text(
+                text = stringResource(R.string.name)
+            ) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
@@ -99,16 +117,22 @@ fun RegisterForm() {
             modifier = Modifier
                 .fillMaxWidth()
         )
+
         var email by remember { mutableStateOf(TextFieldValue("")) }
+
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = email,
-            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
-            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+            leadingIcon = { Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = stringResource(R.string.email)
+            ) },
             onValueChange = {
                 email = it
             },
-            label = { Text(text = "Email") },
+            label = { Text(
+                text = stringResource(R.string.email)
+            ) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
@@ -117,37 +141,47 @@ fun RegisterForm() {
             modifier = Modifier
                 .fillMaxWidth()
         )
+
         var password by remember { mutableStateOf(TextFieldValue("")) }
         var showPassword by remember { mutableStateOf(value = false) }
+
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = password,
-            leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
-            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+            leadingIcon = { Icon(
+                imageVector = Icons.Default.Lock,
+                contentDescription = stringResource(R.string.password)
+            ) },
             onValueChange = {
                 password = it
             },
-            label = { Text(text = "Password") },
+            label = { Text(
+                text = stringResource(R.string.password)
+            ) },
             singleLine = true,
-            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation =
+                if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             ),
             trailingIcon = {
                 if (showPassword) {
-                    IconButton(onClick = { showPassword = false }) {
+                    IconButton(
+                        onClick = { showPassword = false }
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.Visibility,
-                            contentDescription = "hide_password"
+                            contentDescription = stringResource(R.string.hide_password)
                         )
                     }
                 } else {
                     IconButton(
-                        onClick = { showPassword = true }) {
+                        onClick = { showPassword = true }
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.VisibilityOff,
-                            contentDescription = "hide_password"
+                            contentDescription = stringResource(R.string.hide_password)
                         )
                     }
                 }
@@ -155,37 +189,48 @@ fun RegisterForm() {
             modifier = Modifier
                 .fillMaxWidth()
         )
+
         var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
         var showConfirmPassword by remember { mutableStateOf(value = false) }
+
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = confirmPassword,
-            leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
-            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+            leadingIcon = { Icon(
+                imageVector = Icons.Default.Lock,
+                contentDescription = stringResource(R.string.confirm_password)
+            ) },
             onValueChange = {
                 confirmPassword = it
             },
-            label = { Text(text = "Confirm Password") },
+            label = { Text(
+                text = stringResource(R.string.confirm_password)
+            ) },
             singleLine = true,
-            visualTransformation = if (showConfirmPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation =
+                if (showConfirmPassword) VisualTransformation.None
+                else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
             trailingIcon = {
                 if (showConfirmPassword) {
-                    IconButton(onClick = { showConfirmPassword = false }) {
+                    IconButton(
+                        onClick = { showConfirmPassword = false }
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.Visibility,
-                            contentDescription = "hide_password"
+                            contentDescription = stringResource(R.string.hide_password)
                         )
                     }
                 } else {
                     IconButton(
-                        onClick = { showConfirmPassword = true }) {
+                        onClick = { showConfirmPassword = true }
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.VisibilityOff,
-                            contentDescription = "hide_password"
+                            contentDescription = stringResource(R.string.hide_password)
                         )
                     }
                 }
@@ -215,7 +260,7 @@ fun TopSection(
 ) {
     Image(
         painter = painterResource(R.drawable.sign_up),
-        contentDescription = null,
+        contentDescription = stringResource(R.string.sign_up_image),
         modifier = Modifier
             .fillMaxWidth()
             .padding(
@@ -265,6 +310,8 @@ fun BottomSection(
 @Composable
 fun RegisterContentPreview() {
     JetViVeTheme {
-        RegisterContent(navigateToSignIn = {})
+        RegisterContent(
+            navigateToSignIn = {}
+        )
     }
 }
