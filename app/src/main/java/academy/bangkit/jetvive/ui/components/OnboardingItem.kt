@@ -44,21 +44,21 @@ fun OnBoardingItem(
         )
         Text(
             text = headline,
+            fontWeight = FontWeight.W500,
             fontSize = 24.sp,
             lineHeight = 40.sp,
-            letterSpacing = 0.15.sp,
-            fontWeight = FontWeight.W500,
-            modifier = modifier,
+            letterSpacing = 0.30.sp,
             textAlign = TextAlign.Center,
+            modifier = modifier,
         )
         Text(
             text = body,
+            fontWeight = FontWeight.W400,
             fontSize = 16.sp,
             lineHeight = 30.sp,
-            letterSpacing = 0.25.sp,
-            fontWeight = FontWeight.W400,
+            letterSpacing = 0.50.sp,
+            textAlign = TextAlign.Center,
             modifier = modifier,
-            textAlign = TextAlign.Center
         )
     }
 }

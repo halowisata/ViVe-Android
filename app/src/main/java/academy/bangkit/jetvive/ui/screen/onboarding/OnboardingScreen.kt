@@ -64,10 +64,10 @@ fun OnboardingScreen(
                 viewModel.getAllOnboardingData()
             }
             is UiState.Success -> {
-                val onboarding = uiState.data
+                val onboardings = uiState.data
 
                 OnboardingContent(
-                    onboardings = onboarding,
+                    onboardings = onboardings,
                     navigateToLogin = navigateToLogin
                 )
             }
@@ -91,23 +91,22 @@ fun OnboardingContent(
             .fillMaxSize()
     ) {
         TopSection(
-            state = pageState.currentPage,
-            count = onboardings.size,
+            pageState = pageState.currentPage,
+            pageSize = onboardings.size,
             onBackClick = {
                 if (pageState.currentPage + 1 > 1) scope.launch {
-                    pageState.scrollToPage(pageState.currentPage - 1)
+                    pageState.animateScrollToPage(pageState.currentPage - 1)
                 }
             },
             onSkipClick = {
                 if (pageState.currentPage + 1 < onboardings.size) scope.launch {
-                    pageState.scrollToPage(onboardings.size - 1)
+                    pageState.animateScrollToPage(onboardings.size - 1)
                 }
             }
         )
-
         HorizontalPager(
-            count = onboardings.size,
             state = pageState,
+            count = onboardings.size,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(.9f)
@@ -118,14 +117,13 @@ fun OnboardingContent(
                 body = onboardings[page].body
             )
         }
-
         BottomSection(
-            state = pageState.currentPage,
-            count = onboardings.size,
+            pageState = pageState.currentPage,
+            pageSize = onboardings.size,
             index = pageState.currentPage,
             onButtonClick = {
                 if (pageState.currentPage + 1 < onboardings.size) scope.launch {
-                    pageState.scrollToPage(pageState.currentPage + 1)
+                    pageState.animateScrollToPage(pageState.currentPage + 1)
                 } else {
                     navigateToLogin()
                 }
@@ -136,8 +134,8 @@ fun OnboardingContent(
 
 @Composable
 fun TopSection(
-    state: Int,
-    count: Int,
+    pageState: Int,
+    pageSize: Int,
     onBackClick: () -> Unit = {},
     onSkipClick: () -> Unit = {}
 ) {
@@ -146,10 +144,11 @@ fun TopSection(
             .fillMaxWidth()
             .padding(12.dp)
     ) {
-        if (state != 0) {
+        if (pageState != 0) {
             IconButton(
                 onClick = onBackClick,
-                modifier = Modifier.align(Alignment.CenterStart)
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
             ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
@@ -157,10 +156,11 @@ fun TopSection(
                 )
             }
         }
-        if (state != count - 1) {
+        if (pageState != pageSize - 1) {
             TextButton(
                 onClick = onSkipClick,
-                modifier = Modifier.align(Alignment.CenterEnd),
+                modifier = Modifier
+                    .align(Alignment.CenterEnd),
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Text(
@@ -174,8 +174,8 @@ fun TopSection(
 
 @Composable
 fun BottomSection(
-    state: Int,
-    count: Int,
+    pageState: Int,
+    pageSize: Int,
     index: Int,
     onButtonClick: () -> Unit = {}
 ) {
@@ -185,7 +185,7 @@ fun BottomSection(
             .padding(12.dp)
     ) {
         Indicators(
-            count,
+            pageSize,
             index
         )
         FloatingActionButton(
@@ -195,7 +195,7 @@ fun BottomSection(
                 .align(Alignment.CenterEnd)
                 .clip(RoundedCornerShape(100.dp))
         ) {
-            if (state == count - 1) {
+            if (pageState == pageSize - 1) {
                 Text(
                     text = stringResource(R.string.get_started),
                     style = TextStyle(
@@ -229,7 +229,8 @@ fun BoxScope.Indicators(size: Int, index: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.align(Alignment.CenterStart)
+        modifier = Modifier
+            .align(Alignment.CenterStart)
     ) {
         repeat(size) {
             Indicator(isSelected = it == index)
