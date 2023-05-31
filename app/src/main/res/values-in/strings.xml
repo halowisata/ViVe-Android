@@ -20,4 +20,6 @@
     <string name="joined_us_before">Sudah bergabung sebelumnya?</string>
     <string name="how_s_your_mood_today">Bagaimana suasana hatimu hari ini?</string>
     <string name="placeholder_search">Cari destinasi wisata</string>
+    <string name="back">Kembali</string>
+    <string name="bookmark">markah</string>
 </resources>
