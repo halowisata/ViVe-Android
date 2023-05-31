@@ -9,12 +9,12 @@
     <string name="get_started">Mulai</string>
     <string name="continue_text">Lanjutkan</string>
     <string name="skip">Lewati</string>
-    <string name="sign_in">Sign In</string>
+    <string name="sign_in">Masuk</string>
     <string name="text_field_label">Label TextField</string>
     <string name="text_field_placeholder">Placeholder TextField</string>
     <string name="forget_password">Lupa kata sandi?</string>
     <string name="sign_up">Daftar</string>
-    <string name="new_to_vive">Baru di ViVe?</string>
+    <string name="new_to_halowisata">Baru di Halowisata?</string>
     <string name="or">atau</string>
     <string name="sign_in_with_google">Masuk dengan Google</string>
     <string name="joined_us_before">Sudah bergabung sebelumnya?</string>
@@ -22,4 +22,12 @@
     <string name="placeholder_search">Cari destinasi wisata</string>
     <string name="back">Kembali</string>
     <string name="bookmark">markah</string>
+    <string name="sign_in_image">Gambar Masuk</string>
+    <string name="email">Surel</string>
+    <string name="password">Kata Sandi</string>
+    <string name="hide_password">Sembunyikan Kata Sandi</string>
+    <string name="name">Nama</string>
+    <string name="confirm_password">Konfirmasi Kata Sandi</string>
+    <string name="sign_up_image">Gambar Daftar</string>
+    <string name="hi">Hai</string>
 </resources>

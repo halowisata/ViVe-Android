@@ -13,7 +13,7 @@
     <string name="text_field_placeholder">TextField Placeholder</string>
     <string name="forget_password">Forget password?</string>
     <string name="sign_up">Sign Up</string>
-    <string name="new_to_vive">New to ViVe?</string>
+    <string name="new_to_halowisata">New to Halowisata?</string>
     <string name="or">or</string>
     <string name="sign_in_with_google">Sign In with Google</string>
     <string name="joined_us_before">Joined us before?</string>
@@ -21,4 +21,12 @@
     <string name="placeholder_search">Search for tourist attraction</string>
     <string name="back">Back</string>
     <string name="bookmark">Bookmark</string>
+    <string name="sign_in_image">Sign In Image</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="hide_password">Hide Password</string>
+    <string name="name">Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up_image">Sign Up Image</string>
+    <string name="hi">Hi</string>
 </resources>
