@@ -42,14 +42,13 @@ class ViewModelFactory(
         @Volatile
         private var instance: ViewModelFactory? = null
 
-        fun getInstance(context: Context) : ViewModelFactory =
-            instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(
-                    Injection.provideOnboardingRepository(),
-                    Injection.provideUserRepository(context),
-                    Injection.provideMoodRepository(),
-                    Injection.provideTouristAttractionRepository()
-                )
-            }.also { instance = it }
+        fun getInstance(context: Context) : ViewModelFactory = instance ?: synchronized(this) {
+            instance ?: ViewModelFactory(
+                Injection.provideOnboardingRepository(),
+                Injection.provideUserRepository(context),
+                Injection.provideMoodRepository(),
+                Injection.provideTouristAttractionRepository()
+            )
+        }.also { instance = it }
     }
 }

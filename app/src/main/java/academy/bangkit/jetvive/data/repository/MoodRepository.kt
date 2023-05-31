@@ -13,11 +13,10 @@ class MoodRepository {
         @Volatile
         private var instance: MoodRepository? = null
 
-        fun getInstance(): MoodRepository =
-            instance ?: synchronized(this) {
-                MoodRepository().apply {
-                    instance = this
-                }
+        fun getInstance(): MoodRepository = instance ?: synchronized(this) {
+            MoodRepository().apply {
+                instance = this
             }
+        }
     }
 }

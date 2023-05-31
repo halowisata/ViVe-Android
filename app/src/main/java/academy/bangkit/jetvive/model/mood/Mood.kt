@@ -4,6 +4,5 @@ data class Mood(
     val id: String,
     val name: String,
     val image: Int,
-    val color: Long,
-    val surveyId: String? = null
+    val color: Long
 )

@@ -14,11 +14,10 @@ class TouristAttractionRepository {
         @Volatile
         private var instance: TouristAttractionRepository? = null
 
-        fun getInstance(): TouristAttractionRepository =
-            instance ?: synchronized(this) {
-                TouristAttractionRepository().apply {
-                    instance = this
-                }
+        fun getInstance(): TouristAttractionRepository = instance ?: synchronized(this) {
+            TouristAttractionRepository().apply {
+                instance = this
             }
+        }
     }
 }
