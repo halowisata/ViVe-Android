@@ -29,4 +29,12 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up_image">Sign Up Image</string>
     <string name="hi">Hi</string>
+    <string name="mood_name">Mood Name</string>
+    <string name="halowisata">Halowisata</string>
+    <string name="welcome_image">Welcome Image</string>
+    <string name="survey_image">Survey Image</string>
+    <string name="survey">Survey</string>
+    <string name="what_is_your_current_budget">What is your current budget?</string>
+    <string name="input_label">Input Label</string>
+    <string name="open_on_google_maps">Open on Google Maps</string>
 </resources>

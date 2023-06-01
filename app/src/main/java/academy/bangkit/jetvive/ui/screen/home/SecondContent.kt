@@ -2,6 +2,7 @@ package academy.bangkit.jetvive.ui.screen.home
 
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.ViewModelFactory
+import academy.bangkit.jetvive.ui.components.MyUI
 import academy.bangkit.jetvive.ui.screen.login.LoginViewModel
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.Image
@@ -60,7 +61,7 @@ fun TopSection(
 ) {
     Image(
         painter = painterResource(R.drawable.survey),
-        contentDescription = null,
+        contentDescription = stringResource(R.string.survey_image),
         modifier = Modifier
             .fillMaxWidth()
             .padding(
@@ -81,72 +82,30 @@ fun SurveyForm(
     modifier: Modifier = Modifier
 ) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(30.dp)
-            .fillMaxHeight(.9f),
-        verticalArrangement = Arrangement.spacedBy(15.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxHeight(.9f)
     ) {
         Text(
-            text = stringResource(R.string.sign_in),
+            text = stringResource(R.string.survey),
             fontSize = 26.sp,
             lineHeight = 35.sp,
             modifier = Modifier
                 .fillMaxWidth()
         )
-        var email by remember { mutableStateOf(TextFieldValue("")) }
-        OutlinedTextField(
-            shape = RoundedCornerShape(10.dp),
-            value = email,
-            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
-            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
-            onValueChange = {
-                email = it
-            },
-            label = { Text(text = "Email") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
+        MyUI(
+            label = "How's your current budget?",
+            listItems = arrayOf("Low", "Medium", "High", "Surprise me!")
         )
-//        var email by remember { mutableStateOf(TextFieldValue("")) }
-        OutlinedTextField(
-            shape = RoundedCornerShape(10.dp),
-            value = email,
-            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
-            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
-            onValueChange = {
-                email = it
-            },
-            label = { Text(text = "Email") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
+        MyUI(
+            label = "How far are you willing to travel?",
+            listItems = arrayOf("< 20 KM", "20 KM <= distance <= 75 KM", "> 75 KM", "Surprise me!")
         )
-//        var email by remember { mutableStateOf(TextFieldValue("")) }
-        OutlinedTextField(
-            shape = RoundedCornerShape(10.dp),
-            value = email,
-            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
-            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
-            onValueChange = {
-                email = it
-            },
-            label = { Text(text = "Email") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
+        MyUI(
+            label = "What is your preferred city?",
+            listItems = arrayOf("Semarang", "Jogja", "Bandung", "Jakarta")
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(5.dp)

@@ -98,6 +98,8 @@ fun Content(
             }
         }
         Divider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
+        SearchBar()
+        Divider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
         LazyVerticalGrid(
             columns = GridCells.Adaptive(160.dp),
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 20.dp),
@@ -120,10 +122,6 @@ fun Content(
                         fontSize = 14.sp,
                         lineHeight = 20.sp,
                         letterSpacing = .25.sp
-                    )
-                    SearchBar(
-                        modifier = Modifier
-                            .shadow(2.dp, shape = RoundedCornerShape(16.dp))
                     )
                     Text(
                         text = "Top Recommendation",

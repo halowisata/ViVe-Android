@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -72,14 +74,14 @@ fun Content(
             .fillMaxHeight()
     ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .height(335.dp)
         ) {
             Box(
                 modifier = Modifier
                     .height(285.dp)
                     .clip(shape = RectangleShape)
-                    .background(color = Color(0xFFA5D7E8))
+                    .background(color = MaterialTheme.colorScheme.primary)
             ) {
                 Column(
                     modifier = Modifier
@@ -88,7 +90,7 @@ fun Content(
                     verticalArrangement = Arrangement.spacedBy(25.dp)
                 ) {
                     Text(
-                        text = "Halo Wisata",
+                        text = stringResource(R.string.halowisata),
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                         lineHeight = 30.sp,
@@ -102,14 +104,18 @@ fun Content(
                     )
                     Image(
                         painter = painterResource(R.drawable.welcome),
-                        contentDescription = null
+                        contentDescription = stringResource(R.string.welcome_image)
                     )
                 }
             }
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .shadow(8.dp, shape = RoundedCornerShape(15.dp))
+                    .shadow(
+                        8.dp,
+                        shape = RoundedCornerShape(15.dp),
+                        spotColor = MaterialTheme.colorScheme.onBackground
+                    )
             ) {
                 WelcomeBar(
                     name = "John Doe",
@@ -118,7 +124,10 @@ fun Content(
         }
         LazyVerticalGrid(
             columns = GridCells.Adaptive(160.dp),
-            contentPadding = PaddingValues(vertical = 30.dp, horizontal = 20.dp),
+            contentPadding = PaddingValues(
+                vertical = 30.dp,
+                horizontal = 20.dp
+            ),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -126,8 +135,7 @@ fun Content(
                 MoodItem(
                     color = Color(mood.color),
                     image = mood.image,
-                    text = mood.name,
-                    modifier = Modifier
+                    text = mood.name
                 )
             }
         }

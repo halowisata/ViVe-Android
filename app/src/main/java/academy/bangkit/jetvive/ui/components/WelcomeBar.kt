@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +35,7 @@ fun WelcomeBar(
     Box(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(15.dp))
-            .background(color = Color(0xFFFFFFFF))
+            .background(color = MaterialTheme.colorScheme.background)
             .padding(20.dp)
     ) {
         Column(
@@ -47,7 +48,7 @@ fun WelcomeBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Hi, $name!",
+                    text = "${stringResource(R.string.hi)}, $name!",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 24.sp,
                     lineHeight = 35.sp,

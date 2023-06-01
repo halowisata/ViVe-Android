@@ -47,7 +47,6 @@ fun SearchBar(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 48.dp)
-            .clip(RoundedCornerShape(16.dp))
     )
 }
 

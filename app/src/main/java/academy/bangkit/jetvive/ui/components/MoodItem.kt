@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,14 +34,18 @@ fun MoodItem(
 ) {
     Box(
         modifier = Modifier
-            .size(150.dp)
+            .size(175.dp)
             .clip(shape = RoundedCornerShape(15.dp))
             .background(color = color)
             .padding(10.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement
+                .spacedBy(
+                    space = 10.dp,
+                    alignment = Alignment.CenterVertically
+                ),
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
@@ -54,7 +59,8 @@ fun MoodItem(
             )
             Text(
                 text = text,
-                fontWeight = FontWeight.SemiBold,
+                color = Color.Black,
+                fontWeight = FontWeight.Medium,
                 fontSize = 20.sp,
                 lineHeight = 30.sp,
                 letterSpacing = .15.sp
@@ -69,8 +75,8 @@ fun MoodItemPreview() {
     JetViVeTheme {
         MoodItem(
             color = Color(0xFFE5F4F6),
-            image = R.drawable.mood_happy,
-            text = "Happy"
+            image = R.drawable.jetpack_compose,
+            text = stringResource(R.string.mood_name)
         )
     }
 }

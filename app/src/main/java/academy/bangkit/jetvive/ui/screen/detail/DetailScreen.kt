@@ -14,24 +14,30 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +45,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DetailScreen() {
+
 }
 
 @Composable
@@ -74,14 +81,18 @@ fun DetailContent(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = stringResource(R.string.back),
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
+                            .size(75.dp)
                             .padding(16.dp)
                             .clickable { onBackClick() }
                     )
                     Icon(
                         imageVector = Icons.Default.Bookmark,
                         contentDescription = stringResource(R.string.bookmark),
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
+                            .size(75.dp)
                             .padding(16.dp)
                             .clickable { onBackClick() }
                     )
@@ -105,25 +116,47 @@ fun DetailContent(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Text(
-                        text = city,
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                    )
-                    Text(
-                        text = rating.toString(),
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LocationOn,
+                            contentDescription = stringResource(R.string.bookmark),
+                            tint = Color.Red
+                        )
+                        Text(
+                            text = city,
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                        )
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = stringResource(R.string.bookmark),
+                            tint = Color.Yellow
+                        )
+                        Text(
+                            text = rating.toString(),
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp)
                     .background(LightGray))
                 Text(
-                    text = "Pandawa Beach is one of the tourist destinations in the southern part of Kuta, Badung Regency, Bali. This beach is located behind hills and is often referred to as the Secret Beach. Around the beach, there are two very large cliffs, one of which is carved with five statues of the Pandawa and Kunti."
+                    text = "Pandawa Beach is one of the tourist destinations in the southern part of Kuta, Badung Regency, Bali. This beach is located behind hills and is often referred to as the Secret Beach. Around the beach, there are two very large cliffs, one of which is carved with five statues of the Pandawa and Kunti.",
+                    modifier = Modifier
+                        .padding(vertical = 10.dp   )
                 )
                 Button(
                     onClick = {},
@@ -132,10 +165,12 @@ fun DetailContent(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(20.dp)
                 ) {
                     Text(
-                        text = "Open on Google Maps"
+                        text = stringResource(R.string.open_on_google_maps),
+                        style = TextStyle(
+                            color = Color.White
+                        )
                     )
                 }
             }
