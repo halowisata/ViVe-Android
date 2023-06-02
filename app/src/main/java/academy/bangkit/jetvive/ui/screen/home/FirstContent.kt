@@ -72,6 +72,8 @@ fun Content(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .background(color = MaterialTheme.colorScheme.primary)
+            .padding(20.dp)
     ) {
         Box(
             modifier = Modifier
@@ -125,8 +127,7 @@ fun Content(
         LazyVerticalGrid(
             columns = GridCells.Adaptive(160.dp),
             contentPadding = PaddingValues(
-                vertical = 30.dp,
-                horizontal = 20.dp
+                vertical = 30.dp
             ),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
