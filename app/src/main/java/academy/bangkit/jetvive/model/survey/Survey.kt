@@ -2,8 +2,9 @@ package academy.bangkit.jetvive.model.survey
 
 data class Survey(
     val id: String,
+    val userId: String,
+    val moodId: String,
     val budget: String,
-    val distance: Int,
-    val city: String,
-    val userId: String? = null
+    val travelDistance: Int,
+    val destinationCity: String
 )
