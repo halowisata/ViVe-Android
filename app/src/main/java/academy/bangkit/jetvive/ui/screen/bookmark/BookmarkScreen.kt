@@ -5,9 +5,7 @@ import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.model.tourist_attraction.FakeTouristAttractionDataSource
 import academy.bangkit.jetvive.model.tourist_attraction.TouristAttraction
 import academy.bangkit.jetvive.ui.common.UiState
-import academy.bangkit.jetvive.ui.components.SearchBar
 import academy.bangkit.jetvive.ui.components.TouristAttractionItem
-import academy.bangkit.jetvive.ui.screen.home.Content
 import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -15,15 +13,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -48,7 +43,7 @@ fun BookmarkScreen(
                 viewModel.getAllTouristAttractions()
             }
             is UiState.Success -> {
-                Content(uiTouristAttractionState.data)
+                BookmarkContent(uiTouristAttractionState.data)
             }
             is UiState.Error -> {}
         }
@@ -65,9 +60,6 @@ fun BookmarkContent(
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        Divider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
-        SearchBar()
-        Divider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
         LazyVerticalGrid(
             columns = GridCells.Adaptive(160.dp),
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 20.dp),
@@ -90,7 +82,8 @@ fun BookmarkContent(
             items(touristAttractions) { touristAttraction ->
                 TouristAttractionItem(
                     image = R.drawable.jetpack_compose,
-                    title = touristAttraction.name
+                    name = touristAttraction.name,
+                    onClick = {}
                 )
             }
         }

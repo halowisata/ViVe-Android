@@ -1,6 +1,8 @@
 package academy.bangkit.jetvive.ui.screen.detail
 
 import academy.bangkit.jetvive.R
+import academy.bangkit.jetvive.helper.ViewModelFactory
+import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -29,12 +31,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -42,22 +46,48 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun DetailScreen() {
-
+fun DetailScreen(
+    id: String,
+    viewModel: DetailViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+    ),
+    modifier: Modifier = Modifier
+) {
+    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
+        when (uiState) {
+            is UiState.Loading -> {
+                viewModel.getTouristAttractionById(id)
+            }
+            is UiState.Success -> {
+                val data = uiState.data
+                DetailContent(
+                    image = data.image,
+                    name = data.name,
+                    description = data.description,
+                    city = data.city,
+                    rating = data.rating,
+                    onBackClick = {}
+                )
+            }
+            is UiState.Error -> {}
+        }
+    }
 }
 
 @Composable
 fun DetailContent(
     @DrawableRes image: Int,
     name: String,
+    description: String,
     city: String,
     rating: Double,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column {
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
@@ -68,7 +98,7 @@ fun DetailContent(
                     painter = painterResource(image),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = modifier
+                    modifier = Modifier
                         .height(400.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
@@ -154,7 +184,7 @@ fun DetailContent(
                     .height(4.dp)
                     .background(LightGray))
                 Text(
-                    text = "Pandawa Beach is one of the tourist destinations in the southern part of Kuta, Badung Regency, Bali. This beach is located behind hills and is often referred to as the Secret Beach. Around the beach, there are two very large cliffs, one of which is carved with five statues of the Pandawa and Kunti.",
+                    text = description,
                     modifier = Modifier
                         .padding(vertical = 10.dp   )
                 )
@@ -183,11 +213,12 @@ fun DetailContent(
 fun DetailContentPreview() {
     JetViVeTheme {
         DetailContent(
-            R.drawable.jetpack_compose,
-            "Pandawa Beach",
-            "Bali",
-            5.0,
-            onBackClick = {},
+            image = R.drawable.jetpack_compose,
+            description = stringResource(R.string.tourist_attraction_description),
+            name = stringResource(R.string.tourist_attraction_name),
+            city = stringResource(R.string.tourist_attraction_city),
+            rating = 5.0,
+            onBackClick = {}
         )
     }
 }

@@ -2,10 +2,13 @@ package academy.bangkit.jetvive
 
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.navigation.Screen
+import academy.bangkit.jetvive.ui.screen.detail.DetailScreen
 import academy.bangkit.jetvive.ui.screen.home.HomeScreen
 import academy.bangkit.jetvive.ui.screen.login.LoginScreen
+import academy.bangkit.jetvive.ui.screen.mood.MoodScreen
 import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingScreen
 import academy.bangkit.jetvive.ui.screen.register.RegisterScreen
+import academy.bangkit.jetvive.ui.screen.survey.SurveyScreen
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
@@ -20,6 +23,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 @Composable
 fun JetViVeApp(
@@ -32,7 +37,7 @@ fun JetViVeApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    Surface() {
+    Surface {
         NavHost(
             navController = navController,
             startDestination = Screen.Onboarding.route,
@@ -55,7 +60,7 @@ fun JetViVeApp(
                         navController.navigate(Screen.Register.route)
                     },
                     navigateToHome = {
-                        navController.navigate(Screen.Home.route) {
+                        navController.navigate(Screen.Mood.route) {
                             popUpTo(Screen.Login.route) {
                                 inclusive = true
                             }
@@ -75,9 +80,38 @@ fun JetViVeApp(
                     }
                 )
             }
-            composable(Screen.Home.route) {
-                HomeScreen()
+            composable(Screen.Mood.route) {
+                MoodScreen(
+                    navigateToSurvey = {
+                        navController.navigate(Screen.Survey.route)
+                    }
+                )
             }
+            composable(Screen.Survey.route) {
+                SurveyScreen(
+                    navigateToHome = {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(0)
+                        }
+                    }
+                )
+            }
+            composable(Screen.Home.route) {
+                HomeScreen(
+                    navigateToDetail = { id ->
+                        navController.navigate(Screen.DetailTouristAttraction.createRoute(id))
+                    }
+                )
+            }
+            composable(
+                route = Screen.DetailTouristAttraction.route,
+                arguments = listOf(navArgument("id") {
+                    type = NavType.StringType
+                }),
+                content = {
+                    DetailScreen(id = "tourist_attraction-1")
+                }
+            )
         }
     }
 }

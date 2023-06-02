@@ -1,4 +1,4 @@
-package academy.bangkit.jetvive.ui.screen.home
+package academy.bangkit.jetvive.ui.screen.mood
 
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.ViewModelFactory
@@ -7,9 +7,11 @@ import academy.bangkit.jetvive.model.mood.Mood
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.MoodItem
 import academy.bangkit.jetvive.ui.components.WelcomeBar
+import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,7 +46,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun FirstContent(
+fun MoodScreen(
+    navigateToSurvey: () -> Unit,
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
@@ -56,7 +59,10 @@ fun FirstContent(
                 viewModel.getAllMoods()
             }
             is UiState.Success -> {
-                Content(uiMoodState.data)
+                MoodContent(
+                    moods = uiMoodState.data,
+                    navigateToSurvey =  navigateToSurvey
+                )
             }
             is UiState.Error -> {}
         }
@@ -64,8 +70,9 @@ fun FirstContent(
 }
 
 @Composable
-fun Content(
+fun MoodContent(
     moods: List<Mood>,
+    navigateToSurvey: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -136,7 +143,8 @@ fun Content(
                 MoodItem(
                     color = Color(mood.color),
                     image = mood.image,
-                    text = mood.name
+                    text = mood.name,
+                    onClick = { navigateToSurvey() }
                 )
             }
         }
@@ -145,10 +153,11 @@ fun Content(
 
 @Preview(showBackground = true)
 @Composable
-fun FirstContentPreview() {
+fun MoodContentPreview() {
     JetViVeTheme {
-        Content(
-            FakeMoodDataSource.dummyMoods
+        MoodContent(
+            moods = FakeMoodDataSource.dummyMoods,
+            navigateToSurvey = {}
         )
     }
 }

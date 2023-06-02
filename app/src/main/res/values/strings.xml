@@ -39,4 +39,14 @@
     <string name="open_on_google_maps">Open on Google Maps</string>
     <string name="account_image">Account Image</string>
     <string name="select_one">Select one</string>
+    <string name="first_onboarding">Discover Your Perfect Gateway</string>
+    <string name="first_onboarding_description">Find your dream travel destinations effortlessly with our mood-based recommender system</string>
+    <string name="second_onboarding">Set Your Mood, Find Your Adventure</string>
+    <string name="second_onboarding_description">Tell us how you feel and let us curate personalized travel recommendations just for you</string>
+    <string name="third_onboarding">Explore, Experience, Enjoy</string>
+    <string name="third_onboarding_description">Embark on unforgottable journeys tailored to your mood and uncover hidden gems around the world</string>
+    <string name="tourist_attraction_name">Tourist Attraction Name</string>
+    <string name="user_name">User Name</string>
+    <string name="tourist_attraction_city">Tourist Attraction City</string>
+    <string name="tourist_attraction_description">Tourist attraction description.</string>
 </resources>

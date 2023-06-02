@@ -10,6 +10,11 @@ class TouristAttractionRepository {
     fun getAllTouristAttractions(): Flow<List<TouristAttraction>> =
         flowOf(FakeTouristAttractionDataSource.dummyTouristAttractions)
 
+    fun getDetailTouristAttractionById(id: String): TouristAttraction =
+        FakeTouristAttractionDataSource.dummyTouristAttractions.first {
+            it.id == id
+        }
+
     companion object {
         @Volatile
         private var instance: TouristAttractionRepository? = null

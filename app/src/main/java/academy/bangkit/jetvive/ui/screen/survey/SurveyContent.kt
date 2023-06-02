@@ -1,4 +1,4 @@
-package academy.bangkit.jetvive.ui.screen.home
+package academy.bangkit.jetvive.ui.screen.survey
 
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.ViewModelFactory
@@ -29,7 +29,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun SecondContent(
+fun SurveyScreen(
+    navigateToHome: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    SurveyContent(navigateToHome)
+}
+
+@Composable
+fun SurveyContent(
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -38,7 +47,7 @@ fun SecondContent(
             .fillMaxHeight()
     ) { 
         TopSection()
-        SurveyForm()
+        SurveyForm(navigateToHome)
     }
 }
 
@@ -63,6 +72,7 @@ fun TopSection(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SurveyForm(
+    navigateToHome: () -> Unit,
     viewModel: LoginViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
@@ -99,7 +109,7 @@ fun SurveyForm(
         ) {
             val coroutineScope = rememberCoroutineScope()
             Button(
-                onClick = {},
+                onClick = { navigateToHome() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp)
@@ -118,8 +128,10 @@ fun SurveyForm(
 
 @Preview(showBackground = true)
 @Composable
-fun SecondContentPreview() {
+fun SurveyContentPreview() {
     JetViVeTheme {
-        SecondContent()
+        SurveyContent(
+            navigateToHome = {}
+        )
     }
 }

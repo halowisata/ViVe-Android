@@ -5,9 +5,12 @@ import academy.bangkit.jetvive.data.repository.OnboardingRepository
 import academy.bangkit.jetvive.data.repository.TouristAttractionRepository
 import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.di.Injection
+import academy.bangkit.jetvive.ui.screen.detail.DetailViewModel
 import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
 import academy.bangkit.jetvive.ui.screen.login.LoginViewModel
 import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingViewModel
+import academy.bangkit.jetvive.ui.screen.profile.ProfileViewModel
+import academy.bangkit.jetvive.ui.screen.register.RegisterViewModel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -31,8 +34,17 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(userRepository) as T
             }
+            modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
+                RegisterViewModel(userRepository) as T
+            }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(moodRepository, touristAttractionRepository) as T
+            }
+            modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
+                DetailViewModel(touristAttractionRepository) as T
+            }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                ProfileViewModel(userRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

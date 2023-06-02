@@ -52,10 +52,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun OnboardingScreen(
+    navigateToLogin: () -> Unit,
     viewModel: OnboardingViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
-    navigateToLogin: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->

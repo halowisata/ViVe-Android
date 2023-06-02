@@ -33,9 +33,7 @@ fun DropDownMenu(
 
     ExposedDropdownMenuBox(
         expanded = isExpanded,
-        onExpandedChange = {
-            isExpanded = !isExpanded
-        }
+        onExpandedChange = { isExpanded = !isExpanded }
     ) {
         OutlinedTextField(
             value = selectedItem,
@@ -43,11 +41,7 @@ fun DropDownMenu(
             readOnly = true,
             label = { Text(text = label) },
             placeholder = { Text(text = stringResource(R.string.select_one)) },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = isExpanded
-                )
-            },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
@@ -63,9 +57,7 @@ fun DropDownMenu(
         ) {
             listItems.forEach { selectedOption ->
                 DropdownMenuItem(
-                    text =  {
-                        Text(text = selectedOption)
-                    },
+                    text =  { Text(text = selectedOption) },
                     onClick = {
                         selectedItem = selectedOption
                         isExpanded = false

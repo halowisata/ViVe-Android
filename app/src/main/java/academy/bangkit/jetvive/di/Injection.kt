@@ -17,13 +17,13 @@ object Injection {
         name = "user_preferences"
     )
 
-    fun provideOnboardingRepository(): OnboardingRepository = OnboardingRepository.getInstance()
-
     private fun provideUserPreferences(context: Context): UserPreferences {
         val dataStore = context.dataStore
 
         return UserPreferences.getInstance(dataStore)
     }
+
+    fun provideOnboardingRepository(): OnboardingRepository = OnboardingRepository.getInstance()
 
     fun provideUserRepository(context: Context): UserRepository =
         UserRepository.getInstance(provideUserPreferences(context))

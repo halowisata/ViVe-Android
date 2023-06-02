@@ -4,6 +4,7 @@ import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ fun MoodItem(
     color: Color,
     image: Int,
     text: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -38,14 +40,14 @@ fun MoodItem(
             .clip(shape = RoundedCornerShape(15.dp))
             .background(color = color)
             .padding(10.dp)
+            .clickable { onClick() }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement
-                .spacedBy(
-                    space = 10.dp,
-                    alignment = Alignment.CenterVertically
-                ),
+            verticalArrangement = Arrangement.spacedBy(
+                space = 10.dp,
+                alignment = Alignment.CenterVertically
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
@@ -76,7 +78,8 @@ fun MoodItemPreview() {
         MoodItem(
             color = Color(0xFFE5F4F6),
             image = R.drawable.jetpack_compose,
-            text = stringResource(R.string.mood_name)
+            text = stringResource(R.string.mood_name),
+            onClick = {}
         )
     }
 }

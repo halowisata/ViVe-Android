@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun OnBoardingItem(
     image: Int,
-    headline: String,
-    body: String,
+    headline: Int,
+    body: Int,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -43,22 +43,20 @@ fun OnBoardingItem(
                 .size(250.dp)
         )
         Text(
-            text = headline,
+            text = stringResource(headline),
             fontWeight = FontWeight.W500,
             fontSize = 24.sp,
             lineHeight = 40.sp,
             letterSpacing = 0.30.sp,
-            textAlign = TextAlign.Center,
-            modifier = modifier,
+            textAlign = TextAlign.Center
         )
         Text(
-            text = body,
+            text = stringResource(body),
             fontWeight = FontWeight.W400,
             fontSize = 16.sp,
             lineHeight = 30.sp,
             letterSpacing = 0.50.sp,
-            textAlign = TextAlign.Center,
-            modifier = modifier,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -69,8 +67,8 @@ fun OnBoardingItemPreview() {
     JetViVeTheme {
         OnBoardingItem(
             image = R.drawable.jetpack_compose,
-            headline = stringResource(R.string.headline_onboarding),
-            body = stringResource(R.string.body_onboarding),
+            headline = R.string.headline_onboarding,
+            body = R.string.body_onboarding,
         )
     }
 }

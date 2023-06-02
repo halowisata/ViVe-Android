@@ -37,9 +37,7 @@ fun WelcomeBar(
             .background(color = Color.White)
             .padding(20.dp)
     ) {
-        Column(
-            modifier = Modifier
-        ) {
+        Column {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -77,7 +75,7 @@ fun WelcomeBar(
 fun WelcomeBarPreview() {
     JetViVeTheme {
         WelcomeBar(
-            name = "John Doe"
+            name = stringResource(R.string.user_name)
         )
     }
 }

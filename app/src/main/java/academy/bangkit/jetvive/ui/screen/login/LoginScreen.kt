@@ -1,7 +1,6 @@
 package academy.bangkit.jetvive.ui.screen.login
 
 import academy.bangkit.jetvive.R
-import academy.bangkit.jetvive.data.source.remote.request.LoginRequest
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.BorderStroke
@@ -28,10 +27,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,7 +52,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
