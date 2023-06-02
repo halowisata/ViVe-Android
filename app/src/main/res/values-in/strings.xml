@@ -30,4 +30,14 @@
     <string name="confirm_password">Konfirmasi Kata Sandi</string>
     <string name="sign_up_image">Gambar Daftar</string>
     <string name="hi">Hai</string>
+    <string name="mood_name">Name Mood</string>
+    <string name="halowisata">Halowisata</string>
+    <string name="welcome_image">Gambar Sambutan</string>
+    <string name="survey_image">Gambar Survei</string>
+    <string name="survey">Survei</string>
+    <string name="what_is_your_current_budget">Bagaimana budget kamu sekarang?</string>
+    <string name="input_label">Label Masukan</string>
+    <string name="open_on_google_maps">Buka di Google Maps</string>
+    <string name="account_image">Gambar Akun</string>
+    <string name="select_one">Pilih salah satu</string>
 </resources>

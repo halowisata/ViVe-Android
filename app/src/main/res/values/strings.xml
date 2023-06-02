@@ -37,4 +37,6 @@
     <string name="what_is_your_current_budget">What is your current budget?</string>
     <string name="input_label">Input Label</string>
     <string name="open_on_google_maps">Open on Google Maps</string>
+    <string name="account_image">Account Image</string>
+    <string name="select_one">Select one</string>
 </resources>
