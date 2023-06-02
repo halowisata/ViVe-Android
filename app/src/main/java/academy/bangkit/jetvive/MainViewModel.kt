@@ -1,6 +1,6 @@
 package academy.bangkit.jetvive
 
-import academy.bangkit.jetvive.data.local.entity.UserEntity
+import academy.bangkit.jetvive.data.source.local.entity.UserEntity
 import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.ui.common.UiState
 import androidx.lifecycle.ViewModel
