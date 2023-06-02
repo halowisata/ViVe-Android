@@ -5,13 +5,15 @@ object FakeTouristAttractionDataSource {
         TouristAttraction(
             "tourist_attraction-1",
             "Beaches of Bali",
-            1,
+            "Beaches of Bali description.",
+            0,
             "Bali",
             5.0
         ),
         TouristAttraction(
             "tourist_attraction-2",
             "Borobudur",
+            "Borobudur description.",
             2,
             "Yogyakarta",
             4.9
@@ -19,6 +21,7 @@ object FakeTouristAttractionDataSource {
         TouristAttraction(
             "tourist_attraction-3",
             "Orangutans of Borneo",
+            "Orangutan of Borneo description.",
             3,
             "Borneo",
             4.8
@@ -26,6 +29,7 @@ object FakeTouristAttractionDataSource {
         TouristAttraction(
             "tourist_attraction-4",
             "Gili Islands",
+            "Gili Islands description",
             4,
             "Bali",
             4.7
@@ -33,13 +37,15 @@ object FakeTouristAttractionDataSource {
         TouristAttraction(
             "tourist_attraction-5",
             "Komodo National Park",
+            "Komodo National Park description.",
             5,
             "Nusa Tenggara Timur",
             4.6
         ),
         TouristAttraction(
             "tourist_attraction-6",
-            "acred Monkey Forest",
+            "Ubud Monkey Forest",
+            "Ubud Monkey Forest description.",
             6,
             "Bali",
             4.5
