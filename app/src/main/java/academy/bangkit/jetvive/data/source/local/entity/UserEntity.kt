@@ -1,4 +1,4 @@
-package academy.bangkit.jetvive.data.local.entity
+package academy.bangkit.jetvive.data.source.local.entity
 
 data class UserEntity(
     val id: String,
