@@ -7,14 +7,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,33 +34,36 @@ fun WelcomeBar(
     Box(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(15.dp))
-            .background(color = MaterialTheme.colorScheme.background)
+            .background(color = Color.White)
             .padding(20.dp)
     ) {
         Column(
             modifier = Modifier
         ) {
             Row(
-                modifier = Modifier
-                    .width(300.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
             ) {
                 Text(
                     text = "${stringResource(R.string.hi)}, $name!",
+                    color = Color.Black,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 24.sp,
-                    lineHeight = 35.sp,
+                    lineHeight = 35.sp
                 )
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.account_image),
+                    tint = Color.Black,
                     modifier = Modifier
-                        .size(35.dp)
+                        .size(35.dp),
                 )
             }
             Text(
                 text = stringResource(R.string.how_s_your_mood_today),
+                color = Color.Black,
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
                 letterSpacing = .15.sp
