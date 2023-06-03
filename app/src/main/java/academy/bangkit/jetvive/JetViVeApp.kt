@@ -15,8 +15,13 @@ import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,12 +47,25 @@ fun JetViVeApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val snackState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    fun launchSnackbar(message: String, actionLabel : String?=null, duration: SnackbarDuration = SnackbarDuration.Short){
+        scope.launch {
+            snackState.showSnackbar(message = message,actionLabel=actionLabel, duration=duration)
+        }
+    }
+
     Scaffold(
         bottomBar = {
             when (currentRoute) {
                 Screen.Home.route -> BottomBar(navController = navController)
                 Screen.Bookmark.route -> BottomBar(navController = navController)
             }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackState)
         }
     ) { innerPadding ->
         NavHost(
@@ -76,6 +95,13 @@ fun JetViVeApp(
                                 inclusive = true
                             }
                         }
+                    },
+                    launchSnackbar = {
+                        launchSnackbar(
+                            message = context.getString(R.string.coming_soon),
+                            actionLabel = context.getString(R.string.hide),
+                            duration = SnackbarDuration.Short
+                        )
                     }
                 )
             }
@@ -118,7 +144,13 @@ fun JetViVeApp(
                 )
             }
             composable(Screen.Bookmark.route) {
-                BookmarkScreen()
+                BookmarkScreen(
+                    navigateToDetail = { touristAttractionId ->
+                        navController.navigate(Screen.DetailTouristAttraction.createRoute(
+                            touristAttractionId
+                        ))
+                    }
+                )
             }
             composable(Screen.Profile.route) {
                 ProfileScreen(
@@ -131,6 +163,13 @@ fun JetViVeApp(
                     userGender = "Man",
                     onBackClick = {
                         navController.navigateUp()
+                    },
+                    launchSnackbar = {
+                        launchSnackbar(
+                            message = context.getString(R.string.coming_soon),
+                            actionLabel = context.getString(R.string.hide),
+                            duration = SnackbarDuration.Short
+                        )
                     }
                 )
             }
