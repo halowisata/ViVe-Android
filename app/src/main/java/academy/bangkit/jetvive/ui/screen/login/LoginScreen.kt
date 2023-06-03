@@ -56,19 +56,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun LoginScreen(
     navigateToSignUp: () -> Unit,
-    navigateToHome: () -> Unit,
+    navigateToForm: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LoginContent(
-        navigateToSignUp,
-        navigateToHome
+        navigateToSignUp = navigateToSignUp,
+        navigateToForm = navigateToForm
     )
 }
 
 @Composable
 fun LoginContent(
     navigateToSignUp: () -> Unit,
-    navigateToHome: () -> Unit,
+    navigateToForm: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -78,10 +78,10 @@ fun LoginContent(
     ) {
         TopSection()
         LoginForm(
-            navigateToHome
+            navigateToForm = navigateToForm
         )
         BottomSection(
-            navigateToSignUp
+            navigateToSignUp = navigateToSignUp
         )
     }
 }
@@ -96,9 +96,7 @@ fun TopSection(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                start = 30.dp,
-                end = 30.dp,
-                top = 90.dp,
+                top = 60.dp,
                 bottom = 30.dp
             )
     )
@@ -107,7 +105,7 @@ fun TopSection(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginForm(
-    navigateToHome: () -> Unit,
+    navigateToForm: () -> Unit,
     viewModel: LoginViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
@@ -217,11 +215,9 @@ fun LoginForm(
         Column(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            val coroutineScope = rememberCoroutineScope()
-
             Button(
                 onClick = {
-                  navigateToHome()
+                  navigateToForm()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -316,7 +312,7 @@ fun LoginContentPreview() {
     JetViVeTheme {
         LoginContent(
             navigateToSignUp = {},
-            navigateToHome = {}
+            navigateToForm = {}
         )
     }
 }
