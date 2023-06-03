@@ -98,10 +98,12 @@ fun ProfileContent(
                             .size(25.dp)
                     )
                 }
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(
+                    onClick = {}
+                ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.bookmark),
+                        contentDescription = stringResource(R.string.edit),
                         modifier = Modifier
                             .size(25.dp)
                     )
