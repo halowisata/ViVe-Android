@@ -7,7 +7,7 @@ object FakeSurveyDataSource {
             "user-1",
             "mood-1",
             "Low",
-            0,
+            "Low",
             "Bali"
         )
     )
