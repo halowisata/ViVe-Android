@@ -7,7 +7,6 @@ import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,12 +21,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,6 +51,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun DetailScreen(
     touristAttractionId: String,
+    onBackClick: () -> Unit,
     viewModel: DetailViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
@@ -62,14 +63,15 @@ fun DetailScreen(
                 viewModel.getTouristAttractionById(touristAttractionId)
             }
             is UiState.Success -> {
-                val data = uiState.data
+                val touristAttraction = uiState.data
+
                 DetailContent(
-                    image = data.image,
-                    name = data.name,
-                    description = data.description,
-                    city = data.city,
-                    rating = data.rating,
-                    onBackClick = {}
+                    touristAttractionImage = touristAttraction.image,
+                    touristAttractionName = touristAttraction.name,
+                    touristAttractionDescription = touristAttraction.description,
+                    touristAttractionCity = touristAttraction.city,
+                    touristAttractionRating = touristAttraction.rating,
+                    onBackClick = onBackClick
                 )
             }
             is UiState.Error -> {}
@@ -79,11 +81,11 @@ fun DetailScreen(
 
 @Composable
 fun DetailContent(
-    @DrawableRes image: Int,
-    name: String,
-    description: String,
-    city: String,
-    rating: Double,
+    @DrawableRes touristAttractionImage: Int,
+    touristAttractionName: String,
+    touristAttractionDescription: String,
+    touristAttractionCity: String,
+    touristAttractionRating: Double,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -95,7 +97,7 @@ fun DetailContent(
         ) {
             Box {
                 Image(
-                    painter = painterResource(image),
+                    painter = painterResource(R.drawable.jetpack_compose),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -107,35 +109,36 @@ fun DetailContent(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(16.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.back),
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .size(75.dp)
-                            .padding(16.dp)
-                            .clickable { onBackClick() }
-                    )
-                    Icon(
-                        imageVector = Icons.Default.Bookmark,
-                        contentDescription = stringResource(R.string.bookmark),
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .size(75.dp)
-                            .padding(16.dp)
-                            .clickable { onBackClick() }
-                    )
+                    IconButton(
+                        onClick = { onBackClick() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = stringResource(R.string.back),
+                            modifier = Modifier
+                                .size(25.dp)
+                        )
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Default.BookmarkBorder,
+                            contentDescription = stringResource(R.string.bookmark),
+                            modifier = Modifier
+                                .size(25.dp)
+                        )
+                    }
                 }
             }
             Column(
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(15.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(20.dp)
             ) {
                 Text(
-                    text = name,
+                    text = touristAttractionName,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontWeight = FontWeight.ExtraBold
@@ -152,11 +155,11 @@ fun DetailContent(
                     ) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
-                            contentDescription = stringResource(R.string.bookmark),
+                            contentDescription = stringResource(R.string.location_icon),
                             tint = Color.Red
                         )
                         Text(
-                            text = city,
+                            text = touristAttractionCity,
                             style = MaterialTheme.typography.headlineSmall.copy(
                                 fontWeight = FontWeight.Bold
                             ),
@@ -168,25 +171,27 @@ fun DetailContent(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Star,
-                            contentDescription = stringResource(R.string.bookmark),
+                            contentDescription = stringResource(R.string.star_icon),
                             tint = Color.Yellow
                         )
                         Text(
-                            text = rating.toString(),
+                            text = touristAttractionRating.toString(),
                             style = MaterialTheme.typography.headlineSmall.copy(
                                 fontWeight = FontWeight.Bold
                             ),
                         )
                     }
                 }
-                Spacer(modifier = Modifier
+                Spacer(
+                    modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp)
-                    .background(LightGray))
+                    .background(LightGray)
+                )
                 Text(
-                    text = description,
+                    text = touristAttractionDescription,
                     modifier = Modifier
-                        .padding(vertical = 10.dp   )
+                        .padding(vertical = 5.dp   )
                 )
                 Button(
                     onClick = {},
@@ -213,11 +218,11 @@ fun DetailContent(
 fun DetailContentPreview() {
     JetViVeTheme {
         DetailContent(
-            image = R.drawable.jetpack_compose,
-            description = stringResource(R.string.tourist_attraction_description),
-            name = stringResource(R.string.tourist_attraction_name),
-            city = stringResource(R.string.tourist_attraction_city),
-            rating = 5.0,
+            touristAttractionImage = R.drawable.jetpack_compose,
+            touristAttractionName = stringResource(R.string.tourist_attraction_name),
+            touristAttractionDescription = stringResource(R.string.tourist_attraction_description),
+            touristAttractionCity = stringResource(R.string.tourist_attraction_city),
+            touristAttractionRating = 5.0,
             onBackClick = {}
         )
     }
