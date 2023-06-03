@@ -80,4 +80,12 @@
     <string name="edit">Edit</string>
     <string name="location_icon">Location Icon</string>
     <string name="star_icon">Star Icon</string>
+    <string name="coming_soon">Coming Soon!</string>
+    <string name="hide">Hide</string>
+    <string name="alert_title">Alert Title</string>
+    <string name="alert_name">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="restart">Restart</string>
+    <string name="change_mood">Change Mood</string>
 </resources>

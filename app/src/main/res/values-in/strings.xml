@@ -81,4 +81,12 @@
     <string name="edit">Ubah</string>
     <string name="location_icon">Ikon Lokasi</string>
     <string name="star_icon">Ikon Bintang</string>
+    <string name="alert_title">Alert Title</string>
+    <string name="alert_name">Are you sure?</string>
+    <string name="coming_soon">Segera!</string>
+    <string name="hide">Sembunyikan</string>
+    <string name="yes">Iya</string>
+    <string name="cancel">Batal</string>
+    <string name="restart">Ulang</string>
+    <string name="change_mood">Ganti Suasana Hati</string>
 </resources>
