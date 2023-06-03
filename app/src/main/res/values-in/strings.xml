@@ -40,4 +40,14 @@
     <string name="open_on_google_maps">Buka di Google Maps</string>
     <string name="account_image">Gambar Akun</string>
     <string name="select_one">Pilih salah satu</string>
+    <string name="first_onboarding">Temukan Pintu Gerbang yang Sempurna untukmu</string>
+    <string name="first_onboarding_description">Temukan destinasi perjalanan impianmu dengan mudah melalui sistem rekomendasi berbasis suasana hati kami</string>
+    <string name="second_onboarding">Tentukan Suasana Hati Anda, Temukan Petualangan Anda</string>
+    <string name="second_onboarding_description">Beri tahu perasaanmu dan biarkan kami menyusun rekomendasi perjalanan yang dipersonalisasi khusus untukmu.</string>
+    <string name="third_onboarding">Jelajahi, Rasakan, Nikmati</string>
+    <string name="third_onboarding_description">Mulailah perjalanan tak terlupakan yang disesuaikan dengan suasana hatimu dan temukan permata tersembunyi di seluruh dunia.</string>
+    <string name="tourist_attraction_name">Nama Destinasi Wisata</string>
+    <string name="user_name">Nama Pengguna</string>
+    <string name="tourist_attraction_city">Kota Destinasi Wisata</string>
+    <string name="tourist_attraction_description">Deskripsi destinasi wisata.</string>
 </resources>
