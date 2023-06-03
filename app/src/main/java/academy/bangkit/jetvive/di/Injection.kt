@@ -10,7 +10,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 
-
 object Injection {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
