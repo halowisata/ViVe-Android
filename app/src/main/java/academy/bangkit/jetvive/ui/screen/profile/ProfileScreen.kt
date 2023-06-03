@@ -46,7 +46,8 @@ fun ProfileScreen(
     userPhoneNumber: String,
     userAddress: String,
     userGender: String,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    launchSnackbar: () -> Unit
 ) {
     ProfileContent(
         userImage = userImage,
@@ -56,7 +57,8 @@ fun ProfileScreen(
         userPhoneNumber = userPhoneNumber,
         userAddress = userAddress,
         userGender = userGender,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        launchSnackbar = launchSnackbar
     )
 }
 
@@ -70,6 +72,7 @@ fun ProfileContent(
     userAddress: String,
     userGender: String,
     onBackClick: () -> Unit,
+    launchSnackbar: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -99,7 +102,9 @@ fun ProfileContent(
                     )
                 }
                 IconButton(
-                    onClick = {}
+                    onClick = {
+                        launchSnackbar()
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
@@ -248,7 +253,8 @@ fun ProfileContentPreview() {
             userPhoneNumber = stringResource(R.string.user_phone_number),
             userAddress = stringResource(R.string.user_address),
             userGender = stringResource(R.string.user_gender),
-            onBackClick = {}
+            onBackClick = {},
+            launchSnackbar = {}
         )
     }
 }

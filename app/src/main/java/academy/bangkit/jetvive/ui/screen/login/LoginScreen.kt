@@ -3,6 +3,7 @@ package academy.bangkit.jetvive.ui.screen.login
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -32,7 +33,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,11 +57,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun LoginScreen(
     navigateToSignUp: () -> Unit,
     navigateToForm: () -> Unit,
+    launchSnackbar: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LoginContent(
         navigateToSignUp = navigateToSignUp,
-        navigateToForm = navigateToForm
+        navigateToForm = navigateToForm,
+        launchSnackbar = launchSnackbar
     )
 }
 
@@ -69,6 +71,7 @@ fun LoginScreen(
 fun LoginContent(
     navigateToSignUp: () -> Unit,
     navigateToForm: () -> Unit,
+    launchSnackbar: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -78,7 +81,8 @@ fun LoginContent(
     ) {
         TopSection()
         LoginForm(
-            navigateToForm = navigateToForm
+            navigateToForm = navigateToForm,
+            launchSnackbar = launchSnackbar
         )
         BottomSection(
             navigateToSignUp = navigateToSignUp
@@ -102,10 +106,12 @@ fun TopSection(
     )
 }
 
+@SuppressLint("StringFormatInvalid")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginForm(
     navigateToForm: () -> Unit,
+    launchSnackbar: () -> Unit,
     viewModel: LoginViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
@@ -210,7 +216,9 @@ fun LoginForm(
             modifier = Modifier
                 .padding(bottom = 10.dp)
                 .align(Alignment.End)
-                .clickable {}
+                .clickable {
+                    launchSnackbar()
+                }
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(5.dp)
@@ -244,7 +252,9 @@ fun LoginForm(
                     1.dp,
                     Color(0xFF79747E)
                 ),
-                onClick = {},
+                onClick = {
+                    launchSnackbar()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
@@ -312,7 +322,8 @@ fun LoginContentPreview() {
     JetViVeTheme {
         LoginContent(
             navigateToSignUp = {},
-            navigateToForm = {}
+            navigateToForm = {},
+            launchSnackbar = {}
         )
     }
 }
