@@ -50,4 +50,7 @@
     <string name="user_name">Nama Pengguna</string>
     <string name="tourist_attraction_city">Kota Destinasi Wisata</string>
     <string name="tourist_attraction_description">Deskripsi destinasi wisata.</string>
+    <string name="how_s_your_current_budget">Bagaimana anggaran kamu saat ini?</string>
+    <string name="how_far_are_you_willing_to_travel">Sejauh mana kamu ingin melakukan perjalanan?</string>
+    <string name="what_is_your_preferred_city">Apa kota pilihan kamu?</string>
 </resources>

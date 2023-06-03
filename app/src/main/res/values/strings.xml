@@ -49,4 +49,7 @@
     <string name="user_name">User Name</string>
     <string name="tourist_attraction_city">Tourist Attraction City</string>
     <string name="tourist_attraction_description">Tourist attraction description.</string>
+    <string name="how_s_your_current_budget">How\'s your current budget?</string>
+    <string name="how_far_are_you_willing_to_travel">How far are you willing to travel?</string>
+    <string name="what_is_your_preferred_city">What is your preferred city?</string>
 </resources>
