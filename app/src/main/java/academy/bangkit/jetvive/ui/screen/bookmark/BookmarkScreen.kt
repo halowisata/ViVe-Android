@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,7 +63,10 @@ fun BookmarkContent(
     ) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(160.dp),
-            contentPadding = PaddingValues(vertical = 16.dp, horizontal = 20.dp),
+            contentPadding = PaddingValues(
+                vertical = 16.dp,
+                horizontal = 20.dp
+            ),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -71,19 +75,16 @@ fun BookmarkContent(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     Text(
-                        text = "Saved Item",
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 19.sp,
-                        lineHeight = 29.sp,
-                        letterSpacing = .15.sp
+                        text = stringResource(R.string.saved_item),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
             items(touristAttractions) { touristAttraction ->
                 TouristAttractionItem(
                     image = R.drawable.jetpack_compose,
-                    name = touristAttraction.name,
-                    onClick = {}
+                    name = touristAttraction.name
                 )
             }
         }
