@@ -78,4 +78,7 @@
     <string name="user_phone_number">Nomor Telepon Pengguna</string>
     <string name="user_address">Alamat Pengguna</string>
     <string name="user_gender">Jenis Kelamin Pengguna</string>
+    <string name="edit">Ubah</string>
+    <string name="location_icon">Ikon Lokasi</string>
+    <string name="star_icon">Ikon Bintang</string>
 </resources>

@@ -77,4 +77,7 @@
     <string name="user_phone_number">User Phone Number</string>
     <string name="user_address">User Address</string>
     <string name="user_gender">User Gender</string>
+    <string name="edit">Edit</string>
+    <string name="location_icon">Location Icon</string>
+    <string name="star_icon">Star Icon</string>
 </resources>
