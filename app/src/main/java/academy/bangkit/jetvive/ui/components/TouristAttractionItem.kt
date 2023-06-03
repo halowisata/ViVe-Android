@@ -3,11 +3,12 @@ package academy.bangkit.jetvive.ui.components
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,13 +25,13 @@ import androidx.compose.ui.unit.dp
 fun TouristAttractionItem(
     image: Int,
     name: String,
-    onClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .clickable { onClick("tourist_attraction-1") }
+            .clip(RoundedCornerShape(20.dp))
+            .background(MaterialTheme.colorScheme.tertiary)
     ) {
         Image(
             painter = painterResource(image),
@@ -55,8 +56,7 @@ fun TouristAttractionItemPreview() {
     JetViVeTheme {
         TouristAttractionItem(
             image = R.drawable.jetpack_compose,
-            name = stringResource(R.string.tourist_attraction_name),
-            onClick = {}
+            name = stringResource(R.string.tourist_attraction_name)
         )
     }
 }
