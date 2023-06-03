@@ -8,6 +8,7 @@ import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.TouristAttractionItem
 import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun BookmarkScreen(
+    navigateToDetail: (String) -> Unit,
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
@@ -44,7 +46,10 @@ fun BookmarkScreen(
                 viewModel.getAllTouristAttractions()
             }
             is UiState.Success -> {
-                BookmarkContent(uiTouristAttractionState.data)
+                BookmarkContent(
+                    touristAttractions = uiTouristAttractionState.data,
+                    navigateToDetail = navigateToDetail
+                )
             }
             is UiState.Error -> {}
         }
@@ -54,6 +59,7 @@ fun BookmarkScreen(
 @Composable
 fun BookmarkContent(
     touristAttractions: List<TouristAttraction>,
+    navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -84,7 +90,9 @@ fun BookmarkContent(
             items(touristAttractions) { touristAttraction ->
                 TouristAttractionItem(
                     image = R.drawable.jetpack_compose,
-                    name = touristAttraction.name
+                    name = touristAttraction.name,
+                    modifier = Modifier
+                        .clickable { navigateToDetail("tourist_attraction-1") }
                 )
             }
         }
@@ -102,7 +110,8 @@ fun LazyGridScope.header(
 fun BookmarkContentPreview() {
     JetViVeTheme {
         BookmarkContent(
-            FakeTouristAttractionDataSource.dummyTouristAttractions
+            touristAttractions = FakeTouristAttractionDataSource.dummyTouristAttractions,
+            navigateToDetail = {}
         )
     }
 }
