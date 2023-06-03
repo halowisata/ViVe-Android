@@ -93,15 +93,15 @@ fun SurveyForm(
                 .fillMaxWidth()
         )
         DropDownMenu(
-            label = "How's your current budget?",
+            label = stringResource(R.string.how_s_your_current_budget),
             listItems = arrayOf("Low", "Medium", "High", "Surprise me!"),
         )
         DropDownMenu(
-            label = "How far are you willing to travel?",
+            label = stringResource(R.string.how_far_are_you_willing_to_travel),
             listItems = arrayOf("Low", "Medium", "High", "Surprise me!")
         )
         DropDownMenu(
-            label = "What is your preferred city?",
+            label = stringResource(R.string.what_is_your_preferred_city),
             listItems = arrayOf("Semarang", "Jogja", "Bandung", "Jakarta")
         )
         Column(
