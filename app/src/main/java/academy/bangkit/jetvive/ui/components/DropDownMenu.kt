@@ -45,8 +45,8 @@ fun DropDownMenu(
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
-                .menuAnchor()
                 .fillMaxWidth()
+                .menuAnchor()
         )
 
         DropdownMenu(
