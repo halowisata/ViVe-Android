@@ -1,21 +1,25 @@
 package academy.bangkit.jetvive
 
 import academy.bangkit.jetvive.helper.ViewModelFactory
+import academy.bangkit.jetvive.ui.components.BottomBar
 import academy.bangkit.jetvive.ui.navigation.Screen
+import academy.bangkit.jetvive.ui.screen.bookmark.BookmarkScreen
 import academy.bangkit.jetvive.ui.screen.detail.DetailScreen
+import academy.bangkit.jetvive.ui.screen.form.FormScreen
 import academy.bangkit.jetvive.ui.screen.home.HomeScreen
 import academy.bangkit.jetvive.ui.screen.login.LoginScreen
-import academy.bangkit.jetvive.ui.screen.mood.MoodScreen
 import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingScreen
+import academy.bangkit.jetvive.ui.screen.profile.ProfileScreen
 import academy.bangkit.jetvive.ui.screen.register.RegisterScreen
-import academy.bangkit.jetvive.ui.screen.survey.SurveyScreen
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -26,6 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JetViVeApp(
     navController: NavHostController = rememberNavController(),
@@ -37,11 +42,18 @@ fun JetViVeApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    Surface {
+    Scaffold(
+        bottomBar = {
+            when (currentRoute) {
+                Screen.Home.route -> BottomBar(navController = navController)
+                Screen.Bookmark.route -> BottomBar(navController = navController)
+            }
+        }
+    ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = Screen.Onboarding.route,
-            modifier = Modifier.padding()
+            modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Onboarding.route) {
                 OnboardingScreen(
@@ -59,8 +71,8 @@ fun JetViVeApp(
                     navigateToSignUp = {
                         navController.navigate(Screen.Register.route)
                     },
-                    navigateToHome = {
-                        navController.navigate(Screen.Mood.route) {
+                    navigateToForm = {
+                        navController.navigate(Screen.Form.route) {
                             popUpTo(Screen.Login.route) {
                                 inclusive = true
                             }
@@ -80,15 +92,8 @@ fun JetViVeApp(
                     }
                 )
             }
-            composable(Screen.Mood.route) {
-                MoodScreen(
-                    navigateToSurvey = {
-                        navController.navigate(Screen.Survey.route)
-                    }
-                )
-            }
-            composable(Screen.Survey.route) {
-                SurveyScreen(
+            composable(Screen.Form.route) {
+                FormScreen(
                     navigateToHome = {
                         navController.navigate(Screen.Home.route) {
                             popUpTo(0)
@@ -98,8 +103,33 @@ fun JetViVeApp(
             }
             composable(Screen.Home.route) {
                 HomeScreen(
+                    userName = "John Doe",
+                    userMood = "Happy",
+                    navigateToProfile = {
+                        navController.navigate(Screen.Profile.route)
+                    },
+                    navigateToForm = {
+                        navController.navigate(Screen.Form.route)
+                    },
                     navigateToDetail = { id ->
                         navController.navigate(Screen.DetailTouristAttraction.createRoute(id))
+                    }
+                )
+            }
+            composable(Screen.Bookmark.route) {
+                BookmarkScreen()
+            }
+            composable(Screen.Profile.route) {
+                ProfileScreen(
+                    userImage = R.drawable.jetpack_compose,
+                    userName = "John Doe",
+                    username = "johndoe",
+                    userEmail = "johndoe@example.com",
+                    userPhoneNumber = "+62 812-3456-7890",
+                    userAddress = "Indonesia",
+                    userGender = "Man",
+                    onBackClick = {
+                        navController.navigateUp()
                     }
                 )
             }
@@ -109,7 +139,9 @@ fun JetViVeApp(
                     type = NavType.StringType
                 }),
                 content = {
-                    DetailScreen(id = "tourist_attraction-1")
+                    DetailScreen(
+                        touristAttractionId = "tourist_attraction-1"
+                    )
                 }
             )
         }
