@@ -6,6 +6,7 @@ import academy.bangkit.jetvive.helper.getPeriod
 import academy.bangkit.jetvive.model.tourist_attraction.FakeTouristAttractionDataSource
 import academy.bangkit.jetvive.model.tourist_attraction.TouristAttraction
 import academy.bangkit.jetvive.ui.common.UiState
+import academy.bangkit.jetvive.ui.components.Alert
 import academy.bangkit.jetvive.ui.components.TouristAttractionItem
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.Image
@@ -176,12 +177,24 @@ fun HomeContent(
                                 )
                             }
                             Row {
+
+                                val showDialog = remember { mutableStateOf(false) }
+                                if (showDialog.value) {
+                                    Alert(title = stringResource(
+                                        R.string.change_mood),
+                                        name = stringResource(R.string.alert_name),
+                                        showDialog = showDialog.value,
+                                        onConfirm = { navigateToForm() },
+                                        onDismiss = { showDialog.value = false }
+                                    )
+                                }
+
                                 IconButton(
-                                    onClick = { navigateToForm() }
+                                    onClick = { showDialog.value = true }
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.RestartAlt,
-                                        contentDescription = null
+                                        contentDescription = stringResource(R.string.restart)
                                     )
                                 }
                             }
