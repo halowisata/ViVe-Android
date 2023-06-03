@@ -10,9 +10,9 @@ class TouristAttractionRepository {
     fun getAllTouristAttractions(): Flow<List<TouristAttraction>> =
         flowOf(FakeTouristAttractionDataSource.dummyTouristAttractions)
 
-    fun getDetailTouristAttractionById(id: String): TouristAttraction =
+    fun getDetailTouristAttractionById(touristAttractionId: String): TouristAttraction =
         FakeTouristAttractionDataSource.dummyTouristAttractions.first {
-            it.id == id
+            it.id == touristAttractionId
         }
 
     companion object {
