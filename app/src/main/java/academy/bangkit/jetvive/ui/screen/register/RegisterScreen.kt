@@ -52,7 +52,7 @@ fun RegisterScreen(
     modifier: Modifier = Modifier
 ) {
     RegisterContent(
-        navigateToSignIn
+        navigateToSignIn = navigateToSignIn
     )
 }
 
@@ -67,9 +67,11 @@ fun RegisterContent(
             .fillMaxHeight()
     ) {
         TopSection()
-        RegisterForm()
+        RegisterForm(
+            navigateToSignIn = navigateToSignIn
+        )
         BottomSection(
-            navigateToSignIn
+            navigateToSignIn = navigateToSignIn
         )
     }
 }
@@ -77,6 +79,7 @@ fun RegisterContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterForm(
+    navigateToSignIn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -240,7 +243,7 @@ fun RegisterForm(
                 .padding(bottom = 10.dp)
         )
         Button(
-            onClick = {},
+            onClick = { navigateToSignIn() },
             modifier = Modifier
                 .fillMaxWidth()
         ) {
@@ -264,9 +267,7 @@ fun TopSection(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                start = 30.dp,
-                end = 30.dp,
-                top = 90.dp,
+                top = 60.dp,
                 bottom = 30.dp
             )
     )
@@ -274,7 +275,7 @@ fun TopSection(
 
 @Composable
 fun BottomSection(
-    navigateToSignUp: () -> Unit,
+    navigateToSignIn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -300,7 +301,7 @@ fun BottomSection(
             style = TextStyle(color = Color(0xFF576CBC)),
             modifier = Modifier
                 .clickable {
-                    navigateToSignUp()
+                    navigateToSignIn()
                 }
         )
     }

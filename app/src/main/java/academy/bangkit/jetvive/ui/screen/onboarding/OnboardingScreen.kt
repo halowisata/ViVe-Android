@@ -64,10 +64,8 @@ fun OnboardingScreen(
                 viewModel.getAllOnboardingData()
             }
             is UiState.Success -> {
-                val onboardings = uiState.data
-
                 OnboardingContent(
-                    onboardings = onboardings,
+                    onboardings = uiState.data,
                     navigateToLogin = navigateToLogin
                 )
             }

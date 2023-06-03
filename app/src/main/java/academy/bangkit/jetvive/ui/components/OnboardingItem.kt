@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,14 +32,12 @@ fun OnBoardingItem(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 75.dp),
+            .padding(horizontal = 50.dp),
     ) {
         Image(
             painter = painterResource(image),
             contentDescription = stringResource(R.string.onboarding_image),
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier
-                .size(250.dp)
+            contentScale = ContentScale.FillWidth
         )
         Text(
             text = stringResource(headline),
