@@ -1,4 +1,4 @@
-package academy.bangkit.jetvive.ui.screen.survey
+package academy.bangkit.jetvive.ui.screen.form
 
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.ViewModelFactory
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,19 +24,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun SurveyScreen(
+fun FormScreen(
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    SurveyContent(navigateToHome)
+    FormContent(
+        navigateToHome = navigateToHome
+    )
 }
 
 @Composable
-fun SurveyContent(
+fun FormContent(
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -47,7 +47,9 @@ fun SurveyContent(
             .fillMaxHeight()
     ) { 
         TopSection()
-        SurveyForm(navigateToHome)
+        FormForm(
+            navigateToHome = navigateToHome
+        )
     }
 }
 
@@ -56,22 +58,19 @@ fun TopSection(
     modifier: Modifier = Modifier
 ) {
     Image(
-        painter = painterResource(R.drawable.survey),
+        painter = painterResource(R.drawable.form),
         contentDescription = stringResource(R.string.survey_image),
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                start = 30.dp,
-                end = 30.dp,
-                top = 90.dp,
+                top = 60.dp,
                 bottom = 30.dp
             )
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SurveyForm(
+fun FormForm(
     navigateToHome: () -> Unit,
     viewModel: LoginViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
@@ -85,12 +84,9 @@ fun SurveyForm(
             .padding(30.dp)
             .fillMaxHeight(.9f)
     ) {
-        Text(
-            text = stringResource(R.string.survey),
-            fontSize = 26.sp,
-            lineHeight = 35.sp,
-            modifier = Modifier
-                .fillMaxWidth()
+        DropDownMenu(
+            label = stringResource(R.string.how_s_your_current_mood),
+            listItems = arrayOf("Happy", "Sad", "Calm", "Angry"),
         )
         DropDownMenu(
             label = stringResource(R.string.how_s_your_current_budget),
@@ -107,7 +103,6 @@ fun SurveyForm(
         Column(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            val coroutineScope = rememberCoroutineScope()
             Button(
                 onClick = { navigateToHome() },
                 modifier = Modifier
@@ -128,9 +123,9 @@ fun SurveyForm(
 
 @Preview(showBackground = true)
 @Composable
-fun SurveyContentPreview() {
+fun FormContentPreview() {
     JetViVeTheme {
-        SurveyContent(
+        FormContent(
             navigateToHome = {}
         )
     }
