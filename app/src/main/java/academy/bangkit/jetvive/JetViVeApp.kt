@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -111,8 +110,10 @@ fun JetViVeApp(
                     navigateToForm = {
                         navController.navigate(Screen.Form.route)
                     },
-                    navigateToDetail = { id ->
-                        navController.navigate(Screen.DetailTouristAttraction.createRoute(id))
+                    navigateToDetail = { touristAttractionId ->
+                        navController.navigate(Screen.DetailTouristAttraction.createRoute(
+                            touristAttractionId
+                        ))
                     }
                 )
             }
@@ -135,15 +136,19 @@ fun JetViVeApp(
             }
             composable(
                 route = Screen.DetailTouristAttraction.route,
-                arguments = listOf(navArgument("id") {
+                arguments = listOf(navArgument("touristAttractionId") {
                     type = NavType.StringType
-                }),
-                content = {
-                    DetailScreen(
-                        touristAttractionId = "tourist_attraction-1"
-                    )
-                }
-            )
+                })
+            ) {
+                val touristAttractionId = it.arguments?.getString("touristAttractionId") ?: -1L
+                
+                DetailScreen(
+                    touristAttractionId = "tourist_attraction-1",
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
         }
     }
 }
