@@ -38,7 +38,7 @@ class ViewModelFactory(
                 RegisterViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(moodRepository, touristAttractionRepository) as T
+                HomeViewModel(touristAttractionRepository) as T
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(touristAttractionRepository) as T
