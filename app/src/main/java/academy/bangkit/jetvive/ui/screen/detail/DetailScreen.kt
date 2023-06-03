@@ -50,7 +50,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun DetailScreen(
-    id: String,
+    touristAttractionId: String,
     viewModel: DetailViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
@@ -59,7 +59,7 @@ fun DetailScreen(
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
             is UiState.Loading -> {
-                viewModel.getTouristAttractionById(id)
+                viewModel.getTouristAttractionById(touristAttractionId)
             }
             is UiState.Success -> {
                 val data = uiState.data
