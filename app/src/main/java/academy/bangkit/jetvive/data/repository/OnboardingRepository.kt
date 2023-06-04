@@ -14,11 +14,10 @@ class OnboardingRepository {
         @Volatile
         private var instance: OnboardingRepository? = null
 
-        fun getInstance(): OnboardingRepository =
-            instance ?: synchronized(this) {
-                OnboardingRepository().apply {
-                    instance = this
-                }
+        fun getInstance(): OnboardingRepository = instance ?: synchronized(this) {
+            OnboardingRepository().apply {
+                instance = this
             }
+        }
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.JetViVe.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#000000</item>
+        <item name="windowSplashScreenBackground">#1C1B20</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/logo_4</item>
         <item name="postSplashScreenTheme">@style/Theme.JetViVe</item>
     </style>

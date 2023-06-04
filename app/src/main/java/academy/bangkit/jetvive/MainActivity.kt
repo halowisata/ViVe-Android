@@ -22,8 +22,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetViVeTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
+                    modifier = Modifier
+                        .fillMaxSize(),
                 ) {
                     JetViVeApp()
                 }

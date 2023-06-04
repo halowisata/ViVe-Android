@@ -1,6 +1,6 @@
-package academy.bangkit.jetvive.data.local.datastore
+package academy.bangkit.jetvive.data.source.local.datastore
 
-import academy.bangkit.jetvive.data.local.entity.UserEntity
+import academy.bangkit.jetvive.data.source.local.entity.UserEntity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit

@@ -6,21 +6,18 @@ object FakeOnboardingDataSource {
     val dummyOnboardings = listOf(
         Onboarding(
             R.drawable.onboarding_1,
-            "Discover Your Perfect Gateway",
-            "Find your dream travel destinations effortlessly with our mood-based " +
-                    "recommender system"
+            R.string.first_onboarding,
+            R.string.first_onboarding_description
         ),
         Onboarding(
             R.drawable.onboarding_2,
-            "Set Your Mood, Find Your Adventure",
-            "Tell us how you feel and let us curate personalized travel recommendations " +
-                    "just for you"
+            R.string.second_onboarding,
+            R.string.second_onboarding_description
         ),
         Onboarding(
             R.drawable.onboarding_3,
-            "Explore, Experience, Enjoy",
-            "Embark on unforgottable journeys tailored to your mood and uncover hidden " +
-                    "gems around the world"
+            R.string.third_onboarding,
+            R.string.third_onboarding_description
         )
     )
 }

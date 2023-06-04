@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,8 +23,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun OnBoardingItem(
     image: Int,
-    headline: String,
-    body: String,
+    headline: Int,
+    body: Int,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -33,31 +32,27 @@ fun OnBoardingItem(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 75.dp),
+            .padding(horizontal = 50.dp),
     ) {
         Image(
             painter = painterResource(image),
             contentDescription = stringResource(R.string.onboarding_image),
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier
-                .size(250.dp)
+            contentScale = ContentScale.FillWidth
         )
         Text(
-            text = headline,
+            text = stringResource(headline),
+            fontWeight = FontWeight.W500,
             fontSize = 24.sp,
             lineHeight = 40.sp,
-            letterSpacing = 0.15.sp,
-            fontWeight = FontWeight.W500,
-            modifier = modifier,
-            textAlign = TextAlign.Center,
+            letterSpacing = 0.30.sp,
+            textAlign = TextAlign.Center
         )
         Text(
-            text = body,
+            text = stringResource(body),
+            fontWeight = FontWeight.W400,
             fontSize = 16.sp,
             lineHeight = 30.sp,
-            letterSpacing = 0.25.sp,
-            fontWeight = FontWeight.W400,
-            modifier = modifier,
+            letterSpacing = 0.50.sp,
             textAlign = TextAlign.Center
         )
     }
@@ -69,8 +64,8 @@ fun OnBoardingItemPreview() {
     JetViVeTheme {
         OnBoardingItem(
             image = R.drawable.jetpack_compose,
-            headline = stringResource(R.string.headline_onboarding),
-            body = stringResource(R.string.body_onboarding),
+            headline = R.string.headline_onboarding,
+            body = R.string.body_onboarding,
         )
     }
 }

@@ -3,6 +3,7 @@ package academy.bangkit.jetvive.ui.screen.login
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -25,13 +26,13 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,20 +52,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     navigateToSignUp: () -> Unit,
-    navigateToHome: () -> Unit
+    navigateToForm: () -> Unit,
+    launchSnackbar: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    LoginContent(navigateToSignUp, navigateToHome)
+    LoginContent(
+        navigateToSignUp = navigateToSignUp,
+        navigateToForm = navigateToForm,
+        launchSnackbar = launchSnackbar
+    )
 }
 
 @Composable
 fun LoginContent(
     navigateToSignUp: () -> Unit,
-    navigateToHome: () -> Unit,
+    navigateToForm: () -> Unit,
+    launchSnackbar: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -73,8 +80,13 @@ fun LoginContent(
             .fillMaxHeight()
     ) {
         TopSection()
-        LoginForm(navigateToHome)
-        BottomSection(navigateToSignUp)
+        LoginForm(
+            navigateToForm = navigateToForm,
+            launchSnackbar = launchSnackbar
+        )
+        BottomSection(
+            navigateToSignUp = navigateToSignUp
+        )
     }
 }
 
@@ -84,33 +96,33 @@ fun TopSection(
 ) {
     Image(
         painter = painterResource(R.drawable.sign_in),
-        contentDescription = null,
+        contentDescription = stringResource(R.string.sign_in_image),
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                start = 30.dp,
-                end = 30.dp,
-                top = 90.dp,
+                top = 60.dp,
                 bottom = 30.dp
             )
     )
 }
 
+@SuppressLint("StringFormatInvalid")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginForm(
-    navigateToHome: () -> Unit,
+    navigateToForm: () -> Unit,
+    launchSnackbar: () -> Unit,
     viewModel: LoginViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
     modifier: Modifier = Modifier
 ) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(30.dp)
-            .fillMaxHeight(.9f),
-        verticalArrangement = Arrangement.spacedBy(15.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxHeight(.9f)
     ) {
         Text(
             text = stringResource(R.string.sign_in),
@@ -119,16 +131,22 @@ fun LoginForm(
             modifier = Modifier
                 .fillMaxWidth()
         )
+
         var email by remember { mutableStateOf(TextFieldValue("")) }
+
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = email,
-            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
-            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+            leadingIcon = { Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = stringResource(R.string.email)
+            ) },
             onValueChange = {
                 email = it
             },
-            label = { Text(text = "Email") },
+            label = { Text(
+                text = stringResource(R.string.email)
+            ) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
@@ -137,37 +155,47 @@ fun LoginForm(
             modifier = Modifier
                 .fillMaxWidth()
         )
+
         var password by remember { mutableStateOf(TextFieldValue("")) }
         var showPassword by remember { mutableStateOf(value = false) }
+        
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = password,
-            leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
-            //trailingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+            leadingIcon = { Icon(
+                imageVector = Icons.Default.Lock,
+                contentDescription = stringResource(R.string.password)
+            ) },
             onValueChange = {
                 password = it
             },
-            label = { Text(text = "Password") },
+            label = { Text(
+                text = stringResource(R.string.password)
+            ) },
             singleLine = true,
-            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation =
+                if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
             trailingIcon = {
                 if (showPassword) {
-                    IconButton(onClick = { showPassword = false }) {
+                    IconButton(
+                        onClick = { showPassword = false }
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.Visibility,
-                            contentDescription = "hide_password"
+                            contentDescription = stringResource(R.string.hide_password)
                         )
                     }
                 } else {
                     IconButton(
-                        onClick = { showPassword = true }) {
+                        onClick = { showPassword = true }
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.VisibilityOff,
-                            contentDescription = "hide_password"
+                            contentDescription = stringResource(R.string.hide_password)
                         )
                     }
                 }
@@ -181,24 +209,23 @@ fun LoginForm(
             fontSize = 14.sp,
             lineHeight = 18.sp,
             letterSpacing = .25.sp,
-            style = TextStyle(color = Color(0xFF576CBC)),
+            style = TextStyle(
+                color = Color(0xFF576CBC)
+            ),
             textAlign = TextAlign.End,
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(bottom = 10.dp)
+                .align(Alignment.End)
+                .clickable {
+                    launchSnackbar()
+                }
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            val coroutineScope = rememberCoroutineScope()
             Button(
                 onClick = {
-                  coroutineScope.launch {
-                      val state = viewModel.login(email.text, password.text)
-                      if (state) {
-                          navigateToHome()
-                      }
-                  }
+                  navigateToForm()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -218,9 +245,16 @@ fun LoginForm(
                     .fillMaxWidth()
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFFFFF)),
-                border = BorderStroke(1.dp, Color(0xFF79747E)),
-                onClick = {},
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.background
+                ),
+                border = BorderStroke(
+                    1.dp,
+                    Color(0xFF79747E)
+                ),
+                onClick = {
+                    launchSnackbar()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
@@ -236,7 +270,7 @@ fun LoginForm(
                     )
                     Text(
                         text = stringResource(R.string.sign_in_with_google),
-                        color = Color(0xFF79747E)
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
@@ -255,12 +289,14 @@ fun BottomSection(
             .fillMaxWidth()
     ) {
         Text(
-            text = stringResource(R.string.new_to_vive),
+            text = stringResource(R.string.new_to_halowisata),
             fontSize = 14.sp,
             lineHeight = 18.sp,
             letterSpacing = .25.sp,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(end = 3.dp)
+            modifier = Modifier.padding(
+                end = 3.dp
+            )
         )
         Text(
             text = stringResource(R.string.sign_up),
@@ -269,7 +305,9 @@ fun BottomSection(
             textAlign = TextAlign.Center,
             lineHeight = 18.sp,
             letterSpacing = .25.sp,
-            style = TextStyle(color = Color(0xFF576CBC)),
+            style = TextStyle(
+                color = Color(0xFF576CBC)
+            ),
             modifier = Modifier
                 .clickable {
                     navigateToSignUp()
@@ -282,6 +320,10 @@ fun BottomSection(
 @Composable
 fun LoginContentPreview() {
     JetViVeTheme {
-        LoginContent(navigateToSignUp = {}, navigateToHome = {})
+        LoginContent(
+            navigateToSignUp = {},
+            navigateToForm = {},
+            launchSnackbar = {}
+        )
     }
 }

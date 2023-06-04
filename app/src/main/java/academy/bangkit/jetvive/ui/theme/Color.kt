@@ -14,3 +14,6 @@ val LightNavy = Color(0xFFA5D7E8)
 val SemiLightNavy = Color(0xFF576CBC)
 val SemiDarkNavy = Color(0xFF19376D)
 val DarkNavy = Color(0xFF0B2447)
+
+val ItemDark = Color(0xFF222430)
+val ItemLight = Color(0xFFF6F7FC)
