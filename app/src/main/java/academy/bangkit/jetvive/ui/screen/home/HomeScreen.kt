@@ -220,6 +220,7 @@ fun HomeContent(
                     image = R.drawable.jetpack_compose,
                     name = touristAttraction.name,
                     modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
                         .clickable { navigateToDetail("tourist_attraction-1") }
                 )
             }
