@@ -109,7 +109,7 @@ fun DetailContent(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(10.dp)
                 ) {
                     IconButton(
                         onClick = { onBackClick() }
