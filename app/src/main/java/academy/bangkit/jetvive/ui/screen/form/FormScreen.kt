@@ -86,7 +86,7 @@ fun FormForm(
             .fillMaxHeight(.9f)
     ) {
         Text(
-            text = stringResource(R.string.we_have_to_know_how_s_your_mood_and_how_s_your_preferences_first),
+            text = stringResource(R.string.tell_us_how_s_your_mood_and_your_preferences),
             fontSize = 26.sp,
             lineHeight = 35.sp,
             modifier = Modifier
