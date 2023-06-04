@@ -88,4 +88,5 @@
     <string name="cancel">Cancel</string>
     <string name="restart">Restart</string>
     <string name="change_mood">Change Mood</string>
+    <string name="tell_us_how_s_your_mood_and_your_preferences">Tell us how\'s your mood and your preferences</string>
 </resources>
