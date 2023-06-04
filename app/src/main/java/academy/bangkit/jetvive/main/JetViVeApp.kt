@@ -1,5 +1,6 @@
-package academy.bangkit.jetvive
+package academy.bangkit.jetvive.main
 
+import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.TwiceBackPressExit
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.components.BottomBar
@@ -14,8 +15,11 @@ import academy.bangkit.jetvive.ui.screen.profile.ProfileScreen
 import academy.bangkit.jetvive.ui.screen.register.RegisterScreen
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -67,11 +71,19 @@ fun JetViVeApp(
             )
         }
     }
+
     Scaffold(
         bottomBar = {
-            when (currentRoute) {
-                Screen.Home.route -> BottomBar(navController = navController)
-                Screen.Bookmark.route -> BottomBar(navController = navController)
+            AnimatedVisibility(
+                visible = when (currentRoute) {
+                    Screen.Home.route -> true
+                    Screen.Bookmark.route -> true
+                    else -> false
+                },
+                enter = slideInVertically(initialOffsetY = { it }),
+                exit = slideOutVertically(targetOffsetY = { it })
+            ) {
+                BottomBar(navController = navController)
             }
         },
         snackbarHost = {

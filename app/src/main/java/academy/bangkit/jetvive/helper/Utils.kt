@@ -30,6 +30,24 @@ fun getPeriod(hour: Int) = when (hour) {
     }
 }
 
+fun getSky(hour: Int) = when (hour) {
+    in 6..11 -> {
+        R.drawable.sun
+    }
+    in 12..16 -> {
+        R.drawable.sun
+    }
+    in 17..20 -> {
+        R.drawable.moon
+    }
+    in 21..23 -> {
+        R.drawable.moon
+    }
+    else -> {
+        R.drawable.sun
+    }
+}
+
 sealed class BackPress {
     object Idle : BackPress()
     object InitialTouch : BackPress()
