@@ -82,7 +82,7 @@ fun JetViVeApp(
                     when (targetState.destination.route) {
                         Screen.Login.route ->
                             slideOutOfContainer(
-                                AnimatedContentScope.SlideDirection.Up,
+                                AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
                         else -> null
@@ -105,7 +105,7 @@ fun JetViVeApp(
                     when (initialState.destination.route) {
                         Screen.Onboarding.route ->
                             slideIntoContainer(
-                                AnimatedContentScope.SlideDirection.Up,
+                                AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
                         Screen.Register.route ->
@@ -125,7 +125,7 @@ fun JetViVeApp(
                             )
                         Screen.Form.route ->
                             slideOutOfContainer(
-                                AnimatedContentScope.SlideDirection.Up,
+                                AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
                         else -> null
@@ -192,7 +192,7 @@ fun JetViVeApp(
                     when (initialState.destination.route) {
                         Screen.Login.route ->
                             slideIntoContainer(
-                                AnimatedContentScope.SlideDirection.Up,
+                                AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
                         Screen.Home.route ->
