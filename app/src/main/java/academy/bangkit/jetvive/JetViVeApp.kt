@@ -1,5 +1,6 @@
 package academy.bangkit.jetvive
 
+import academy.bangkit.jetvive.helper.TwiceBackPressExit
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.components.BottomBar
 import academy.bangkit.jetvive.ui.navigation.Screen
@@ -49,17 +50,23 @@ fun JetViVeApp(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-
     val snackState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    fun launchSnackbar(message: String, actionLabel : String?=null, duration: SnackbarDuration = SnackbarDuration.Short){
+    fun launchSnackbar(
+        message: String,
+        actionLabel : String? = null,
+        duration: SnackbarDuration = SnackbarDuration.Short
+    ){
         scope.launch {
-            snackState.showSnackbar(message = message,actionLabel=actionLabel, duration=duration)
+            snackState.showSnackbar(
+                message = message,
+                actionLabel = actionLabel,
+                duration = duration
+            )
         }
     }
-
     Scaffold(
         bottomBar = {
             when (currentRoute) {
@@ -73,7 +80,7 @@ fun JetViVeApp(
     ) { innerPadding ->
         AnimatedNavHost(
             navController = navController,
-            startDestination = Screen.Onboarding.route,
+            startDestination = Screen.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(
@@ -82,7 +89,7 @@ fun JetViVeApp(
                     when (targetState.destination.route) {
                         Screen.Login.route ->
                             slideOutOfContainer(
-                                AnimatedContentScope.SlideDirection.Up,
+                                AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
                         else -> null
@@ -98,6 +105,7 @@ fun JetViVeApp(
                         }
                     }
                 )
+                TwiceBackPressExit()
             }
             composable(
                 route = Screen.Login.route,
@@ -105,7 +113,7 @@ fun JetViVeApp(
                     when (initialState.destination.route) {
                         Screen.Onboarding.route ->
                             slideIntoContainer(
-                                AnimatedContentScope.SlideDirection.Up,
+                                AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
                         Screen.Register.route ->
@@ -125,7 +133,7 @@ fun JetViVeApp(
                             )
                         Screen.Form.route ->
                             slideOutOfContainer(
-                                AnimatedContentScope.SlideDirection.Up,
+                                AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
                         else -> null
@@ -151,6 +159,7 @@ fun JetViVeApp(
                         )
                     }
                 )
+                TwiceBackPressExit()
             }
             composable(
                 route = Screen.Register.route,
@@ -192,7 +201,7 @@ fun JetViVeApp(
                     when (initialState.destination.route) {
                         Screen.Login.route ->
                             slideIntoContainer(
-                                AnimatedContentScope.SlideDirection.Up,
+                                AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
                         Screen.Home.route ->
@@ -221,6 +230,7 @@ fun JetViVeApp(
                         }
                     }
                 )
+                TwiceBackPressExit()
             }
             composable(
                 route = Screen.Home.route,
@@ -282,7 +292,9 @@ fun JetViVeApp(
                         navController.navigate(Screen.Profile.route)
                     },
                     navigateToForm = {
-                        navController.navigate(Screen.Form.route)
+                        navController.navigate(Screen.Form.route) {
+                            popUpTo(0)
+                        }
                     },
                     navigateToDetail = { touristAttractionId ->
                         navController.navigate(Screen.DetailTouristAttraction.createRoute(
@@ -290,6 +302,7 @@ fun JetViVeApp(
                         ))
                     }
                 )
+                TwiceBackPressExit()
             }
             composable(
                 route = Screen.Bookmark.route,
