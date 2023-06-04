@@ -5,6 +5,7 @@ import academy.bangkit.jetvive.data.repository.OnboardingRepository
 import academy.bangkit.jetvive.data.repository.TouristAttractionRepository
 import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.di.Injection
+import academy.bangkit.jetvive.main.MainViewModel
 import academy.bangkit.jetvive.ui.screen.detail.DetailViewModel
 import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
 import academy.bangkit.jetvive.ui.screen.login.LoginViewModel
@@ -25,8 +26,8 @@ class ViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(academy.bangkit.jetvive.MainViewModel::class.java) -> {
-                academy.bangkit.jetvive.MainViewModel(userRepository) as T
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+                MainViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(OnboardingViewModel::class.java) -> {
                 OnboardingViewModel(onboardingRepository) as T
