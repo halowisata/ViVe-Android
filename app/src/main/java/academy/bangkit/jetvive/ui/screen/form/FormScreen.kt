@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
@@ -84,6 +85,14 @@ fun FormForm(
             .padding(30.dp)
             .fillMaxHeight(.9f)
     ) {
+        Text(
+            text = stringResource(R.string.tell_us_how_s_your_mood_and_your_preferences),
+            fontSize = 26.sp,
+            lineHeight = 35.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Divider()
         DropDownMenu(
             label = stringResource(R.string.how_s_your_current_mood),
             listItems = arrayOf("Happy", "Sad", "Calm", "Angry"),
