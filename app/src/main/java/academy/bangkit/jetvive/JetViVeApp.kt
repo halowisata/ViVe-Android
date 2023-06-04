@@ -12,6 +12,9 @@ import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingScreen
 import academy.bangkit.jetvive.ui.screen.profile.ProfileScreen
 import academy.bangkit.jetvive.ui.screen.register.RegisterScreen
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -26,19 +29,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import com.google.accompanist.navigation.animation.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun JetViVeApp(
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberAnimatedNavController(),
     mainViewModel: MainViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
@@ -68,12 +71,24 @@ fun JetViVeApp(
             SnackbarHost(hostState = snackState)
         }
     ) { innerPadding ->
-        NavHost(
+        AnimatedNavHost(
             navController = navController,
             startDestination = Screen.Onboarding.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Onboarding.route) {
+            composable(
+                route = Screen.Onboarding.route,
+                exitTransition = {
+                    when (targetState.destination.route) {
+                        Screen.Login.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+            ) {
                 OnboardingScreen(
                     navigateToLogin = {
                         navController.navigate(Screen.Login.route) {
@@ -84,7 +99,39 @@ fun JetViVeApp(
                     }
                 )
             }
-            composable(Screen.Login.route) {
+            composable(
+                route = Screen.Login.route,
+                enterTransition = {
+                    when (initialState.destination.route) {
+                        Screen.Onboarding.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Register.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+                exitTransition = {
+                    when (targetState.destination.route) {
+                        Screen.Register.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Form.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+            ) {
                 LoginScreen(
                     navigateToSignUp = {
                         navController.navigate(Screen.Register.route)
@@ -105,7 +152,29 @@ fun JetViVeApp(
                     }
                 )
             }
-            composable(Screen.Register.route) {
+            composable(
+                route = Screen.Register.route,
+                enterTransition = {
+                    when (initialState.destination.route) {
+                        Screen.Login.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+                exitTransition = {
+                    when (targetState.destination.route) {
+                        Screen.Login.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+            ) {
                 RegisterScreen(
                     navigateToSignIn = {
                         navController.navigate(Screen.Login.route) {
@@ -117,7 +186,34 @@ fun JetViVeApp(
                     }
                 )
             }
-            composable(Screen.Form.route) {
+            composable(
+                route = Screen.Form.route,
+                enterTransition = {
+                    when (initialState.destination.route) {
+                        Screen.Login.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Home.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+                exitTransition = {
+                    when (targetState.destination.route) {
+                        Screen.Home.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+            ) {
                 FormScreen(
                     navigateToHome = {
                         navController.navigate(Screen.Home.route) {
@@ -126,7 +222,59 @@ fun JetViVeApp(
                     }
                 )
             }
-            composable(Screen.Home.route) {
+            composable(
+                route = Screen.Home.route,
+                enterTransition = {
+                    when (initialState.destination.route) {
+                        Screen.Form.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Profile.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Bookmark.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        Screen.DetailTouristAttraction.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Down,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+                exitTransition = {
+                    when (targetState.destination.route) {
+                        Screen.Profile.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Down,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Form.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Bookmark.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        Screen.DetailTouristAttraction.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+            ) {
                 HomeScreen(
                     userName = "John Doe",
                     userMood = "Happy",
@@ -143,7 +291,39 @@ fun JetViVeApp(
                     }
                 )
             }
-            composable(Screen.Bookmark.route) {
+            composable(
+                route = Screen.Bookmark.route,
+                enterTransition = {
+                    when (initialState.destination.route) {
+                        Screen.Home.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        Screen.DetailTouristAttraction.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Down,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+                exitTransition = {
+                    when (targetState.destination.route) {
+                        Screen.Home.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        Screen.DetailTouristAttraction.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+            ) {
                 BookmarkScreen(
                     navigateToDetail = { touristAttractionId ->
                         navController.navigate(Screen.DetailTouristAttraction.createRoute(
@@ -152,7 +332,29 @@ fun JetViVeApp(
                     }
                 )
             }
-            composable(Screen.Profile.route) {
+            composable(
+                route = Screen.Profile.route,
+                enterTransition = {
+                    when (initialState.destination.route) {
+                        Screen.Home.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Down,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+                exitTransition = {
+                    when (targetState.destination.route) {
+                        Screen.Home.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+            ) {
                 ProfileScreen(
                     userImage = R.drawable.jetpack_compose,
                     userName = "John Doe",
@@ -175,6 +377,36 @@ fun JetViVeApp(
             }
             composable(
                 route = Screen.DetailTouristAttraction.route,
+                enterTransition = {
+                    when (initialState.destination.route) {
+                        Screen.Home.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Bookmark.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+                exitTransition = {
+                    when (targetState.destination.route) {
+                        Screen.Home.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Down,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Bookmark.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Down,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
                 arguments = listOf(navArgument("touristAttractionId") {
                     type = NavType.StringType
                 })
