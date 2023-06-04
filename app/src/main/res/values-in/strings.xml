@@ -18,10 +18,8 @@
     <string name="or">atau</string>
     <string name="sign_in_with_google">Masuk dengan Google</string>
     <string name="joined_us_before">Sudah bergabung sebelumnya?</string>
-    <string name="how_s_your_mood_today">Bagaimana suasana hatimu hari ini?</string>
-    <string name="placeholder_search">Cari destinasi wisata</string>
     <string name="back">Kembali</string>
-    <string name="bookmark">markah</string>
+    <string name="bookmark">Markah</string>
     <string name="sign_in_image">Gambar Masuk</string>
     <string name="email">Surel</string>
     <string name="password">Kata Sandi</string>
@@ -35,22 +33,21 @@
     <string name="welcome_image">Gambar Sambutan</string>
     <string name="survey_image">Gambar Survei</string>
     <string name="survey">Survei</string>
-    <string name="what_is_your_current_budget">Bagaimana budget kamu sekarang?</string>
+    <string name="how_s_your_current_budget">Bagaimana budget kamu sekarang?</string>
     <string name="input_label">Label Masukan</string>
     <string name="open_on_google_maps">Buka di Google Maps</string>
     <string name="account_image">Gambar Akun</string>
-    <string name="select_one">Pilih salah satu</string>
-    <string name="first_onboarding">Temukan Pintu Gerbang yang Sempurna untukmu</string>
+    <string name="select_one">Pilih salah satu:</string>
+    <string name="first_onboarding">Temukan Gerbang yang Sempurna untukmu</string>
     <string name="first_onboarding_description">Temukan destinasi perjalanan impianmu dengan mudah melalui sistem rekomendasi berbasis suasana hati kami</string>
     <string name="second_onboarding">Tentukan Suasana Hati Anda, Temukan Petualangan Anda</string>
-    <string name="second_onboarding_description">Beri tahu perasaanmu dan biarkan kami menyusun rekomendasi perjalanan yang dipersonalisasi khusus untukmu</string>
+    <string name="second_onboarding_description">Beri tahu suasana hati kamu dan biarkan kami menyusun rekomendasi perjalanan yang dipersonalisasi khusus untuk kamu</string>
     <string name="third_onboarding">Jelajahi, Rasakan, Nikmati</string>
-    <string name="third_onboarding_description">Mulailah perjalanan tak terlupakan yang disesuaikan dengan suasana hatimu dan temukan permata tersembunyi di seluruh dunia</string>
+    <string name="third_onboarding_description">Mulailah perjalanan tak terlupakan yang disesuaikan dengan suasana hati kamu dan temukan permata tersembunyi di seluruh dunia</string>
     <string name="tourist_attraction_name">Nama Destinasi Wisata</string>
     <string name="user_name">Nama Pengguna</string>
     <string name="tourist_attraction_city">Kota Destinasi Wisata</string>
     <string name="tourist_attraction_description">Deskripsi destinasi wisata.</string>
-    <string name="how_s_your_current_budget">Bagaimana anggaran kamu saat ini?</string>
     <string name="how_far_are_you_willing_to_travel">Sejauh mana kamu ingin melakukan perjalanan?</string>
     <string name="what_is_your_preferred_city">Apa kota pilihan kamu?</string>
     <string name="how_s_your_current_mood">Bagaimana suasana hati kamu sekarang?</string>
@@ -82,7 +79,7 @@
     <string name="location_icon">Ikon Lokasi</string>
     <string name="star_icon">Ikon Bintang</string>
     <string name="alert_title">Alert Title</string>
-    <string name="alert_name">Are you sure?</string>
+    <string name="alert_name">Apakah kamu yakin?</string>
     <string name="coming_soon">Segera!</string>
     <string name="hide">Sembunyikan</string>
     <string name="yes">Iya</string>
@@ -90,4 +87,5 @@
     <string name="restart">Ulang</string>
     <string name="change_mood">Ganti Suasana Hati</string>
     <string name="tell_us_how_s_your_mood_and_your_preferences">Beri tahu kami bagaimana suasana hati kamu dan preferensi kamu</string>
+    <string name="press_back_again_to_exit">Tekan kambali lagi untuk keluar</string>
 </resources>
