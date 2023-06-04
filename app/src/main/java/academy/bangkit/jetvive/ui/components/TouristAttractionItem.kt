@@ -31,7 +31,6 @@ fun TouristAttractionItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .clip(RoundedCornerShape(20.dp))
             .background(MaterialTheme.colorScheme.tertiary)
     ) {
         Image(
