@@ -49,6 +49,22 @@ object FakeTouristAttractionDataSource {
             6,
             "Bali",
             4.5
+        ),
+        TouristAttraction(
+            "tourist_attraction-7",
+            "Guciku",
+            "Guciku description.",
+            7,
+            "Tegal",
+            4.6
+        ),
+        TouristAttraction(
+            "tourist_attraction-8",
+            "Pantai Alam Indah",
+            "Pantai Alam Indah description.",
+            8,
+            "Tegal",
+            4.5
         )
     )
 }
