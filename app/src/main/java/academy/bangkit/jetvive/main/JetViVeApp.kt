@@ -1,5 +1,6 @@
-package academy.bangkit.jetvive
+package academy.bangkit.jetvive.main
 
+import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.TwiceBackPressExit
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.components.BottomBar

@@ -1,4 +1,4 @@
-package academy.bangkit.jetvive
+package academy.bangkit.jetvive.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

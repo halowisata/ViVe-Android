@@ -1,4 +1,4 @@
-package academy.bangkit.jetvive
+package academy.bangkit.jetvive.main
 
 import academy.bangkit.jetvive.data.repository.UserRepository
 import androidx.lifecycle.ViewModel
