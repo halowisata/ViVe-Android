@@ -20,10 +20,12 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -92,6 +94,7 @@ fun BookmarkContent(
                     image = R.drawable.jetpack_compose,
                     name = touristAttraction.name,
                     modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
                         .clickable { navigateToDetail("tourist_attraction-1") }
                 )
             }
