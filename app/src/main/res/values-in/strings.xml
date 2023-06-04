@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JetViVe</string>
+    <string name="app_name">Halowisata</string>
     <string name="logo">Logo</string>
     <string name="headline_onboarding">Judul Orientasi</string>
     <string name="body_onboarding">Isi Orientasi</string>
