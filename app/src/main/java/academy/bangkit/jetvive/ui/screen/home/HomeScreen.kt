@@ -3,10 +3,12 @@ package academy.bangkit.jetvive.ui.screen.home
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.helper.getPeriod
+import academy.bangkit.jetvive.helper.getSky
 import academy.bangkit.jetvive.model.tourist_attraction.FakeTouristAttractionDataSource
 import academy.bangkit.jetvive.model.tourist_attraction.TouristAttraction
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.Alert
+import academy.bangkit.jetvive.ui.components.GifImage
 import academy.bangkit.jetvive.ui.components.TouristAttractionItem
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.Image
@@ -109,21 +111,26 @@ fun HomeContent(
         ) {
             val hour by remember { mutableStateOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) }
 
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "${stringResource(R.string.good)} ${stringResource(getPeriod(hour))},",
-                    fontSize = 14.sp,
+                GifImage(gifImage = getSky(hour))
+                Column(
                     modifier = Modifier
-                        .padding(vertical = 5.dp)
-                )
-                Text(
-                    text = userName,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                )
+                        .padding(horizontal = 10.dp)
+                ) {
+                    Text(
+                        text = "${stringResource(R.string.good)} ${stringResource(getPeriod(hour))},",
+                        fontSize = 14.sp,
+                        modifier = Modifier
+                            .padding(vertical = 5.dp)
+                    )
+                    Text(
+                        text = userName,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
             }
             IconButton(
                 onClick = { navigateToProfile() }
