@@ -1,6 +1,7 @@
 package academy.bangkit.jetvive.ui.screen.profile
 
 import academy.bangkit.jetvive.R
+import academy.bangkit.jetvive.ui.components.Alert
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Divider
@@ -27,6 +29,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -101,14 +105,26 @@ fun ProfileContent(
                             .size(25.dp)
                     )
                 }
+
+                val showDialog = remember { mutableStateOf(false) }
+                if (showDialog.value) {
+                    Alert(title = stringResource(
+                        R.string.logout),
+                        name = stringResource(R.string.alert_name),
+                        showDialog = showDialog.value,
+                        onConfirm = {  },
+                        onDismiss = { showDialog.value = false }
+                    )
+                }
+
                 IconButton(
                     onClick = {
-                        launchSnackbar()
+                        showDialog.value = true
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.edit),
+                        imageVector = Icons.Default.Logout,
+                        contentDescription = stringResource(R.string.logout),
                         modifier = Modifier
                             .size(25.dp)
                     )
@@ -131,13 +147,30 @@ fun ProfileContent(
             verticalArrangement = Arrangement.spacedBy(5.dp),
             modifier = Modifier.padding(20.dp)
         ) {
-            Text(
-                text = stringResource(R.string.user_information),
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(bottom = 10.dp)
-            )
+            ) {
+                Text(
+                    text = stringResource(R.string.user_information),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+
+                )
+                IconButton(
+                    onClick = { launchSnackbar() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = stringResource(R.string.edit),
+                        modifier = Modifier
+                            .size(25.dp)
+                    )
+                }
+            }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
