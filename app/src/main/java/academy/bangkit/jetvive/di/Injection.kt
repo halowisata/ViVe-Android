@@ -5,6 +5,7 @@ import academy.bangkit.jetvive.data.repository.MoodRepository
 import academy.bangkit.jetvive.data.repository.OnboardingRepository
 import academy.bangkit.jetvive.data.repository.TouristAttractionRepository
 import academy.bangkit.jetvive.data.repository.UserRepository
+import academy.bangkit.jetvive.data.source.remote.retrofit.ApiConfig
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -12,6 +13,7 @@ import androidx.datastore.preferences.preferencesDataStore
 
 object Injection {
 
+    private val apiService = ApiConfig.getApiService()
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
         name = "user_preferences"
     )
@@ -25,7 +27,7 @@ object Injection {
     fun provideOnboardingRepository(): OnboardingRepository = OnboardingRepository.getInstance()
 
     fun provideUserRepository(context: Context): UserRepository =
-        UserRepository.getInstance(provideUserPreferences(context))
+        UserRepository.getInstance(apiService, provideUserPreferences(context))
 
     fun provideMoodRepository(): MoodRepository = MoodRepository.getInstance()
 
