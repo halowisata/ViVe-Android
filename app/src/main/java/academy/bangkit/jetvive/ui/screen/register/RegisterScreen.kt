@@ -7,21 +7,21 @@ import academy.bangkit.jetvive.helper.isPasswordMatching
 import academy.bangkit.jetvive.helper.isPasswordValid
 import academy.bangkit.jetvive.helper.isValidEmail
 import academy.bangkit.jetvive.ui.common.UiState
+import academy.bangkit.jetvive.ui.components.LoadingDialog
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
@@ -29,7 +29,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -60,8 +59,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
@@ -83,6 +80,9 @@ fun RegisterContent(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .verticalScroll(
+                state = rememberScrollState()
+            )
     ) {
         TopSection()
         RegisterForm(
@@ -94,49 +94,72 @@ fun RegisterContent(
     }
 }
 
+@Composable
+fun TopSection(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(
+            R.drawable.sign_up
+        ),
+        contentDescription = stringResource(
+            R.string.sign_up_image
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 60.dp,
+                bottom = 30.dp
+            )
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterForm(
     navigateToSignIn: () -> Unit,
+    viewModel: RegisterViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(
+            context = LocalContext.current
+        )
+    ),
     modifier: Modifier = Modifier
 ) {
-    val viewModel: RegisterViewModel = viewModel(
-        factory = ViewModelFactory.getInstance(context = LocalContext.current)
-    )
-    val context = LocalContext.current
     val registrationStatus by viewModel.registrationStatus.collectAsState()
+
+    var name by remember { mutableStateOf(TextFieldValue("")) }
+    var email by remember { mutableStateOf(TextFieldValue("")) }
+    var password by remember { mutableStateOf(TextFieldValue("")) }
+    var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
+
+    var showPassword by remember { mutableStateOf(value = false) }
+    var showConfirmPassword by remember { mutableStateOf(value = false) }
+
+    var isEmailValid by remember { mutableStateOf(true) }
+    var isPasswordValid by remember { mutableStateOf(true) }
+    var isPasswordMatching by remember { mutableStateOf(true) }
+    val isAnyFieldEmpty = name.text.isEmpty()
+                || email.text.isEmpty()
+                || password.text.isEmpty()
+                || confirmPassword.text.isEmpty()
+
     var isLoading by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
     if (isLoading) {
-        Dialog(
-            onDismissRequest = {},
-            properties = DialogProperties(
-                dismissOnClickOutside = false,
-                dismissOnBackPress = false
-            )
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .background(Color.Transparent)
-                    .fillMaxSize()
-            ) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-        }
+        LoadingDialog()
     }
 
     LaunchedEffect(registrationStatus) {
         if (registrationStatus is UiState.Success) {
-            Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.registration_successful, Toast.LENGTH_SHORT).show()
             navigateToSignIn()
         } else if (registrationStatus is UiState.Error) {
-            Toast.makeText(context, "Registration failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.registration_failed, Toast.LENGTH_SHORT).show()
             isLoading = false
         }
     }
-
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -151,9 +174,6 @@ fun RegisterForm(
             modifier = Modifier
                 .fillMaxWidth()
         )
-
-        var name by remember { mutableStateOf(TextFieldValue("")) }
-        
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = name,
@@ -175,10 +195,6 @@ fun RegisterForm(
             modifier = Modifier
                 .fillMaxWidth()
         )
-
-        var email by remember { mutableStateOf(TextFieldValue("")) }
-        var isEmailValid by remember { mutableStateOf(true) }
-
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = email,
@@ -198,25 +214,18 @@ fun RegisterForm(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
-            modifier = Modifier
-                .fillMaxWidth(),
             isError = !isEmailValid,
             supportingText = {
                 if (!isEmailValid) {
                     Text(
-                        text = "Invalid email address",
+                        text = stringResource(R.string.invalid_email_address),
                         color = MaterialTheme.colorScheme.error
                     )
                 }
-            }
+            },
+            modifier = Modifier
+                .fillMaxWidth(),
         )
-
-        var password by remember { mutableStateOf(TextFieldValue("")) }
-        var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
-        var showPassword by remember { mutableStateOf(value = false) }
-        var isPasswordMatching by remember { mutableStateOf(true) }
-        var isPasswordValid by remember { mutableStateOf(true) }
-
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = password,
@@ -233,7 +242,7 @@ fun RegisterForm(
             ) },
             singleLine = true,
             visualTransformation =
-                if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
@@ -260,20 +269,17 @@ fun RegisterForm(
                 }
             },
             isError = !isPasswordValid,
-            modifier = Modifier
-                .fillMaxWidth(),
             supportingText = {
                 if (!isPasswordValid) {
                     Text(
-                        text = "Password must contain at least 8 characters long, one uppercase letter, one lowercase letter, and one digit.",
+                        text = stringResource(R.string.password_validation),
                         color = MaterialTheme.colorScheme.error,
                     )
                 }
-            }
+            },
+            modifier = Modifier
+                .fillMaxWidth(),
         )
-
-        var showConfirmPassword by remember { mutableStateOf(value = false) }
-
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = confirmPassword,
@@ -296,7 +302,6 @@ fun RegisterForm(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
-            isError = !isPasswordMatching,
             trailingIcon = {
                 if (showConfirmPassword) {
                     IconButton(
@@ -319,21 +324,19 @@ fun RegisterForm(
                 }
             },
             enabled = password.text.isNotEmpty() && isPasswordValid(password.text),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 10.dp),
+            isError = !isPasswordMatching,
             supportingText = {
                 if (!isPasswordMatching) {
                     Text(
-                        text = "Password did not match",
+                        text = stringResource(R.string.password_did_not_match),
                         color = MaterialTheme.colorScheme.error,
                     )
                 }
             },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp),
         )
-        val isAnyFieldEmpty = name.text.isEmpty() || email.text.isEmpty() ||
-                password.text.isEmpty() || confirmPassword.text.isEmpty()
-
         Button(
             onClick = {
                 isLoading = true
@@ -343,9 +346,9 @@ fun RegisterForm(
                     password = password.text)
                 )
             },
+            enabled = !isLoading && !isAnyFieldEmpty,
             modifier = Modifier
                 .fillMaxWidth(),
-            enabled = !isLoading && !isAnyFieldEmpty
         ) {
             Text(
                 text = stringResource(R.string.sign_up),
@@ -355,22 +358,6 @@ fun RegisterForm(
             )
         }
     }
-}
-
-@Composable
-fun TopSection(
-    modifier: Modifier = Modifier
-) {
-    Image(
-        painter = painterResource(R.drawable.sign_up),
-        contentDescription = stringResource(R.string.sign_up_image),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                top = 60.dp,
-                bottom = 30.dp
-            )
-    )
 }
 
 @Composable
@@ -389,7 +376,8 @@ fun BottomSection(
             lineHeight = 18.sp,
             letterSpacing = .25.sp,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(end = 3.dp)
+            modifier = Modifier
+                .padding(end = 3.dp)
         )
         Text(
             text = stringResource(R.string.sign_in),
@@ -398,7 +386,9 @@ fun BottomSection(
             textAlign = TextAlign.Center,
             lineHeight = 18.sp,
             letterSpacing = .25.sp,
-            style = TextStyle(color = Color(0xFF576CBC)),
+            style = TextStyle(
+                color = Color(0xFF576CBC)
+            ),
             modifier = Modifier
                 .clickable {
                     navigateToSignIn()
