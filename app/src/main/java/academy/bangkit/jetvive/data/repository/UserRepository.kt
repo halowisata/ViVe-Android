@@ -4,25 +4,25 @@ import academy.bangkit.jetvive.data.source.local.datastore.UserPreferences
 import academy.bangkit.jetvive.data.source.local.entity.UserEntity
 import academy.bangkit.jetvive.data.source.remote.request.RegisterRequest
 import academy.bangkit.jetvive.data.source.remote.response.RegisterResponse
-import academy.bangkit.jetvive.data.source.remote.retrofit.ApiResponse
 import academy.bangkit.jetvive.data.source.remote.retrofit.ApiService
-import android.util.Log
+import academy.bangkit.jetvive.ui.common.UiState
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class UserRepository(
     private val apiService: ApiService,
     private val userPreferences: UserPreferences
     ) {
 
-    fun register(registerRequest: RegisterRequest): Flow<ApiResponse<RegisterResponse>> = flow {
-        emit(ApiResponse.Empty)
-        try {
+    suspend fun register(registerRequest: RegisterRequest): UiState<RegisterResponse> {
+        return try {
             val response = apiService.register(registerRequest)
-            emit(ApiResponse.Success(response))
+            if (response.isSuccessful) {
+                UiState.Success(response.body() ?: throw Exception("Empty response body"))
+            } else {
+                UiState.Error("Registration failed")
+            }
         } catch (exception: Exception) {
-            Log.d("UserRepository", "register: ${exception.message.toString()}")
-            emit(ApiResponse.Error(exception.message.toString()))
+            UiState.Error(exception.message.toString())
         }
     }
 
