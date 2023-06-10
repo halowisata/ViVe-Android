@@ -89,4 +89,9 @@
     <string name="tell_us_how_s_your_mood_and_your_preferences">Beri tahu kami bagaimana suasana hati kamu dan preferensi kamu</string>
     <string name="press_back_again_to_exit">Tekan kambali lagi untuk keluar</string>
     <string name="logout">Keluar</string>
+    <string name="registration_successful">Pendaftaran success</string>
+    <string name="registration_failed">Pendaftaran gagal</string>
+    <string name="password_did_not_match">Kata sandi tidak cocok</string>
+    <string name="password_validation">Kata sandi minimal harus berisi sedikitnya 8 karakter, satu huruf besar, satu huruf kecil, dan satu digit</string>
+    <string name="invalid_email_address">Alamat surel tidak valid</string>
 </resources>

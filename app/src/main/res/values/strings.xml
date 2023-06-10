@@ -88,4 +88,9 @@
     <string name="tell_us_how_s_your_mood_and_your_preferences">Tell us how\'s your mood and your preferences</string>
     <string name="press_back_again_to_exit">Press back again to exit</string>
     <string name="logout">Logout</string>
+    <string name="registration_successful">Registration successful</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="password_did_not_match">Password did not match</string>
+    <string name="password_validation">Password must contain at least 8 characters long, one uppercase letter, one lowercase letter, and one digit</string>
+    <string name="invalid_email_address">Invalid email address</string>
 </resources>
