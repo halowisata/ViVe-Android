@@ -1,13 +1,23 @@
 package academy.bangkit.jetvive.ui.screen.register
 
 import academy.bangkit.jetvive.R
+import academy.bangkit.jetvive.data.source.remote.request.RegisterRequest
+import academy.bangkit.jetvive.helper.ViewModelFactory
+import academy.bangkit.jetvive.helper.isPasswordMatching
+import academy.bangkit.jetvive.helper.isPasswordValid
+import academy.bangkit.jetvive.helper.isValidEmail
+import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
+import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,12 +29,16 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -45,6 +60,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun RegisterScreen(
@@ -68,7 +86,7 @@ fun RegisterContent(
     ) {
         TopSection()
         RegisterForm(
-            navigateToSignIn = navigateToSignIn
+            navigateToSignIn = navigateToSignIn,
         )
         BottomSection(
             navigateToSignIn = navigateToSignIn
@@ -82,6 +100,43 @@ fun RegisterForm(
     navigateToSignIn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val viewModel: RegisterViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+    )
+    val context = LocalContext.current
+    val registrationStatus by viewModel.registrationStatus.collectAsState()
+    var isLoading by remember { mutableStateOf(false) }
+    if (isLoading) {
+        Dialog(
+            onDismissRequest = {},
+            properties = DialogProperties(
+                dismissOnClickOutside = false,
+                dismissOnBackPress = false
+            )
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .background(Color.Transparent)
+                    .fillMaxSize()
+            ) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    }
+
+    LaunchedEffect(registrationStatus) {
+        if (registrationStatus is UiState.Success) {
+            Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
+            navigateToSignIn()
+        } else if (registrationStatus is UiState.Error) {
+            Toast.makeText(context, "Registration failed", Toast.LENGTH_SHORT).show()
+            isLoading = false
+        }
+    }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -97,17 +152,17 @@ fun RegisterForm(
                 .fillMaxWidth()
         )
 
-        var nama by remember { mutableStateOf(TextFieldValue("")) }
+        var name by remember { mutableStateOf(TextFieldValue("")) }
         
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
-            value = nama,
+            value = name,
             leadingIcon = { Icon(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = stringResource(R.string.name)
             ) },
             onValueChange = {
-                nama = it
+                name = it
             },
             label = { Text(
                 text = stringResource(R.string.name)
@@ -122,6 +177,7 @@ fun RegisterForm(
         )
 
         var email by remember { mutableStateOf(TextFieldValue("")) }
+        var isEmailValid by remember { mutableStateOf(true) }
 
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
@@ -132,6 +188,7 @@ fun RegisterForm(
             ) },
             onValueChange = {
                 email = it
+                isEmailValid = isValidEmail(it.text)
             },
             label = { Text(
                 text = stringResource(R.string.email)
@@ -142,11 +199,23 @@ fun RegisterForm(
                 imeAction = ImeAction.Next
             ),
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            isError = !isEmailValid,
+            supportingText = {
+                if (!isEmailValid) {
+                    Text(
+                        text = "Invalid email address",
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
         )
 
         var password by remember { mutableStateOf(TextFieldValue("")) }
+        var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
         var showPassword by remember { mutableStateOf(value = false) }
+        var isPasswordMatching by remember { mutableStateOf(true) }
+        var isPasswordValid by remember { mutableStateOf(true) }
 
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
@@ -157,6 +226,7 @@ fun RegisterForm(
             ) },
             onValueChange = {
                 password = it
+                isPasswordValid = isPasswordValid(it.text)
             },
             label = { Text(
                 text = stringResource(R.string.password)
@@ -189,11 +259,19 @@ fun RegisterForm(
                     }
                 }
             },
+            isError = !isPasswordValid,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            supportingText = {
+                if (!isPasswordValid) {
+                    Text(
+                        text = "Password must contain at least 8 characters long, one uppercase letter, one lowercase letter, and one digit.",
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            }
         )
 
-        var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
         var showConfirmPassword by remember { mutableStateOf(value = false) }
 
         OutlinedTextField(
@@ -205,6 +283,7 @@ fun RegisterForm(
             ) },
             onValueChange = {
                 confirmPassword = it
+                isPasswordMatching = isPasswordMatching(password.text, confirmPassword.text)
             },
             label = { Text(
                 text = stringResource(R.string.confirm_password)
@@ -217,6 +296,7 @@ fun RegisterForm(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
+            isError = !isPasswordMatching,
             trailingIcon = {
                 if (showConfirmPassword) {
                     IconButton(
@@ -238,14 +318,34 @@ fun RegisterForm(
                     }
                 }
             },
+            enabled = password.text.isNotEmpty() && isPasswordValid(password.text),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 10.dp)
+                .padding(bottom = 10.dp),
+            supportingText = {
+                if (!isPasswordMatching) {
+                    Text(
+                        text = "Password did not match",
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            },
         )
+        val isAnyFieldEmpty = name.text.isEmpty() || email.text.isEmpty() ||
+                password.text.isEmpty() || confirmPassword.text.isEmpty()
+
         Button(
-            onClick = { navigateToSignIn() },
+            onClick = {
+                isLoading = true
+                viewModel.register(RegisterRequest(
+                    name = name.text,
+                    email = email.text,
+                    password = password.text)
+                )
+            },
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            enabled = !isLoading && !isAnyFieldEmpty
         ) {
             Text(
                 text = stringResource(R.string.sign_up),
@@ -312,7 +412,7 @@ fun BottomSection(
 fun RegisterContentPreview() {
     JetViVeTheme {
         RegisterContent(
-            navigateToSignIn = {}
+            navigateToSignIn = {},
         )
     }
 }
