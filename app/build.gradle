@@ -19,7 +19,7 @@ android {
             useSupportLibrary true
         }
 
-        buildConfigField "String", "Halowisata_API", "\"https://backend-awnvjhpyqa-et.a.run.app\""
+        buildConfigField "String", "Halowisata_API", "\"https://backend-awnvjhpyqa-et.a.run.app/api/v1/\""
     }
 
     buildTypes {
