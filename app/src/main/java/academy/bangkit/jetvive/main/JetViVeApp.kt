@@ -403,7 +403,7 @@ fun JetViVeApp(
                     onBackClick = {
                         navController.navigateUp()
                     },
-                    navigateToLogin = {
+                    navigateToSignIn = {
                         navController.navigate(Screen.Login.route) {
                             popUpTo(0)
                         }
