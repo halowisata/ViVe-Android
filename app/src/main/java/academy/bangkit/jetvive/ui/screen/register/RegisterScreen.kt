@@ -18,10 +18,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
@@ -80,9 +78,6 @@ fun RegisterContent(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .verticalScroll(
-                state = rememberScrollState()
-            )
     ) {
         TopSection()
         RegisterForm(
@@ -99,12 +94,8 @@ fun TopSection(
     modifier: Modifier = Modifier
 ) {
     Image(
-        painter = painterResource(
-            R.drawable.sign_up
-        ),
-        contentDescription = stringResource(
-            R.string.sign_up_image
-        ),
+        painter = painterResource(R.drawable.sign_up),
+        contentDescription = stringResource(R.string.sign_up_image),
         modifier = Modifier
             .fillMaxWidth()
             .padding(
