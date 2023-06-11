@@ -334,8 +334,9 @@ fun RegisterForm(
                 viewModel.register(RegisterRequest(
                     name = name.text,
                     email = email.text,
-                    password = password.text)
-                )
+                    password = password.text,
+                    confirmPassword = confirmPassword.text
+                ))
             },
             enabled = !isLoading && !isAnyFieldEmpty,
             modifier = Modifier
