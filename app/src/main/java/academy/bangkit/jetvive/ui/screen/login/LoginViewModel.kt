@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val userRepository: UserRepository): ViewModel() {
+
     private val _loginStatus = MutableStateFlow<UiState<LoginResponse>>(UiState.Loading)
     val loginStatus: StateFlow<UiState<LoginResponse>> get() = _loginStatus
 
