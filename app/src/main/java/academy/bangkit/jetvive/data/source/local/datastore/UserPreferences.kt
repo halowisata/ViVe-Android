@@ -12,29 +12,26 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
 
     suspend fun setLogin(userEntity: UserEntity) {
         dataStore.edit { preferences ->
-            preferences[ID] = userEntity.id
-            preferences[NAME] = userEntity.name
-            preferences[TOKEN] = userEntity.token
+            preferences[ACCESS_TOKEN] = userEntity.accessToken
+            preferences[REFRESH_TOKEN] = userEntity.refreshToken
         }
     }
 
     fun getLogin(): Flow<UserEntity> = dataStore.data.map { preferences ->
         UserEntity(
-            preferences[ID] ?: "",
-            preferences[NAME] ?: "",
-            preferences[TOKEN] ?: ""
+            preferences[ACCESS_TOKEN] ?: "",
+            preferences[REFRESH_TOKEN] ?: ""
         )
     }
 
-    suspend fun deleteLogin() { dataStore.edit { preferences -> preferences.clear() } }
+    suspend fun deleteLogin() { dataStore.edit { it.clear() } }
 
     companion object {
         @Volatile
         private var INSTANCE: UserPreferences? = null
 
-        private val ID = stringPreferencesKey("id")
-        private val NAME = stringPreferencesKey("name")
-        private val TOKEN = stringPreferencesKey("token")
+        private val ACCESS_TOKEN = stringPreferencesKey("accessToken")
+        private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreferences =
             INSTANCE ?: synchronized(this) {
