@@ -1,9 +1,12 @@
 package academy.bangkit.jetvive.ui.screen.login
 
 import academy.bangkit.jetvive.R
+import academy.bangkit.jetvive.data.source.remote.request.LoginRequest
 import academy.bangkit.jetvive.helper.ViewModelFactory
+import academy.bangkit.jetvive.ui.common.UiState
+import academy.bangkit.jetvive.ui.components.LoadingDialog
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
-import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -12,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +27,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,6 +35,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -106,17 +113,44 @@ fun TopSection(
     )
 }
 
-@SuppressLint("StringFormatInvalid")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginForm(
     navigateToForm: () -> Unit,
     launchSnackbar: () -> Unit,
     viewModel: LoginViewModel = viewModel(
-        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+        factory = ViewModelFactory.getInstance(
+            context = LocalContext.current
+        )
     ),
     modifier: Modifier = Modifier
 ) {
+    val loginStatus by viewModel.loginStatus.collectAsState()
+
+    var email by remember { mutableStateOf(TextFieldValue("")) }
+    var password by remember { mutableStateOf(TextFieldValue("")) }
+
+    var showPassword by remember { mutableStateOf(value = false) }
+
+    val isAnyFieldEmpty = email.text.isEmpty() || password.text.isEmpty()
+
+    var isLoading by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    if (isLoading) {
+        LoadingDialog()
+    }
+
+    LaunchedEffect(loginStatus) {
+        if (loginStatus is UiState.Success) {
+            Toast.makeText(context, R.string.login_successful, Toast.LENGTH_SHORT).show()
+            navigateToForm()
+        } else if (loginStatus is UiState.Error) {
+            Toast.makeText(context, R.string.login_failed, Toast.LENGTH_SHORT).show()
+            isLoading = false
+        }
+    }
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -131,9 +165,6 @@ fun LoginForm(
             modifier = Modifier
                 .fillMaxWidth()
         )
-
-        var email by remember { mutableStateOf(TextFieldValue("")) }
-
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = email,
@@ -155,10 +186,6 @@ fun LoginForm(
             modifier = Modifier
                 .fillMaxWidth()
         )
-
-        var password by remember { mutableStateOf(TextFieldValue("")) }
-        var showPassword by remember { mutableStateOf(value = false) }
-        
         OutlinedTextField(
             shape = RoundedCornerShape(10.dp),
             value = password,
@@ -225,8 +252,13 @@ fun LoginForm(
         ) {
             Button(
                 onClick = {
-                  navigateToForm()
+                    isLoading = true
+                    viewModel.login(LoginRequest(
+                        email = email.text,
+                        password = password.text)
+                    )
                 },
+                enabled = !isAnyFieldEmpty,
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
@@ -237,13 +269,27 @@ fun LoginForm(
                     )
                 )
             }
-            Text(
-                text = stringResource(R.string.or),
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Divider(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(1.dp)
+                )
+                Text(
+                    text = stringResource(R.string.or),
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
+                Divider(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(1.dp)
+                )
+            }
             Button(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.background
@@ -294,9 +340,8 @@ fun BottomSection(
             lineHeight = 18.sp,
             letterSpacing = .25.sp,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(
-                end = 3.dp
-            )
+            modifier = Modifier
+                .padding(end = 3.dp)
         )
         Text(
             text = stringResource(R.string.sign_up),
