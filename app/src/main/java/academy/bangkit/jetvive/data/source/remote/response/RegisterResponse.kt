@@ -10,10 +10,10 @@ data class RegisterResponse(
     val message: String,
 
     @field:SerializedName("data")
-    val data: Data
+    val data: RegisterData
 )
 
-data class Data(
+data class RegisterData(
     @field:SerializedName("id")
     val id: String,
 
