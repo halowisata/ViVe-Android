@@ -94,4 +94,7 @@
     <string name="password_did_not_match">Kata sandi tidak cocok</string>
     <string name="password_validation">Kata sandi minimal harus berisi sedikitnya 8 karakter, satu huruf besar, satu huruf kecil, dan satu digit</string>
     <string name="invalid_email_address">Alamat surel tidak valid</string>
+    <string name="login_successful">Berhasil masuk</string>
+    <string name="login_failed">Gagal masuk</string>
+    <string name="logout_successful">Berhasil keluar</string>
 </resources>

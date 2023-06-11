@@ -93,4 +93,7 @@
     <string name="password_did_not_match">Password did not match</string>
     <string name="password_validation">Password must contain at least 8 characters long, one uppercase letter, one lowercase letter, and one digit</string>
     <string name="invalid_email_address">Invalid email address</string>
+    <string name="login_successful">Login successful</string>
+    <string name="login_failed">Login failed</string>
+    <string name="logout_successful">Logout successful</string>
 </resources>
