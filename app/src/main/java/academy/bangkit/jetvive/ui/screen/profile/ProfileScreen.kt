@@ -1,8 +1,13 @@
 package academy.bangkit.jetvive.ui.screen.profile
 
 import academy.bangkit.jetvive.R
+import academy.bangkit.jetvive.data.source.remote.request.LogoutRequest
+import academy.bangkit.jetvive.helper.ViewModelFactory
+import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.Alert
+import academy.bangkit.jetvive.ui.components.LoadingDialog
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,17 +34,23 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun ProfileScreen(
@@ -51,6 +62,7 @@ fun ProfileScreen(
     userAddress: String,
     userGender: String,
     onBackClick: () -> Unit,
+    navigateToSignIn: () -> Unit,
     launchSnackbar: () -> Unit
 ) {
     ProfileContent(
@@ -62,6 +74,7 @@ fun ProfileScreen(
         userAddress = userAddress,
         userGender = userGender,
         onBackClick = onBackClick,
+        navigateToSignIn = navigateToSignIn,
         launchSnackbar = launchSnackbar
     )
 }
@@ -76,9 +89,34 @@ fun ProfileContent(
     userAddress: String,
     userGender: String,
     onBackClick: () -> Unit,
+    navigateToSignIn: () -> Unit,
     launchSnackbar: () -> Unit,
+    viewModel: ProfileViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+    ),
     modifier: Modifier = Modifier
 ) {
+    viewModel.getLogin()
+    val loginData by viewModel.loginData.collectAsState()
+    val logoutStatus by viewModel.logoutStatus.collectAsState()
+
+    var isLoading by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    if (isLoading) {
+        LoadingDialog()
+    }
+
+    LaunchedEffect(logoutStatus) {
+        if (logoutStatus is UiState.Success) {
+            Toast.makeText(context, R.string.logout_successful, Toast.LENGTH_SHORT).show()
+            navigateToSignIn()
+        } else if (logoutStatus is UiState.Error) {
+            Toast.makeText(context, R.string.login_failed, Toast.LENGTH_SHORT).show()
+            isLoading = false
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -112,7 +150,13 @@ fun ProfileContent(
                         R.string.logout),
                         name = stringResource(R.string.alert_name),
                         showDialog = showDialog.value,
-                        onConfirm = {  },
+                        onConfirm = {
+                            showDialog.value = false
+                            isLoading = true
+                            viewModel.logout(LogoutRequest(
+                                refreshToken = loginData?.refreshToken.toString()
+                            ))
+                        },
                         onDismiss = { showDialog.value = false }
                     )
                 }
@@ -287,6 +331,7 @@ fun ProfileContentPreview() {
             userAddress = stringResource(R.string.user_address),
             userGender = stringResource(R.string.user_gender),
             onBackClick = {},
+            navigateToSignIn = {},
             launchSnackbar = {}
         )
     }
