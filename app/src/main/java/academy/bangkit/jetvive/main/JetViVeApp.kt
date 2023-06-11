@@ -27,6 +27,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,7 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun JetViVeApp(
     navController: NavHostController = rememberAnimatedNavController(),
-    mainViewModel: MainViewModel = viewModel(
+    viewModel: MainViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
     modifier: Modifier = Modifier
@@ -90,9 +91,20 @@ fun JetViVeApp(
             SnackbarHost(hostState = snackState)
         }
     ) { innerPadding ->
+        viewModel.getLogin()
+        val loginData by viewModel.loginData.collectAsState()
+
+        val startDestination = remember {
+            if (loginData?.accessToken?.isNotBlank() == true) {
+                Screen.Home.route
+            } else {
+                Screen.Onboarding.route
+            }
+        }
+
         AnimatedNavHost(
             navController = navController,
-            startDestination = Screen.Home.route,
+            startDestination = startDestination,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(
@@ -390,6 +402,11 @@ fun JetViVeApp(
                     userGender = "Man",
                     onBackClick = {
                         navController.navigateUp()
+                    },
+                    navigateToLogin = {
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(0)
+                        }
                     },
                     launchSnackbar = {
                         launchSnackbar(
