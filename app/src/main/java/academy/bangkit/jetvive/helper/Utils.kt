@@ -78,3 +78,18 @@ fun TwiceBackPressExit() {
         showToast = true
     }
 }
+
+fun isValidEmail(email: String): Boolean {
+    // Simple email validation using regex
+    val regex = Regex("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$")
+    return regex.matches(email)
+}
+
+fun isPasswordMatching(password: String, confirmPassword: String): Boolean {
+    return password == confirmPassword
+}
+
+fun isPasswordValid(password: String): Boolean {
+    val passwordRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+\$")
+    return password.length >= 8 && password.matches(passwordRegex)
+}
