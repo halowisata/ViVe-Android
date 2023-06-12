@@ -8,8 +8,10 @@ import academy.bangkit.jetvive.data.source.remote.response.LoginResponse
 import academy.bangkit.jetvive.data.source.remote.response.LogoutResponse
 import academy.bangkit.jetvive.data.source.remote.response.RegisterResponse
 import academy.bangkit.jetvive.data.source.remote.response.SurveyResponse
+import academy.bangkit.jetvive.data.source.remote.response.UserResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -30,4 +32,7 @@ interface ApiService {
         @Header("Authorization") accessToken: String,
         @Body surveyRequest: SurveyRequest
     ): Response<SurveyResponse>
+
+    @GET("users")
+    suspend fun getUser(@Header("Authorization") accessToken: String): Response<UserResponse>
 }
