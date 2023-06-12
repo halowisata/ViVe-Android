@@ -6,6 +6,7 @@ import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.Alert
 import academy.bangkit.jetvive.ui.components.LoadingDialog
+import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingViewModel
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -54,40 +55,55 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun ProfileScreen(
-    userImage: Int,
-    userName: String,
-    username: String,
-    userEmail: String,
-    userPhoneNumber: String,
-    userAddress: String,
-    userGender: String,
     onBackClick: () -> Unit,
     navigateToSignIn: () -> Unit,
+    viewModel: ProfileViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+    ),
     launchSnackbar: () -> Unit
 ) {
-    ProfileContent(
-        userImage = userImage,
-        userName = userName,
-        username = username,
-        userEmail = userEmail,
-        userPhoneNumber = userPhoneNumber,
-        userAddress = userAddress,
-        userGender = userGender,
-        onBackClick = onBackClick,
-        navigateToSignIn = navigateToSignIn,
-        launchSnackbar = launchSnackbar
-    )
+    viewModel.getLogin()
+    val loginData by viewModel.loginData.collectAsState()
+    var isLoading by remember { mutableStateOf(false) }
+
+    if (isLoading) {
+        LoadingDialog()
+    }
+    viewModel.uiState.collectAsState().value.let { uiState ->
+        when (uiState) {
+            is UiState.Loading -> {
+                isLoading = true
+                viewModel.getUser(accessToken = loginData?.accessToken.toString())
+            }
+            is UiState.Success -> {
+                isLoading = false
+                ProfileContent(
+                    userImage = R.drawable.jetpack_compose,
+                    userName = uiState.data.data.name,
+                    username = uiState.data.data.username,
+                    userEmail = uiState.data.data.email,
+                    userPhoneNumber = uiState.data.data.phoneNumber,
+                    userAddress = uiState.data.data.address,
+                    userGender = uiState.data.data.gender,
+                    onBackClick = onBackClick,
+                    navigateToSignIn = navigateToSignIn,
+                    launchSnackbar = launchSnackbar
+                )
+            }
+            is UiState.Error -> {}
+        }
+    }
 }
 
 @Composable
 fun ProfileContent(
-    userImage: Int,
-    userName: String,
-    username: String,
-    userEmail: String,
-    userPhoneNumber: String,
-    userAddress: String,
-    userGender: String,
+    userImage: Int? = null,
+    userName: String? = null,
+    username: String? = null,
+    userEmail: String? = null,
+    userPhoneNumber: String? = null,
+    userAddress: String? = null,
+    userGender: String? = null,
     onBackClick: () -> Unit,
     navigateToSignIn: () -> Unit,
     launchSnackbar: () -> Unit,
@@ -175,13 +191,13 @@ fun ProfileContent(
                 }
             }
             Image(
-                painter = painterResource(userImage),
+                painter = painterResource(userImage ?: 0),
                 contentDescription = stringResource(R.string.user_image),
                 modifier = Modifier
                     .size(150.dp)
             )
             Text(
-                text = userName,
+                text = userName ?: "(Not Set)",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -231,7 +247,7 @@ fun ProfileContent(
                         contentDescription = stringResource(R.string.username_icon)
                     )
                     Text(
-                        text = username
+                        text = username ?: "(Not Set)"
                     )
                 }
             }
@@ -250,7 +266,7 @@ fun ProfileContent(
                         contentDescription = stringResource(R.string.email_icon)
                     )
                     Text(
-                        text = userEmail
+                        text = userEmail ?: "(Not Set)"
                     )
                 }
             }
@@ -270,7 +286,7 @@ fun ProfileContent(
                         contentDescription = stringResource(R.string.phone_number_icon)
                     )
                     Text(
-                        text = userPhoneNumber
+                        text = userPhoneNumber ?: "(Not Set)"
                     )
                 }
             }
@@ -290,7 +306,7 @@ fun ProfileContent(
                         contentDescription = stringResource(R.string.address_icon)
                     )
                     Text(
-                        text = userAddress
+                        text = userAddress ?: "(Not Set)"
                     )
                 }
             }
@@ -310,7 +326,7 @@ fun ProfileContent(
                         contentDescription = stringResource(R.string.gender_icon)
                     )
                     Text(
-                        text = userGender
+                        text = userGender ?: "(Not Set)"
                     )
                 }
             }
