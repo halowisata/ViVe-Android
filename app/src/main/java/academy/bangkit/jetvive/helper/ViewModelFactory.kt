@@ -2,11 +2,13 @@ package academy.bangkit.jetvive.helper
 
 import academy.bangkit.jetvive.data.repository.MoodRepository
 import academy.bangkit.jetvive.data.repository.OnboardingRepository
+import academy.bangkit.jetvive.data.repository.SurveyRepository
 import academy.bangkit.jetvive.data.repository.TouristAttractionRepository
 import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.di.Injection
 import academy.bangkit.jetvive.main.MainViewModel
 import academy.bangkit.jetvive.ui.screen.detail.DetailViewModel
+import academy.bangkit.jetvive.ui.screen.form.SurveyViewModel
 import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
 import academy.bangkit.jetvive.ui.screen.login.LoginViewModel
 import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingViewModel
@@ -19,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 class ViewModelFactory(
     private val onboardingRepository: OnboardingRepository,
     private val userRepository: UserRepository,
+    private val surveyRepository: SurveyRepository,
     private val moodRepository: MoodRepository,
     private val touristAttractionRepository: TouristAttractionRepository
     ): ViewModelProvider.NewInstanceFactory() {
@@ -37,6 +40,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(userRepository) as T
+            }
+            modelClass.isAssignableFrom(SurveyViewModel::class.java) -> {
+                SurveyViewModel(userRepository, surveyRepository) as T
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(touristAttractionRepository) as T
@@ -59,6 +65,7 @@ class ViewModelFactory(
             instance ?: ViewModelFactory(
                 Injection.provideOnboardingRepository(),
                 Injection.provideUserRepository(context),
+                Injection.provideSurveyRepository(context),
                 Injection.provideMoodRepository(),
                 Injection.provideTouristAttractionRepository()
             )
