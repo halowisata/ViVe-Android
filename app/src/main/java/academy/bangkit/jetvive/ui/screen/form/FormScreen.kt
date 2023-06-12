@@ -298,7 +298,7 @@ fun FormForm(
                     viewModel.addSurvey(
                         loginData?.accessToken.toString(),
                         SurveyRequest(
-                            moodId = selectedMoodItem,
+                            mood = selectedMoodItem,
                             budget = selectedBudgetItem,
                             travelDistance = selectedFarItem,
                             destinationCity = selectedCityItem

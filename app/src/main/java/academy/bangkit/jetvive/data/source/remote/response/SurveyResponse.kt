@@ -15,13 +15,13 @@ data class SurveyResponse(
 
 data class SurveyData(
     @field:SerializedName("id")
-    val id: String,
+    val id: Int,
 
     @field:SerializedName("userId")
-    val userId: String,
+    val userId: Int,
 
     @field:SerializedName("moodId")
-    val moodId: String,
+    val mood: String,
 
     @field:SerializedName("budget")
     val budget: String,

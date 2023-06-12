@@ -1,6 +1,5 @@
 package academy.bangkit.jetvive.helper
 
-import academy.bangkit.jetvive.data.repository.MoodRepository
 import academy.bangkit.jetvive.data.repository.OnboardingRepository
 import academy.bangkit.jetvive.data.repository.SurveyRepository
 import academy.bangkit.jetvive.data.repository.TouristAttractionRepository
@@ -22,7 +21,6 @@ class ViewModelFactory(
     private val onboardingRepository: OnboardingRepository,
     private val userRepository: UserRepository,
     private val surveyRepository: SurveyRepository,
-    private val moodRepository: MoodRepository,
     private val touristAttractionRepository: TouristAttractionRepository
     ): ViewModelProvider.NewInstanceFactory() {
 
@@ -66,7 +64,6 @@ class ViewModelFactory(
                 Injection.provideOnboardingRepository(),
                 Injection.provideUserRepository(context),
                 Injection.provideSurveyRepository(context),
-                Injection.provideMoodRepository(),
                 Injection.provideTouristAttractionRepository()
             )
         }.also { instance = it }

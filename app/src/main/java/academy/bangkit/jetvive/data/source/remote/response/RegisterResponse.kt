@@ -15,7 +15,7 @@ data class RegisterResponse(
 
 data class RegisterData(
     @field:SerializedName("id")
-    val id: String,
+    val id: Int,
 
     @field:SerializedName("name")
     val name: String,
