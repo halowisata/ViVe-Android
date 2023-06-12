@@ -80,7 +80,6 @@ fun TwiceBackPressExit() {
 }
 
 fun isValidEmail(email: String): Boolean {
-    // Simple email validation using regex
     val regex = Regex("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$")
     return regex.matches(email)
 }
