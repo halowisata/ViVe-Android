@@ -97,4 +97,6 @@
     <string name="login_successful">Berhasil masuk</string>
     <string name="login_failed">Gagal masuk</string>
     <string name="logout_successful">Berhasil keluar</string>
+    <string name="add_survery_successful">Berhasil mengirimkan survei</string>
+    <string name="add_survery_failed">Gagal mengirimkan survei</string>
 </resources>
