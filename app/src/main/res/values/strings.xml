@@ -96,4 +96,6 @@
     <string name="login_successful">Login successful</string>
     <string name="login_failed">Login failed</string>
     <string name="logout_successful">Logout successful</string>
+    <string name="add_survery_successful">Add survey successful</string>
+    <string name="add_survery_failed">Add survey failed</string>
 </resources>
