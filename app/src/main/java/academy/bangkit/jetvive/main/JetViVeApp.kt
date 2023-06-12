@@ -393,13 +393,6 @@ fun JetViVeApp(
                 },
             ) {
                 ProfileScreen(
-                    userImage = R.drawable.jetpack_compose,
-                    userName = "John Doe",
-                    username = "johndoe",
-                    userEmail = "johndoe@example.com",
-                    userPhoneNumber = "+62 812-3456-7890",
-                    userAddress = "Indonesia",
-                    userGender = "Man",
                     onBackClick = {
                         navController.navigateUp()
                     },
