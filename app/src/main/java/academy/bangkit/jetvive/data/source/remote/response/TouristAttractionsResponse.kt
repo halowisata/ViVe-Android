@@ -10,14 +10,14 @@ data class TouristAttractionsResponse(
     val message: String,
 
     @field:SerializedName("data")
-    val data: TouristAttractionsData
+    val data: List<TouristAttractionsData>
 )
 
 data class TouristAttractionsData(
     @field:SerializedName("Place_Id")
     val id: Int,
 
-    @field:SerializedName("Place_name")
+    @field:SerializedName("Place_Name")
     val name: String,
 
     @field:SerializedName("City")

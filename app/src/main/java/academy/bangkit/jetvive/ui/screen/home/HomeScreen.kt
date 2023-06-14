@@ -2,10 +2,9 @@ package academy.bangkit.jetvive.ui.screen.home
 
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.ViewModelFactory
+import academy.bangkit.jetvive.helper.getEmoji
 import academy.bangkit.jetvive.helper.getPeriod
 import academy.bangkit.jetvive.helper.getSky
-import academy.bangkit.jetvive.model.tourist_attraction.FakeTouristAttractionDataSource
-import academy.bangkit.jetvive.model.tourist_attraction.TouristAttraction
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.Alert
 import academy.bangkit.jetvive.ui.components.GifImage
@@ -57,8 +56,20 @@ import java.util.Calendar
 
 @Composable
 fun HomeScreen(
-    userName: String,
-    userMood: String,
+    navigateToProfile: () -> Unit,
+    navigateToForm: () -> Unit,
+    navigateToDetail: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    HomeContent(
+        navigateToProfile = navigateToProfile,
+        navigateToForm = navigateToForm,
+        navigateToDetail = navigateToDetail
+    )
+}
+
+@Composable
+fun HomeContent(
     navigateToProfile: () -> Unit,
     navigateToForm: () -> Unit,
     navigateToDetail: (String) -> Unit,
@@ -67,170 +78,208 @@ fun HomeScreen(
     ),
     modifier: Modifier = Modifier
 ) {
-    viewModel.uiTouristAttractionState.collectAsState(initial = UiState.Loading).value.let { uiTouristAttractionState ->
-        when (uiTouristAttractionState) {
-            is UiState.Loading -> {
-                viewModel.getAllTouristAttractions()
-            }
-            is UiState.Success -> {
-                HomeContent(
-                    userName = userName,
-                    userMood = userMood,
-                    navigateToProfile = navigateToProfile,
-                    navigateToForm = navigateToForm,
-                    navigateToDetail = navigateToDetail,
-                    touristAttractions = uiTouristAttractionState.data
-                )
-            }
-            is UiState.Error -> {}
-        }
-    }
-}
-
-@Composable
-fun HomeContent(
-    userName: String,
-    userMood: String,
-    navigateToProfile: () -> Unit,
-    navigateToForm: () -> Unit,
-    navigateToDetail: (String) -> Unit,
-    touristAttractions: List<TouristAttraction>,
-    modifier: Modifier = Modifier
-) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            val hour by remember { mutableStateOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) }
+        viewModel.getLogin()
+        val uiLoginDataState by viewModel.uiLoginDataState.collectAsState()
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                GifImage(gifImage = getSky(hour))
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 10.dp)
-                ) {
-                    Text(
-                        text = "${stringResource(R.string.good)} ${stringResource(getPeriod(hour))},",
-                        fontSize = 14.sp,
-                        modifier = Modifier
-                            .padding(vertical = 5.dp)
-                    )
-                    Text(
-                        text = userName,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
+        TopSection(
+            navigateToProfile = navigateToProfile
+        )
+        viewModel.uiSurveyState.collectAsState(initial = UiState.Loading).value.let { uiSurveyState ->
+            when (uiSurveyState) {
+                is UiState.Loading -> {
+                    viewModel.getSurvey(uiLoginDataState?.accessToken.toString())
+                }
+                is UiState.Success -> {
+                    MainScreen(
+                        userMood = uiSurveyState.data.data.mood,
+                        userBudget = uiSurveyState.data.data.budget,
+                        userDestinationCity = uiSurveyState.data.data.destinationCity,
+                        navigateToForm = navigateToForm,
+                        navigateToDetail = navigateToDetail
                     )
                 }
-            }
-            IconButton(
-                onClick = { navigateToProfile() }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(100.dp)
-                )
+                is UiState.Error -> {}
             }
         }
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(160.dp),
-            contentPadding = PaddingValues(vertical = 16.dp, horizontal = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+    }
+}
+
+@Composable
+fun TopSection(
+    navigateToProfile: () -> Unit,
+    viewModel: HomeViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+    ),
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        viewModel.getLogin()
+        val hour by remember { mutableStateOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) }
+        val uiLoginDataState by viewModel.uiLoginDataState.collectAsState()
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            header {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(15.dp),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(MaterialTheme.colorScheme.tertiary)
-                            .padding(10.dp)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                                modifier = Modifier
-                                    .padding(start = 15.dp)
-                            ) {
-                                Image(
-                                    painter = painterResource(R.drawable.mood_happy),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(20.dp)
-                                )
-                                Text(
-                                    text = userMood,
-                                    fontWeight = FontWeight.SemiBold,
-                                )
-                            }
-                            Row {
-
-                                val showDialog = remember { mutableStateOf(false) }
-                                if (showDialog.value) {
-                                    Alert(title = stringResource(
-                                        R.string.change_mood),
-                                        name = stringResource(R.string.alert_name),
-                                        showDialog = showDialog.value,
-                                        onConfirm = { navigateToForm() },
-                                        onDismiss = { showDialog.value = false }
-                                    )
-                                }
-
-                                IconButton(
-                                    onClick = { showDialog.value = true }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.RestartAlt,
-                                        contentDescription = stringResource(R.string.restart)
-                                    )
-                                }
-                            }
+            GifImage(gifImage = getSky(hour))
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+            ) {
+                Text(
+                    text = "${stringResource(R.string.good)} ${stringResource(getPeriod(hour))},",
+                    fontSize = 14.sp,
+                    modifier = Modifier
+                        .padding(vertical = 5.dp)
+                )
+                viewModel.uiUserDataState.collectAsState(initial = UiState.Loading).value.let { uiUserDataState ->
+                    when (uiUserDataState) {
+                        is UiState.Loading -> {
+                            viewModel.getUser(accessToken = uiLoginDataState?.accessToken.toString())
                         }
+                        is UiState.Success -> {
+                            Text(
+                                text = uiUserDataState.data.data.name,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+                        is UiState.Error -> {}
                     }
-                    Text(
-                        text = stringResource(R.string.result_message),
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        letterSpacing = .25.sp
-                    )
-                    Text(
-                        text = stringResource(R.string.top_recommendation),
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 20.sp,
-                        lineHeight = 30.sp,
-                        letterSpacing = .15.sp
-                    )
                 }
             }
-            items(touristAttractions) { touristAttraction ->
-                TouristAttractionItem(
-                    image = R.drawable.jetpack_compose,
-                    name = touristAttraction.name,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .clickable { navigateToDetail("tourist_attraction-1") }
-                )
+        }
+        IconButton(
+            onClick = { navigateToProfile() }
+        ) {
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(100.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun MainScreen(
+    userMood: String? = null,
+    userBudget: String? = null,
+    userDestinationCity: String? = null,
+    navigateToForm: () -> Unit,
+    navigateToDetail: (String) -> Unit,
+    viewModel: HomeViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+    ),
+) {
+    viewModel.getLogin()
+    val uiLoginDataState by viewModel.uiLoginDataState.collectAsState()
+    viewModel.uiTouristAttractionDataState.collectAsState(initial = UiState.Loading).value.let { uiTouristAttractionDataState ->
+        when (uiTouristAttractionDataState) {
+            is UiState.Loading -> {
+                viewModel.getAllTouristAttractions(uiLoginDataState?.accessToken.toString(), userMood!!, userBudget!!, userDestinationCity!!)
             }
+            is UiState.Success -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(160.dp),
+                    contentPadding = PaddingValues(vertical = 16.dp, horizontal = 20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    header {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(15.dp),
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(MaterialTheme.colorScheme.tertiary)
+                                    .padding(10.dp)
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                        modifier = Modifier
+                                            .padding(start = 15.dp)
+                                    ) {
+                                        Image(
+                                            painter = painterResource(getEmoji(userMood!!)),
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .size(20.dp)
+                                        )
+                                        Text(
+                                            text = userMood,
+                                            fontWeight = FontWeight.SemiBold,
+                                        )
+                                    }
+                                    Row {
+                                        val showDialog = remember { mutableStateOf(false) }
+                                        if (showDialog.value) {
+                                            Alert(title = stringResource(
+                                                R.string.change_mood),
+                                                name = stringResource(R.string.alert_name),
+                                                showDialog = showDialog.value,
+                                                onConfirm = { navigateToForm() },
+                                                onDismiss = { showDialog.value = false }
+                                            )
+                                        }
+
+                                        IconButton(
+                                            onClick = { showDialog.value = true }
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.RestartAlt,
+                                                contentDescription = stringResource(R.string.restart)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                            Text(
+                                text = stringResource(R.string.result_message),
+                                fontSize = 14.sp,
+                                lineHeight = 20.sp,
+                                letterSpacing = .25.sp
+                            )
+                            Text(
+                                text = stringResource(R.string.top_recommendation),
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 20.sp,
+                                lineHeight = 30.sp,
+                                letterSpacing = .15.sp
+                            )
+                        }
+                    }
+                    items(uiTouristAttractionDataState.data.data) { touristAttraction ->
+                        TouristAttractionItem(
+                            image = R.drawable.jetpack_compose,
+                            name = touristAttraction.name,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(20.dp))
+                                .clickable { navigateToDetail("tourist_attraction-1") }
+                        )
+                    }
+                }
+            }
+            is UiState.Error -> {}
         }
     }
 }
@@ -249,12 +298,9 @@ fun LazyGridScope.header(
 fun HomeContentPreview() {
     JetViVeTheme {
         HomeContent(
-            userName = stringResource(R.string.user_name),
-            userMood = stringResource(R.string.user_mood),
             navigateToProfile = {},
             navigateToForm = {},
-            navigateToDetail = {},
-            touristAttractions = FakeTouristAttractionDataSource.dummyTouristAttractions
+            navigateToDetail = {}
         )
     }
 }

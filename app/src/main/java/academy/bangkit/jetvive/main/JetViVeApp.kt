@@ -311,8 +311,6 @@ fun JetViVeApp(
                 },
             ) {
                 HomeScreen(
-                    userName = "John Doe",
-                    userMood = "Happy",
                     navigateToProfile = {
                         navController.navigate(Screen.Profile.route)
                     },
