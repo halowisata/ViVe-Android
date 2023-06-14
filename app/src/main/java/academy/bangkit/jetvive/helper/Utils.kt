@@ -48,11 +48,27 @@ fun getSky(hour: Int) = when (hour) {
     }
 }
 
+fun getString(mood: String) = when (mood) {
+    "Happy" -> R.string.happy
+    "Senang" -> R.string.happy
+    "Sad" -> R.string.sad
+    "Sedih" -> R.string.sad
+    "Calm" -> R.string.calm
+    "Tenang" -> R.string.calm
+    "Angry" -> R.string.angry
+    "Marah" -> R.string.angry
+    else -> R.string.mood_name
+}
+
 fun getEmoji(mood: String) = when (mood) {
     "Happy" -> R.drawable.mood_happy
+    "Senang" -> R.drawable.mood_happy
     "Sad" -> R.drawable.mood_sad
+    "Sedih" -> R.drawable.mood_sad
     "Calm" -> R.drawable.mood_calm
+    "Tenang" -> R.drawable.mood_calm
     "Angry" -> R.drawable.mood_angry
+    "Marah" -> R.drawable.mood_angry
     else -> R.drawable.jetpack_compose
 }
 

@@ -1,4 +1,4 @@
-package academy.bangkit.jetvive.ui.screen.form
+package academy.bangkit.jetvive.ui.screen.survey
 
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.data.source.remote.request.SurveyRequest
@@ -43,17 +43,17 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun FormScreen(
+fun SurveyScreen(
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    FormContent(
+    SurveyContent(
         navigateToHome = navigateToHome
     )
 }
 
 @Composable
-fun FormContent(
+fun SurveyContent(
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -169,7 +169,12 @@ fun FormForm(
                 modifier = Modifier
                     .exposedDropdownSize()
             ) {
-                val listMoodItems = arrayOf("Happy", "Sad", "Calm", "Angry")
+                val listMoodItems = arrayOf(
+                    stringResource(R.string.happy),
+                    stringResource(R.string.sad),
+                    stringResource(R.string.calm),
+                    stringResource(R.string.angry)
+                )
                 listMoodItems.forEach { selectedOption ->
                     DropdownMenuItem(
                         text =  { Text(text = selectedOption) },
@@ -324,9 +329,9 @@ fun FormForm(
 
 @Preview(showBackground = true)
 @Composable
-fun FormContentPreview() {
+fun SurveyContentPreview() {
     JetViVeTheme {
-        FormContent(
+        SurveyContent(
             navigateToHome = {}
         )
     }

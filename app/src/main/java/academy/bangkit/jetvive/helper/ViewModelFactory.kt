@@ -7,7 +7,7 @@ import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.di.Injection
 import academy.bangkit.jetvive.main.MainViewModel
 import academy.bangkit.jetvive.ui.screen.detail.DetailViewModel
-import academy.bangkit.jetvive.ui.screen.form.SurveyViewModel
+import academy.bangkit.jetvive.ui.screen.survey.SurveyViewModel
 import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
 import academy.bangkit.jetvive.ui.screen.login.LoginViewModel
 import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingViewModel

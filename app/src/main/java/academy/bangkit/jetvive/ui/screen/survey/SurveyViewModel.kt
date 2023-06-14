@@ -1,10 +1,9 @@
-package academy.bangkit.jetvive.ui.screen.form
+package academy.bangkit.jetvive.ui.screen.survey
 
 import academy.bangkit.jetvive.data.repository.SurveyRepository
 import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.data.source.local.entity.UserEntity
 import academy.bangkit.jetvive.data.source.remote.request.SurveyRequest
-import academy.bangkit.jetvive.data.source.remote.response.GetSurveyResponse
 import academy.bangkit.jetvive.data.source.remote.response.PostSurveyResponse
 import academy.bangkit.jetvive.ui.common.UiState
 import androidx.lifecycle.ViewModel

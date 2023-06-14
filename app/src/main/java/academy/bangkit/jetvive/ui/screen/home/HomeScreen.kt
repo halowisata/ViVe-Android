@@ -5,6 +5,7 @@ import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.helper.getEmoji
 import academy.bangkit.jetvive.helper.getPeriod
 import academy.bangkit.jetvive.helper.getSky
+import academy.bangkit.jetvive.helper.getString
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.Alert
 import academy.bangkit.jetvive.ui.components.GifImage
@@ -226,7 +227,7 @@ fun MainScreen(
                                                 .size(20.dp)
                                         )
                                         Text(
-                                            text = userMood,
+                                            text = stringResource(getString(userMood)),
                                             fontWeight = FontWeight.SemiBold,
                                         )
                                     }

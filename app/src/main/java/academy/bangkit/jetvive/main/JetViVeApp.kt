@@ -7,7 +7,7 @@ import academy.bangkit.jetvive.ui.components.BottomBar
 import academy.bangkit.jetvive.ui.navigation.Screen
 import academy.bangkit.jetvive.ui.screen.bookmark.BookmarkScreen
 import academy.bangkit.jetvive.ui.screen.detail.DetailScreen
-import academy.bangkit.jetvive.ui.screen.form.FormScreen
+import academy.bangkit.jetvive.ui.screen.survey.SurveyScreen
 import academy.bangkit.jetvive.ui.screen.home.HomeScreen
 import academy.bangkit.jetvive.ui.screen.login.LoginScreen
 import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingScreen
@@ -248,7 +248,7 @@ fun JetViVeApp(
                     }
                 },
             ) {
-                FormScreen(
+                SurveyScreen(
                     navigateToHome = {
                         navController.navigate(Screen.Home.route) {
                             popUpTo(0)
