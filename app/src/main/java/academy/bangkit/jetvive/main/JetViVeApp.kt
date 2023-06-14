@@ -7,7 +7,7 @@ import academy.bangkit.jetvive.ui.components.BottomBar
 import academy.bangkit.jetvive.ui.navigation.Screen
 import academy.bangkit.jetvive.ui.screen.bookmark.BookmarkScreen
 import academy.bangkit.jetvive.ui.screen.detail.DetailScreen
-import academy.bangkit.jetvive.ui.screen.form.FormScreen
+import academy.bangkit.jetvive.ui.screen.survey.SurveyScreen
 import academy.bangkit.jetvive.ui.screen.home.HomeScreen
 import academy.bangkit.jetvive.ui.screen.login.LoginScreen
 import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingScreen
@@ -92,6 +92,7 @@ fun JetViVeApp(
         }
     ) { innerPadding ->
         viewModel.getLogin()
+
         val loginData by viewModel.loginData.collectAsState()
 
         val startDestination = remember {
@@ -247,7 +248,7 @@ fun JetViVeApp(
                     }
                 },
             ) {
-                FormScreen(
+                SurveyScreen(
                     navigateToHome = {
                         navController.navigate(Screen.Home.route) {
                             popUpTo(0)
@@ -310,8 +311,6 @@ fun JetViVeApp(
                 },
             ) {
                 HomeScreen(
-                    userName = "John Doe",
-                    userMood = "Happy",
                     navigateToProfile = {
                         navController.navigate(Screen.Profile.route)
                     },
@@ -393,13 +392,6 @@ fun JetViVeApp(
                 },
             ) {
                 ProfileScreen(
-                    userImage = R.drawable.jetpack_compose,
-                    userName = "John Doe",
-                    username = "johndoe",
-                    userEmail = "johndoe@example.com",
-                    userPhoneNumber = "+62 812-3456-7890",
-                    userAddress = "Indonesia",
-                    userGender = "Man",
                     onBackClick = {
                         navController.navigateUp()
                     },

@@ -7,7 +7,7 @@ import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.di.Injection
 import academy.bangkit.jetvive.main.MainViewModel
 import academy.bangkit.jetvive.ui.screen.detail.DetailViewModel
-import academy.bangkit.jetvive.ui.screen.form.SurveyViewModel
+import academy.bangkit.jetvive.ui.screen.survey.SurveyViewModel
 import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
 import academy.bangkit.jetvive.ui.screen.login.LoginViewModel
 import academy.bangkit.jetvive.ui.screen.onboarding.OnboardingViewModel
@@ -28,7 +28,7 @@ class ViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(userRepository) as T
+                MainViewModel(userRepository, surveyRepository) as T
             }
             modelClass.isAssignableFrom(OnboardingViewModel::class.java) -> {
                 OnboardingViewModel(onboardingRepository) as T
@@ -43,7 +43,7 @@ class ViewModelFactory(
                 SurveyViewModel(userRepository, surveyRepository) as T
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(touristAttractionRepository) as T
+                HomeViewModel(userRepository, surveyRepository, touristAttractionRepository) as T
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(touristAttractionRepository) as T

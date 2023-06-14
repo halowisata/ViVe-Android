@@ -98,4 +98,8 @@
     <string name="logout_successful">Logout successful</string>
     <string name="add_survery_successful">Add survey successful</string>
     <string name="add_survery_failed">Add survey failed</string>
+    <string name="happy">Happy</string>
+    <string name="sad">Sad</string>
+    <string name="calm">Calm</string>
+    <string name="angry">Angry</string>
 </resources>

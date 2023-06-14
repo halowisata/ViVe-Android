@@ -1,10 +1,10 @@
-package academy.bangkit.jetvive.ui.screen.form
+package academy.bangkit.jetvive.ui.screen.survey
 
 import academy.bangkit.jetvive.data.repository.SurveyRepository
 import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.data.source.local.entity.UserEntity
 import academy.bangkit.jetvive.data.source.remote.request.SurveyRequest
-import academy.bangkit.jetvive.data.source.remote.response.SurveyResponse
+import academy.bangkit.jetvive.data.source.remote.response.PostSurveyResponse
 import academy.bangkit.jetvive.ui.common.UiState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,8 +20,8 @@ class SurveyViewModel(
     private val _loginData = MutableStateFlow<UserEntity?>(null)
     val loginData: StateFlow<UserEntity?> get() = _loginData
 
-    private val _addSurveyStatus = MutableStateFlow<UiState<SurveyResponse>>(UiState.Loading)
-    val addSurveyStatus: StateFlow<UiState<SurveyResponse>> get() = _addSurveyStatus
+    private val _addSurveyStatus = MutableStateFlow<UiState<PostSurveyResponse>>(UiState.Loading)
+    val addSurveyStatus: StateFlow<UiState<PostSurveyResponse>> get() = _addSurveyStatus
 
     fun addSurvey(accessToken: String, surveyRequest: SurveyRequest) {
         viewModelScope.launch {

@@ -99,4 +99,8 @@
     <string name="logout_successful">Berhasil keluar</string>
     <string name="add_survery_successful">Berhasil mengirimkan survei</string>
     <string name="add_survery_failed">Gagal mengirimkan survei</string>
+    <string name="happy">Senang</string>
+    <string name="sad">Sedih</string>
+    <string name="calm">Tenang</string>
+    <string name="angry">Marah</string>
 </resources>

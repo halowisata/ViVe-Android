@@ -8,6 +8,7 @@ import academy.bangkit.jetvive.data.source.remote.request.RegisterRequest
 import academy.bangkit.jetvive.data.source.remote.response.LoginResponse
 import academy.bangkit.jetvive.data.source.remote.response.LogoutResponse
 import academy.bangkit.jetvive.data.source.remote.response.RegisterResponse
+import academy.bangkit.jetvive.data.source.remote.response.UserResponse
 import academy.bangkit.jetvive.data.source.remote.retrofit.ApiService
 import academy.bangkit.jetvive.ui.common.UiState
 import kotlinx.coroutines.flow.Flow
@@ -61,6 +62,19 @@ class UserRepository(
     }
 
     suspend fun deleteLogin() = userPreferences.deleteLogin()
+
+    suspend fun getUser(accessToken: String): UiState<UserResponse> {
+        return try {
+            val response = apiService.getUser("Bearer $accessToken")
+            if (response.isSuccessful) {
+                UiState.Success(response.body() ?: throw Exception("Empty response body"))
+            } else {
+                UiState.Error("Failed to retrieve user data")
+            }
+        } catch (exception: Exception) {
+            UiState.Error(exception.message.toString())
+        }
+    }
 
     companion object {
         @Volatile

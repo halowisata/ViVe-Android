@@ -33,5 +33,5 @@ object Injection {
         SurveyRepository.getInstance(apiService)
 
     fun provideTouristAttractionRepository(): TouristAttractionRepository =
-        TouristAttractionRepository.getInstance()
+        TouristAttractionRepository.getInstance(apiService)
 }
