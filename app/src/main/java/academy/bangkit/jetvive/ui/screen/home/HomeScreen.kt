@@ -1,6 +1,7 @@
 package academy.bangkit.jetvive.ui.screen.home
 
 import academy.bangkit.jetvive.R
+import academy.bangkit.jetvive.helper.SharedViewModel
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.helper.getMoodEmoji
 import academy.bangkit.jetvive.helper.getPeriod
@@ -9,6 +10,7 @@ import academy.bangkit.jetvive.helper.getMoodString
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.Alert
 import academy.bangkit.jetvive.ui.components.GifImage
+import academy.bangkit.jetvive.ui.components.LoadingBar
 import academy.bangkit.jetvive.ui.components.TouristAttractionItem
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.Image
@@ -42,6 +44,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,13 +62,15 @@ import java.util.Calendar
 fun HomeScreen(
     navigateToProfile: () -> Unit,
     navigateToSurvey: () -> Unit,
-    navigateToDetail: (String) -> Unit,
+    navigateToDetail: () -> Unit,
+    sharedViewModel: SharedViewModel,
     modifier: Modifier = Modifier
 ) {
     HomeContent(
         navigateToProfile = navigateToProfile,
         navigateToSurvey = navigateToSurvey,
-        navigateToDetail = navigateToDetail
+        navigateToDetail = navigateToDetail,
+        sharedViewModel = sharedViewModel
     )
 }
 
@@ -73,10 +78,11 @@ fun HomeScreen(
 fun HomeContent(
     navigateToProfile: () -> Unit,
     navigateToSurvey: () -> Unit,
-    navigateToDetail: (String) -> Unit,
+    navigateToDetail: () -> Unit,
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
+    sharedViewModel: SharedViewModel,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -85,23 +91,26 @@ fun HomeContent(
             .fillMaxHeight()
     ) {
         viewModel.getLogin()
-        val uiLoginDataState by viewModel.uiLoginDataState.collectAsState()
+
+        val uiLoginState by viewModel.uiLoginState.collectAsState()
 
         TopSection(
             navigateToProfile = navigateToProfile
         )
+
         viewModel.uiSurveyState.collectAsState(initial = UiState.Loading).value.let { uiSurveyState ->
             when (uiSurveyState) {
                 is UiState.Loading -> {
-                    viewModel.getSurvey(uiLoginDataState?.accessToken.toString())
+                    viewModel.getSurvey(uiLoginState?.accessToken.toString())
                 }
                 is UiState.Success -> {
-                    MainScreen(
+                    MainSection(
                         userMood = uiSurveyState.data.data.mood,
                         userBudget = uiSurveyState.data.data.budget,
                         userDestinationCity = uiSurveyState.data.data.destinationCity,
                         navigateToSurvey = navigateToSurvey,
-                        navigateToDetail = navigateToDetail
+                        navigateToDetail = navigateToDetail,
+                        sharedViewModel = sharedViewModel
                     )
                 }
                 is UiState.Error -> {}
@@ -125,8 +134,11 @@ fun TopSection(
             .padding(10.dp)
     ) {
         viewModel.getLogin()
-        val hour by remember { mutableStateOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) }
-        val uiLoginDataState by viewModel.uiLoginDataState.collectAsState()
+
+        val hour by remember {
+            mutableStateOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+        }
+        val uiLoginState by viewModel.uiLoginState.collectAsState()
 
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -142,14 +154,16 @@ fun TopSection(
                     modifier = Modifier
                         .padding(vertical = 5.dp)
                 )
-                viewModel.uiUserDataState.collectAsState(initial = UiState.Loading).value.let { uiUserDataState ->
-                    when (uiUserDataState) {
+                viewModel.uiUserState.collectAsState(
+                    initial = UiState.Loading
+                ).value.let { uiUserState ->
+                    when (uiUserState) {
                         is UiState.Loading -> {
-                            viewModel.getUser(accessToken = uiLoginDataState?.accessToken.toString())
+                            viewModel.getUser(accessToken = uiLoginState?.accessToken.toString())
                         }
                         is UiState.Success -> {
                             Text(
-                                text = uiUserDataState.data.data.name,
+                                text = uiUserState.data.data.name,
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -164,7 +178,7 @@ fun TopSection(
         ) {
             Icon(
                 imageVector = Icons.Default.AccountCircle,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.account_image),
                 modifier = Modifier
                     .size(100.dp)
             )
@@ -173,24 +187,40 @@ fun TopSection(
 }
 
 @Composable
-fun MainScreen(
+fun MainSection(
     userMood: String? = null,
     userBudget: String? = null,
     userDestinationCity: String? = null,
     navigateToSurvey: () -> Unit,
-    navigateToDetail: (String) -> Unit,
+    navigateToDetail: () -> Unit,
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
+    sharedViewModel: SharedViewModel
 ) {
     viewModel.getLogin()
-    val uiLoginDataState by viewModel.uiLoginDataState.collectAsState()
-    viewModel.uiTouristAttractionDataState.collectAsState(initial = UiState.Loading).value.let { uiTouristAttractionDataState ->
-        when (uiTouristAttractionDataState) {
+
+    val uiLoginState by viewModel.uiLoginState.collectAsState()
+    var isLoading by remember { mutableStateOf(true) }
+
+    if (isLoading) {
+        LoadingBar()
+    }
+
+    viewModel.uiTouristAttractionsState.collectAsState(
+        initial = UiState.Loading
+    ).value.let { uiTouristAttractionsState ->
+        when (uiTouristAttractionsState) {
             is UiState.Loading -> {
-                viewModel.getAllTouristAttractions(uiLoginDataState?.accessToken.toString(), userMood!!, userBudget!!, userDestinationCity!!)
+                viewModel.getAllTouristAttractions(
+                    uiLoginState?.accessToken.toString(),
+                    userMood!!,
+                    userBudget!!,
+                    userDestinationCity!!
+                )
             }
             is UiState.Success -> {
+                isLoading = false
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(160.dp),
                     contentPadding = PaddingValues(vertical = 16.dp, horizontal = 20.dp),
@@ -222,7 +252,7 @@ fun MainScreen(
                                     ) {
                                         Image(
                                             painter = painterResource(getMoodEmoji(userMood!!)),
-                                            contentDescription = null,
+                                            contentDescription = stringResource(R.string.mood_icon),
                                             modifier = Modifier
                                                 .size(20.dp)
                                         )
@@ -232,7 +262,9 @@ fun MainScreen(
                                         )
                                     }
                                     Row {
-                                        val showDialog = remember { mutableStateOf(false) }
+                                        val showDialog = remember {
+                                            mutableStateOf(false)
+                                        }
                                         if (showDialog.value) {
                                             Alert(title = stringResource(
                                                 R.string.change_mood),
@@ -255,7 +287,9 @@ fun MainScreen(
                                 }
                             }
                             Text(
-                                text = stringResource(R.string.result_message),
+                                text = stringResource(
+                                    R.string.result_message
+                                ),
                                 fontSize = 14.sp,
                                 lineHeight = 20.sp,
                                 letterSpacing = .25.sp
@@ -269,13 +303,16 @@ fun MainScreen(
                             )
                         }
                     }
-                    items(uiTouristAttractionDataState.data.data) { touristAttraction ->
+                    items(uiTouristAttractionsState.data.data) { touristAttraction ->
                         TouristAttractionItem(
                             image = R.drawable.jetpack_compose,
                             name = touristAttraction.name,
                             modifier = Modifier
                                 .clip(RoundedCornerShape(20.dp))
-                                .clickable { navigateToDetail("tourist_attraction-1") }
+                                .clickable {
+                                    sharedViewModel.selectedItem = touristAttraction
+                                    navigateToDetail()
+                                }
                         )
                     }
                 }
@@ -299,6 +336,7 @@ fun LazyGridScope.header(
 fun HomeContentPreview() {
     JetViVeTheme {
         HomeContent(
+            sharedViewModel = SharedViewModel(),
             navigateToProfile = {},
             navigateToSurvey = {},
             navigateToDetail = {}

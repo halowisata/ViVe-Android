@@ -77,7 +77,7 @@ fun TopSection(
     modifier: Modifier = Modifier
 ) {
     Image(
-        painter = painterResource(R.drawable.form),
+        painter = painterResource(R.drawable.survey),
         contentDescription = stringResource(R.string.survey_image),
         modifier = Modifier
             .fillMaxWidth()

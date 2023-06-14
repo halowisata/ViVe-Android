@@ -1,9 +1,11 @@
 package academy.bangkit.jetvive.ui.screen.detail
 
 import academy.bangkit.jetvive.R
+import academy.bangkit.jetvive.helper.SharedViewModel
 import academy.bangkit.jetvive.helper.ViewModelFactory
-import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
+import android.content.Intent
+import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,7 +33,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,33 +51,25 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun DetailScreen(
-    touristAttractionId: String,
+    sharedViewModel: SharedViewModel,
     onBackClick: () -> Unit,
     viewModel: DetailViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
     modifier: Modifier = Modifier
 ) {
-    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
-        when (uiState) {
-            is UiState.Loading -> {
-                viewModel.getTouristAttractionById(touristAttractionId)
-            }
-            is UiState.Success -> {
-                val touristAttraction = uiState.data
+    val selectedItem = sharedViewModel.selectedItem
 
-                DetailContent(
-                    touristAttractionImage = touristAttraction.image,
-                    touristAttractionName = touristAttraction.name,
-                    touristAttractionDescription = touristAttraction.description,
-                    touristAttractionCity = touristAttraction.city,
-                    touristAttractionRating = touristAttraction.rating,
-                    onBackClick = onBackClick
-                )
-            }
-            is UiState.Error -> {}
-        }
-    }
+    DetailContent(
+        touristAttractionImage = R.drawable.jetpack_compose,
+        touristAttractionName = selectedItem!!.name,
+        touristAttractionDescription = selectedItem.description,
+        touristAttractionCity = selectedItem.city,
+        touristAttractionRating = selectedItem.rating,
+        touristAttractionLat = selectedItem.lat,
+        touristAttractionLon = selectedItem.lon,
+        onBackClick = onBackClick
+    )
 }
 
 @Composable
@@ -86,6 +79,8 @@ fun DetailContent(
     touristAttractionDescription: String,
     touristAttractionCity: String,
     touristAttractionRating: Double,
+    touristAttractionLat: Double,
+    touristAttractionLon: Double,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -191,10 +186,20 @@ fun DetailContent(
                 Text(
                     text = touristAttractionDescription,
                     modifier = Modifier
-                        .padding(vertical = 5.dp   )
+                        .padding(vertical = 5.dp)
                 )
+
+                val context = LocalContext.current
+
                 Button(
-                    onClick = {},
+                    onClick = {
+                        val uri = Uri.parse(
+                            "geo:$touristAttractionLat,$touristAttractionLon"
+                        )
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        intent.setPackage("com.google.android.apps.maps")
+                        context.startActivity(intent)
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     ),
@@ -222,7 +227,9 @@ fun DetailContentPreview() {
             touristAttractionName = stringResource(R.string.tourist_attraction_name),
             touristAttractionDescription = stringResource(R.string.tourist_attraction_description),
             touristAttractionCity = stringResource(R.string.tourist_attraction_city),
-            touristAttractionRating = 5.0,
+            touristAttractionRating = 0.0,
+            touristAttractionLat = 0.0,
+            touristAttractionLon = 0.0,
             onBackClick = {}
         )
     }
