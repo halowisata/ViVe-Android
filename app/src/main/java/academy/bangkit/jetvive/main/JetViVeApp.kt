@@ -93,10 +93,10 @@ fun JetViVeApp(
     ) { innerPadding ->
         viewModel.getLogin()
 
-        val loginData by viewModel.loginData.collectAsState()
+        val uiLoginState by viewModel.uiLoginState.collectAsState()
 
         val startDestination = remember {
-            if (loginData?.accessToken?.isNotBlank() == true) {
+            if (uiLoginState?.accessToken?.isNotBlank() == true) {
                 Screen.Home.route
             } else {
                 Screen.Onboarding.route

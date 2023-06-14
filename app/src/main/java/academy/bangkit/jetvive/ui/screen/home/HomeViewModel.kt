@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -41,18 +40,6 @@ class HomeViewModel(
     private val _uiSurveyState: MutableStateFlow<UiState<GetSurveyResponse>> =
         MutableStateFlow(UiState.Loading)
     val uiSurveyState: StateFlow<UiState<GetSurveyResponse>> get() = _uiSurveyState
-
-    fun getAllTouristAttractions() {
-        viewModelScope.launch {
-            touristAttractionRepository.getAllTouristAttractions()
-                .catch {
-                    _uiTouristAttractionState.value = UiState.Error(it.message.toString())
-                }
-                .collect { touristAttractions ->
-                    _uiTouristAttractionState.value = UiState.Success(touristAttractions)
-                }
-        }
-    }
 
     fun getLogin() {
         viewModelScope.launch {

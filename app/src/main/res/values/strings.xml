@@ -26,9 +26,7 @@
     <string name="name">Name</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up_image">Sign Up Image</string>
-    <string name="hi">Hi</string>
     <string name="mood_name">Mood Name</string>
-    <string name="halowisata">Halowisata</string>
     <string name="welcome_image">Welcome Image</string>
     <string name="survey_image">Survey Image</string>
     <string name="survey">Survey</string>
@@ -96,8 +94,8 @@
     <string name="login_successful">Login successful</string>
     <string name="login_failed">Login failed</string>
     <string name="logout_successful">Logout successful</string>
-    <string name="add_survery_successful">Add survey successful</string>
-    <string name="add_survery_failed">Add survey failed</string>
+    <string name="add_survery_successful">Survey has been sent successfully</string>
+    <string name="add_survery_failed">Failed to send survey</string>
     <string name="happy">Happy</string>
     <string name="sad">Sad</string>
     <string name="calm">Calm</string>

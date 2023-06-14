@@ -22,11 +22,11 @@ class MainViewModel(
     private val mutableStateFlow = MutableStateFlow(true)
     val isLoading = mutableStateFlow.asStateFlow()
 
-    private val _loginData = MutableStateFlow<UserEntity?>(null)
-    val loginData: StateFlow<UserEntity?> get() = _loginData
+    private val _uiLoginState = MutableStateFlow<UserEntity?>(null)
+    val uiLoginState: StateFlow<UserEntity?> get() = _uiLoginState
 
-    private val _userData: MutableStateFlow<UiState<UserResponse>> = MutableStateFlow(UiState.Loading)
-    val userData: StateFlow<UiState<UserResponse>> get() = _userData
+    private val _uiUserState: MutableStateFlow<UiState<UserResponse>> = MutableStateFlow(UiState.Loading)
+    val uiUserState: StateFlow<UiState<UserResponse>> get() = _uiUserState
 
     private val _uiSurveyState: MutableStateFlow<UiState<GetSurveyResponse>> =
         MutableStateFlow(UiState.Loading)
@@ -37,14 +37,12 @@ class MainViewModel(
             delay(2000)
             mutableStateFlow.value = false
         }
-
-        getLogin()
     }
 
     fun getLogin() {
         viewModelScope.launch {
             userRepository.getLogin().collect { userEntity ->
-                _loginData.value = userEntity
+                _uiLoginState.value = userEntity
             }
         }
     }
@@ -63,9 +61,9 @@ class MainViewModel(
 
     fun getUser(accessToken: String) {
         viewModelScope.launch {
-            _userData.value = UiState.Loading
+            _uiUserState.value = UiState.Loading
             val uiState = userRepository.getUser(accessToken)
-            _userData.value = when(uiState) {
+            _uiUserState.value = when(uiState) {
                 is UiState.Success -> UiState.Success(uiState.data)
                 is UiState.Error -> UiState.Error(uiState.errorMessage)
                 UiState.Loading -> UiState.Loading

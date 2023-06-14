@@ -63,7 +63,7 @@ class ViewModelFactory(
             instance ?: ViewModelFactory(
                 Injection.provideOnboardingRepository(),
                 Injection.provideUserRepository(context),
-                Injection.provideSurveyRepository(context),
+                Injection.provideSurveyRepository(),
                 Injection.provideTouristAttractionRepository()
             )
         }.also { instance = it }

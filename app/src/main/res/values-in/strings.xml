@@ -27,9 +27,7 @@
     <string name="name">Nama</string>
     <string name="confirm_password">Konfirmasi Kata Sandi</string>
     <string name="sign_up_image">Gambar Daftar</string>
-    <string name="hi">Hai</string>
-    <string name="mood_name">Name Mood</string>
-    <string name="halowisata">Halowisata</string>
+    <string name="mood_name">Nama Suasana Hati</string>
     <string name="welcome_image">Gambar Sambutan</string>
     <string name="survey_image">Gambar Survei</string>
     <string name="survey">Survei</string>
@@ -78,7 +76,7 @@
     <string name="edit">Ubah</string>
     <string name="location_icon">Ikon Lokasi</string>
     <string name="star_icon">Ikon Bintang</string>
-    <string name="alert_title">Alert Title</string>
+    <string name="alert_title">Judul Peringatan</string>
     <string name="alert_name">Apakah kamu yakin?</string>
     <string name="coming_soon">Segera!</string>
     <string name="hide">Sembunyikan</string>

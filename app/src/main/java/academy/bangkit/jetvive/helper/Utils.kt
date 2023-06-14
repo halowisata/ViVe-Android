@@ -30,7 +30,7 @@ fun getPeriod(hour: Int) = when (hour) {
     }
 }
 
-fun getSky(hour: Int) = when (hour) {
+fun getPeriodSky(hour: Int) = when (hour) {
     in 6..11 -> {
         R.drawable.sun
     }
@@ -48,7 +48,7 @@ fun getSky(hour: Int) = when (hour) {
     }
 }
 
-fun getString(mood: String) = when (mood) {
+fun getMoodString(mood: String) = when (mood) {
     "Happy" -> R.string.happy
     "Senang" -> R.string.happy
     "Sad" -> R.string.sad
@@ -60,7 +60,7 @@ fun getString(mood: String) = when (mood) {
     else -> R.string.mood_name
 }
 
-fun getEmoji(mood: String) = when (mood) {
+fun getMoodEmoji(mood: String) = when (mood) {
     "Happy" -> R.drawable.mood_happy
     "Senang" -> R.drawable.mood_happy
     "Sad" -> R.drawable.mood_sad

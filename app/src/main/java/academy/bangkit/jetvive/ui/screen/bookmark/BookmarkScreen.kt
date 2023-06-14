@@ -42,20 +42,20 @@ fun BookmarkScreen(
     ),
     modifier: Modifier = Modifier
 ) {
-    viewModel.uiTouristAttractionState.collectAsState(initial = UiState.Loading).value.let { uiTouristAttractionState ->
-        when (uiTouristAttractionState) {
-            is UiState.Loading -> {
-                viewModel.getAllTouristAttractions()
-            }
-            is UiState.Success -> {
-                BookmarkContent(
-                    touristAttractions = uiTouristAttractionState.data,
-                    navigateToDetail = navigateToDetail
-                )
-            }
-            is UiState.Error -> {}
-        }
-    }
+//    viewModel.uiTouristAttractionState.collectAsState(initial = UiState.Loading).value.let { uiTouristAttractionState ->
+//        when (uiTouristAttractionState) {
+//            is UiState.Loading -> {
+//                viewModel.getAllTouristAttractions()
+//            }
+//            is UiState.Success -> {
+//                BookmarkContent(
+//                    touristAttractions = uiTouristAttractionState.data,
+//                    navigateToDetail = navigateToDetail
+//                )
+//            }
+//            is UiState.Error -> {}
+//        }
+//    }
 }
 
 @Composable

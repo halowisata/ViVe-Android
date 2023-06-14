@@ -5,13 +5,8 @@ import academy.bangkit.jetvive.data.source.remote.retrofit.ApiService
 import academy.bangkit.jetvive.model.tourist_attraction.FakeTouristAttractionDataSource
 import academy.bangkit.jetvive.model.tourist_attraction.TouristAttraction
 import academy.bangkit.jetvive.ui.common.UiState
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 
 class TouristAttractionRepository(private val apiService: ApiService) {
-
-    fun getAllTouristAttractions(): Flow<List<TouristAttraction>> =
-        flowOf(FakeTouristAttractionDataSource.dummyTouristAttractions)
 
     suspend fun getAllTouristAttractions(
         accessToken: String,
@@ -45,7 +40,9 @@ class TouristAttractionRepository(private val apiService: ApiService) {
         @Volatile
         private var instance: TouristAttractionRepository? = null
 
-        fun getInstance(apiService: ApiService): TouristAttractionRepository = instance ?: synchronized(this) {
+        fun getInstance(
+            apiService: ApiService
+        ): TouristAttractionRepository = instance ?: synchronized(this) {
             TouristAttractionRepository(apiService).apply {
                 instance = this
             }

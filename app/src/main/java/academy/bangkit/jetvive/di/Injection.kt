@@ -29,7 +29,7 @@ object Injection {
     fun provideUserRepository(context: Context): UserRepository =
         UserRepository.getInstance(apiService, provideUserPreferences(context))
 
-    fun provideSurveyRepository(context: Context): SurveyRepository =
+    fun provideSurveyRepository(): SurveyRepository =
         SurveyRepository.getInstance(apiService)
 
     fun provideTouristAttractionRepository(): TouristAttractionRepository =

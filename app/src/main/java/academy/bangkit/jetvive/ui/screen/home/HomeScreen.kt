@@ -2,10 +2,10 @@ package academy.bangkit.jetvive.ui.screen.home
 
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.ViewModelFactory
-import academy.bangkit.jetvive.helper.getEmoji
+import academy.bangkit.jetvive.helper.getMoodEmoji
 import academy.bangkit.jetvive.helper.getPeriod
-import academy.bangkit.jetvive.helper.getSky
-import academy.bangkit.jetvive.helper.getString
+import academy.bangkit.jetvive.helper.getPeriodSky
+import academy.bangkit.jetvive.helper.getMoodString
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.Alert
 import academy.bangkit.jetvive.ui.components.GifImage
@@ -131,7 +131,7 @@ fun TopSection(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            GifImage(gifImage = getSky(hour))
+            GifImage(gifImage = getPeriodSky(hour))
             Column(
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
@@ -221,13 +221,13 @@ fun MainScreen(
                                             .padding(start = 15.dp)
                                     ) {
                                         Image(
-                                            painter = painterResource(getEmoji(userMood!!)),
+                                            painter = painterResource(getMoodEmoji(userMood!!)),
                                             contentDescription = null,
                                             modifier = Modifier
                                                 .size(20.dp)
                                         )
                                         Text(
-                                            text = stringResource(getString(userMood)),
+                                            text = stringResource(getMoodString(userMood)),
                                             fontWeight = FontWeight.SemiBold,
                                         )
                                     }
