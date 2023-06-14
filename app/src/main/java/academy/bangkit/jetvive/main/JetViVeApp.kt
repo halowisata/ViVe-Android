@@ -156,7 +156,7 @@ fun JetViVeApp(
                                 AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
-                        Screen.Form.route ->
+                        Screen.Survey.route ->
                             slideOutOfContainer(
                                 AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
@@ -169,8 +169,8 @@ fun JetViVeApp(
                     navigateToSignUp = {
                         navController.navigate(Screen.Register.route)
                     },
-                    navigateToForm = {
-                        navController.navigate(Screen.Form.route) {
+                    navigateToSurvey = {
+                        navController.navigate(Screen.Survey.route) {
                             popUpTo(Screen.Login.route) {
                                 inclusive = true
                             }
@@ -221,7 +221,7 @@ fun JetViVeApp(
                 )
             }
             composable(
-                route = Screen.Form.route,
+                route = Screen.Survey.route,
                 enterTransition = {
                     when (initialState.destination.route) {
                         Screen.Login.route ->
@@ -250,18 +250,15 @@ fun JetViVeApp(
             ) {
                 SurveyScreen(
                     navigateToHome = {
-                        navController.navigate(Screen.Home.route) {
-                            popUpTo(0)
-                        }
+                        navController.navigate(Screen.Home.route)
                     }
                 )
-                TwiceBackPressExit()
             }
             composable(
                 route = Screen.Home.route,
                 enterTransition = {
                     when (initialState.destination.route) {
-                        Screen.Form.route ->
+                        Screen.Survey.route ->
                             slideIntoContainer(
                                 AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
@@ -291,7 +288,7 @@ fun JetViVeApp(
                                 AnimatedContentScope.SlideDirection.Down,
                                 animationSpec = tween(700)
                             )
-                        Screen.Form.route ->
+                        Screen.Survey.route ->
                             slideOutOfContainer(
                                 AnimatedContentScope.SlideDirection.Right,
                                 animationSpec = tween(700)
@@ -314,10 +311,8 @@ fun JetViVeApp(
                     navigateToProfile = {
                         navController.navigate(Screen.Profile.route)
                     },
-                    navigateToForm = {
-                        navController.navigate(Screen.Form.route) {
-                            popUpTo(0)
-                        }
+                    navigateToSurvey = {
+                        navController.navigate(Screen.Survey.route)
                     },
                     navigateToDetail = { touristAttractionId ->
                         navController.navigate(Screen.DetailTouristAttraction.createRoute(

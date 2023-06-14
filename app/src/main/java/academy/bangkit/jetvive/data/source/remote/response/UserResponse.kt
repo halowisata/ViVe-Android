@@ -32,6 +32,9 @@ data class UserData(
     @field:SerializedName("address")
     val address: String,
 
+    @field:SerializedName("age")
+    val age: Int,
+
     @field:SerializedName("gender")
     val gender: String,
 

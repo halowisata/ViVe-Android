@@ -116,7 +116,7 @@ fun RegisterForm(
     ),
     modifier: Modifier = Modifier
 ) {
-    val registrationStatus by viewModel.registrationStatus.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     var name by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember { mutableStateOf(TextFieldValue("")) }
@@ -142,11 +142,11 @@ fun RegisterForm(
         LoadingDialog()
     }
 
-    LaunchedEffect(registrationStatus) {
-        if (registrationStatus is UiState.Success) {
+    LaunchedEffect(uiState) {
+        if (uiState is UiState.Success) {
             Toast.makeText(context, R.string.registration_successful, Toast.LENGTH_SHORT).show()
             navigateToSignIn()
-        } else if (registrationStatus is UiState.Error) {
+        } else if (uiState is UiState.Error) {
             Toast.makeText(context, R.string.registration_failed, Toast.LENGTH_SHORT).show()
             isLoading = false
         }
@@ -319,7 +319,7 @@ fun RegisterForm(
             supportingText = {
                 if (!isPasswordMatching) {
                     Text(
-                        text = stringResource(R.string.password_did_not_match),
+                        text = stringResource(R.string.password_does_not_match),
                         color = MaterialTheme.colorScheme.error,
                     )
                 }
@@ -338,7 +338,7 @@ fun RegisterForm(
                     confirmPassword = confirmPassword.text
                 ))
             },
-            enabled = !isLoading && !isAnyFieldEmpty,
+            enabled = !isLoading && !isAnyFieldEmpty && isPasswordMatching,
             modifier = Modifier
                 .fillMaxWidth(),
         ) {

@@ -17,17 +17,17 @@ class SurveyViewModel(
     private val surveyRepository: SurveyRepository
     ): ViewModel() {
 
-    private val _loginData = MutableStateFlow<UserEntity?>(null)
-    val loginData: StateFlow<UserEntity?> get() = _loginData
+    private val _uiLoginState = MutableStateFlow<UserEntity?>(null)
+    val uiLoginState: StateFlow<UserEntity?> get() = _uiLoginState
 
-    private val _addSurveyStatus = MutableStateFlow<UiState<PostSurveyResponse>>(UiState.Loading)
-    val addSurveyStatus: StateFlow<UiState<PostSurveyResponse>> get() = _addSurveyStatus
+    private val _uiSurveyState = MutableStateFlow<UiState<PostSurveyResponse>>(UiState.Loading)
+    val uiSurveyState: StateFlow<UiState<PostSurveyResponse>> get() = _uiSurveyState
 
     fun addSurvey(accessToken: String, surveyRequest: SurveyRequest) {
         viewModelScope.launch {
-            _addSurveyStatus.value = UiState.Loading
+            _uiSurveyState.value = UiState.Loading
             val uiState = surveyRepository.addSurvey(accessToken, surveyRequest)
-            _addSurveyStatus.value = when (uiState) {
+            _uiSurveyState.value = when (uiState) {
                 is UiState.Success -> UiState.Success(uiState.data)
                 is UiState.Error -> UiState.Error(uiState.errorMessage)
                 UiState.Loading -> UiState.Loading
@@ -38,7 +38,7 @@ class SurveyViewModel(
     fun getLogin() {
         viewModelScope.launch {
             userRepository.getLogin().collect { userEntity ->
-                _loginData.value = userEntity
+                _uiLoginState.value = userEntity
             }
         }
     }

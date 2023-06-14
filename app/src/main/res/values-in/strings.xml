@@ -89,7 +89,7 @@
     <string name="logout">Keluar</string>
     <string name="registration_successful">Pendaftaran success</string>
     <string name="registration_failed">Pendaftaran gagal</string>
-    <string name="password_did_not_match">Kata sandi tidak cocok</string>
+    <string name="password_does_not_match">Kata sandi tidak cocok</string>
     <string name="password_validation">Kata sandi minimal harus berisi sedikitnya 8 karakter, satu huruf besar, satu huruf kecil, dan satu digit</string>
     <string name="invalid_email_address">Alamat surel tidak valid</string>
     <string name="login_successful">Berhasil masuk</string>
@@ -101,4 +101,18 @@
     <string name="sad">Sedih</string>
     <string name="calm">Tenang</string>
     <string name="angry">Marah</string>
+    <string name="tourist_attraction_image">Gambar Destinasi Wisata</string>
+    <string name="gif_image">Gambar Gif</string>
+    <string name="low">Rendah</string>
+    <string name="medium">Sedang</string>
+    <string name="high">Tinggi</string>
+    <string name="surprise_me">Kejutkan saya!</string>
+    <string name="age_icon">Ikon Umur</string>
+    <string name="username_not_set">- nama pengguna belum diatur -</string>
+    <string name="email_not_set">- surel belum diatur -</string>
+    <string name="phone_number_not_set">- nomor telepon belum diatur -</string>
+    <string name="address_not_set">- alamat belum diatur -</string>
+    <string name="age_not_set">- umur belum diatur -</string>
+    <string name="gender_not_set">- jenis kelamin belum diatur -</string>
+    <string name="name_not_set">- nama belum diatur -</string>
 </resources>

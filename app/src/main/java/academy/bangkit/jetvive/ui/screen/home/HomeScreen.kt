@@ -58,13 +58,13 @@ import java.util.Calendar
 @Composable
 fun HomeScreen(
     navigateToProfile: () -> Unit,
-    navigateToForm: () -> Unit,
+    navigateToSurvey: () -> Unit,
     navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     HomeContent(
         navigateToProfile = navigateToProfile,
-        navigateToForm = navigateToForm,
+        navigateToSurvey = navigateToSurvey,
         navigateToDetail = navigateToDetail
     )
 }
@@ -72,7 +72,7 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     navigateToProfile: () -> Unit,
-    navigateToForm: () -> Unit,
+    navigateToSurvey: () -> Unit,
     navigateToDetail: (String) -> Unit,
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
@@ -100,7 +100,7 @@ fun HomeContent(
                         userMood = uiSurveyState.data.data.mood,
                         userBudget = uiSurveyState.data.data.budget,
                         userDestinationCity = uiSurveyState.data.data.destinationCity,
-                        navigateToForm = navigateToForm,
+                        navigateToSurvey = navigateToSurvey,
                         navigateToDetail = navigateToDetail
                     )
                 }
@@ -177,7 +177,7 @@ fun MainScreen(
     userMood: String? = null,
     userBudget: String? = null,
     userDestinationCity: String? = null,
-    navigateToForm: () -> Unit,
+    navigateToSurvey: () -> Unit,
     navigateToDetail: (String) -> Unit,
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
@@ -238,7 +238,7 @@ fun MainScreen(
                                                 R.string.change_mood),
                                                 name = stringResource(R.string.alert_name),
                                                 showDialog = showDialog.value,
-                                                onConfirm = { navigateToForm() },
+                                                onConfirm = { navigateToSurvey() },
                                                 onDismiss = { showDialog.value = false }
                                             )
                                         }
@@ -300,7 +300,7 @@ fun HomeContentPreview() {
     JetViVeTheme {
         HomeContent(
             navigateToProfile = {},
-            navigateToForm = {},
+            navigateToSurvey = {},
             navigateToDetail = {}
         )
     }

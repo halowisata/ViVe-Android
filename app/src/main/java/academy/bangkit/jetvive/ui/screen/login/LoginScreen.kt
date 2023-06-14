@@ -63,13 +63,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun LoginScreen(
     navigateToSignUp: () -> Unit,
-    navigateToForm: () -> Unit,
+    navigateToSurvey: () -> Unit,
     launchSnackbar: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LoginContent(
         navigateToSignUp = navigateToSignUp,
-        navigateToForm = navigateToForm,
+        navigateToSurvey = navigateToSurvey,
         launchSnackbar = launchSnackbar
     )
 }
@@ -77,7 +77,7 @@ fun LoginScreen(
 @Composable
 fun LoginContent(
     navigateToSignUp: () -> Unit,
-    navigateToForm: () -> Unit,
+    navigateToSurvey: () -> Unit,
     launchSnackbar: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -88,7 +88,7 @@ fun LoginContent(
     ) {
         TopSection()
         LoginForm(
-            navigateToForm = navigateToForm,
+            navigateToSurvey = navigateToSurvey,
             launchSnackbar = launchSnackbar
         )
         BottomSection(
@@ -116,7 +116,7 @@ fun TopSection(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginForm(
-    navigateToForm: () -> Unit,
+    navigateToSurvey: () -> Unit,
     launchSnackbar: () -> Unit,
     viewModel: LoginViewModel = viewModel(
         factory = ViewModelFactory.getInstance(
@@ -125,7 +125,7 @@ fun LoginForm(
     ),
     modifier: Modifier = Modifier
 ) {
-    val loginStatus by viewModel.loginStatus.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
@@ -142,11 +142,11 @@ fun LoginForm(
         LoadingDialog()
     }
 
-    LaunchedEffect(loginStatus) {
-        if (loginStatus is UiState.Success) {
+    LaunchedEffect(uiState) {
+        if (uiState is UiState.Success) {
             Toast.makeText(context, R.string.login_successful, Toast.LENGTH_SHORT).show()
-            navigateToForm()
-        } else if (loginStatus is UiState.Error) {
+            navigateToSurvey()
+        } else if (uiState is UiState.Error) {
             Toast.makeText(context, R.string.login_failed, Toast.LENGTH_SHORT).show()
             isLoading = false
         }
@@ -367,7 +367,7 @@ fun LoginContentPreview() {
     JetViVeTheme {
         LoginContent(
             navigateToSignUp = {},
-            navigateToForm = {},
+            navigateToSurvey = {},
             launchSnackbar = {}
         )
     }

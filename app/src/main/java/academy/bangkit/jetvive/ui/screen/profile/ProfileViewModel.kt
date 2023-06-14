@@ -6,7 +6,6 @@ import academy.bangkit.jetvive.data.source.remote.request.LogoutRequest
 import academy.bangkit.jetvive.data.source.remote.response.LogoutResponse
 import academy.bangkit.jetvive.data.source.remote.response.UserResponse
 import academy.bangkit.jetvive.ui.common.UiState
-import android.util.JsonToken
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,20 +14,20 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(private val userRepository: UserRepository): ViewModel() {
 
-    private val _logoutStatus = MutableStateFlow<UiState<LogoutResponse>>(UiState.Loading)
-    val logoutStatus: StateFlow<UiState<LogoutResponse>> get() = _logoutStatus
+    private val _uiLogoutState = MutableStateFlow<UiState<LogoutResponse>>(UiState.Loading)
+    val uiLogoutState: StateFlow<UiState<LogoutResponse>> get() = _uiLogoutState
 
-    private val _loginData = MutableStateFlow<UserEntity?>(null)
-    val loginData: StateFlow<UserEntity?> get() = _loginData
+    private val _uiLoginState = MutableStateFlow<UserEntity?>(null)
+    val uiLoginState: StateFlow<UserEntity?> get() = _uiLoginState
 
-    private val _userData: MutableStateFlow<UiState<UserResponse>> = MutableStateFlow(UiState.Loading)
-    val userData: StateFlow<UiState<UserResponse>> get() = _userData
+    private val _uiUserState: MutableStateFlow<UiState<UserResponse>> = MutableStateFlow(UiState.Loading)
+    val uiUserState: StateFlow<UiState<UserResponse>> get() = _uiUserState
 
     fun logout(logoutRequest: LogoutRequest) {
         viewModelScope.launch {
-            _logoutStatus.value = UiState.Loading
+            _uiLogoutState.value = UiState.Loading
             val uiState = userRepository.logout(logoutRequest)
-            _logoutStatus.value = when(uiState) {
+            _uiLogoutState.value = when(uiState) {
                 is UiState.Success -> {
                     userRepository.deleteLogin()
                     UiState.Success(uiState.data)
@@ -38,19 +37,20 @@ class ProfileViewModel(private val userRepository: UserRepository): ViewModel() 
             }
         }
     }
+
     fun getLogin() {
         viewModelScope.launch {
             userRepository.getLogin().collect { userEntity ->
-                _loginData.value = userEntity
+                _uiLoginState.value = userEntity
             }
         }
     }
 
     fun getUser(accessToken: String) {
         viewModelScope.launch {
-            _userData.value = UiState.Loading
+            _uiUserState.value = UiState.Loading
             val uiState = userRepository.getUser(accessToken)
-            _userData.value = when(uiState) {
+            _uiUserState.value = when(uiState) {
                 is UiState.Success -> UiState.Success(uiState.data)
                 is UiState.Error -> UiState.Error(uiState.errorMessage)
                 UiState.Loading -> UiState.Loading
