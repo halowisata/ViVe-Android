@@ -8,7 +8,5 @@ sealed class Screen(val route: String) {
     object Home: Screen("home")
     object Bookmark: Screen("bookmark")
     object Profile: Screen("profile")
-    object DetailTouristAttraction: Screen("home/{touristAttractionId}") {
-        fun createRoute(touristAttractionId: String) = "home/$touristAttractionId"
-    }
+    object DetailTouristAttraction: Screen("detailTouristAttraction")
 }

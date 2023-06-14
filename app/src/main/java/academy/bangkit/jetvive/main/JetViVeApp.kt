@@ -1,6 +1,7 @@
 package academy.bangkit.jetvive.main
 
 import academy.bangkit.jetvive.R
+import academy.bangkit.jetvive.helper.SharedViewModel
 import academy.bangkit.jetvive.helper.TwiceBackPressExit
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.components.BottomBar
@@ -38,8 +39,6 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.launch
@@ -51,6 +50,7 @@ fun JetViVeApp(
     viewModel: MainViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
     ),
+    sharedViewModel: SharedViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -314,11 +314,10 @@ fun JetViVeApp(
                     navigateToSurvey = {
                         navController.navigate(Screen.Survey.route)
                     },
-                    navigateToDetail = { touristAttractionId ->
-                        navController.navigate(Screen.DetailTouristAttraction.createRoute(
-                            touristAttractionId
-                        ))
-                    }
+                    navigateToDetail = {
+                        navController.navigate(Screen.DetailTouristAttraction.route)
+                    },
+                    sharedViewModel = sharedViewModel
                 )
                 TwiceBackPressExit()
             }
@@ -356,10 +355,8 @@ fun JetViVeApp(
                 },
             ) {
                 BookmarkScreen(
-                    navigateToDetail = { touristAttractionId ->
-                        navController.navigate(Screen.DetailTouristAttraction.createRoute(
-                            touristAttractionId
-                        ))
+                    navigateToDetail = {
+                        navController.navigate(Screen.DetailTouristAttraction.route)
                     }
                 )
             }
@@ -435,15 +432,10 @@ fun JetViVeApp(
                             )
                         else -> null
                     }
-                },
-                arguments = listOf(navArgument("touristAttractionId") {
-                    type = NavType.StringType
-                })
+                }
             ) {
-                val touristAttractionId = it.arguments?.getString("touristAttractionId") ?: -1L
-                
                 DetailScreen(
-                    touristAttractionId = "tourist_attraction-1",
+                    sharedViewModel = sharedViewModel,
                     onBackClick = {
                         navController.navigateUp()
                     }

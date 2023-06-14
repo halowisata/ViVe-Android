@@ -7,7 +7,6 @@ import academy.bangkit.jetvive.data.source.local.entity.UserEntity
 import academy.bangkit.jetvive.data.source.remote.response.GetSurveyResponse
 import academy.bangkit.jetvive.data.source.remote.response.TouristAttractionsResponse
 import academy.bangkit.jetvive.data.source.remote.response.UserResponse
-import academy.bangkit.jetvive.model.tourist_attraction.TouristAttraction
 import academy.bangkit.jetvive.ui.common.UiState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,21 +20,16 @@ class HomeViewModel(
     private val touristAttractionRepository: TouristAttractionRepository
 ): ViewModel() {
 
-    private val _uiLoginDataState = MutableStateFlow<UserEntity?>(null)
-    val uiLoginDataState: StateFlow<UserEntity?> get() = _uiLoginDataState
+    private val _uiLoginState = MutableStateFlow<UserEntity?>(null)
+    val uiLoginState: StateFlow<UserEntity?> get() = _uiLoginState
 
-    private val _uiUserDataState: MutableStateFlow<UiState<UserResponse>> = MutableStateFlow(UiState.Loading)
-    val uiUserDataState: StateFlow<UiState<UserResponse>> get() = _uiUserDataState
+    private val _uiUserState: MutableStateFlow<UiState<UserResponse>> = MutableStateFlow(UiState.Loading)
+    val uiUserState: StateFlow<UiState<UserResponse>> get() = _uiUserState
 
-    private val _uiTouristAttractionState: MutableStateFlow<UiState<List<TouristAttraction>>> =
+    private val _uiTouristAttractionsState: MutableStateFlow<UiState<TouristAttractionsResponse>> =
         MutableStateFlow(UiState.Loading)
-    val uiTouristAttractionState: StateFlow<UiState<List<TouristAttraction>>> get() =
-        _uiTouristAttractionState
-
-    private val _uiTouristAttractionDataState: MutableStateFlow<UiState<TouristAttractionsResponse>> =
-        MutableStateFlow(UiState.Loading)
-    val uiTouristAttractionDataState: StateFlow<UiState<TouristAttractionsResponse>> get() =
-        _uiTouristAttractionDataState
+    val uiTouristAttractionsState: StateFlow<UiState<TouristAttractionsResponse>> get() =
+        _uiTouristAttractionsState
 
     private val _uiSurveyState: MutableStateFlow<UiState<GetSurveyResponse>> =
         MutableStateFlow(UiState.Loading)
@@ -44,16 +38,16 @@ class HomeViewModel(
     fun getLogin() {
         viewModelScope.launch {
             userRepository.getLogin().collect { userEntity ->
-                _uiLoginDataState.value = userEntity
+                _uiLoginState.value = userEntity
             }
         }
     }
 
     fun getUser(accessToken: String) {
         viewModelScope.launch {
-            _uiUserDataState.value = UiState.Loading
+            _uiUserState.value = UiState.Loading
             val uiState = userRepository.getUser(accessToken)
-            _uiUserDataState.value = when(uiState) {
+            _uiUserState.value = when(uiState) {
                 is UiState.Success -> UiState.Success(uiState.data)
                 is UiState.Error -> UiState.Error(uiState.errorMessage)
                 UiState.Loading -> UiState.Loading
@@ -75,11 +69,17 @@ class HomeViewModel(
 
     fun getAllTouristAttractions(accessToken: String, mood: String, budget: String, city: String) {
         viewModelScope.launch {
-            _uiTouristAttractionDataState.value = UiState.Loading
-            val uiTouristAttractionDataState = touristAttractionRepository.getAllTouristAttractions(accessToken, mood, budget, city)
-            _uiTouristAttractionDataState.value = when (uiTouristAttractionDataState) {
-                is UiState.Success -> UiState.Success(uiTouristAttractionDataState.data)
-                is UiState.Error -> UiState.Error(uiTouristAttractionDataState.errorMessage)
+            _uiTouristAttractionsState.value = UiState.Loading
+            val uiTouristAttractionsState =
+                touristAttractionRepository.getAllTouristAttractions(
+                    accessToken,
+                    mood,
+                    budget,
+                    city
+                )
+            _uiTouristAttractionsState.value = when (uiTouristAttractionsState) {
+                is UiState.Success -> UiState.Success(uiTouristAttractionsState.data)
+                is UiState.Error -> UiState.Error(uiTouristAttractionsState.errorMessage)
                 UiState.Loading -> UiState.Loading
             }
         }

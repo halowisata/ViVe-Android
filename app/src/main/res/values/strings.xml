@@ -114,4 +114,6 @@
     <string name="age_not_set">- age not set -</string>
     <string name="gender_not_set">- gender not set -</string>
     <string name="name_not_set">- name not set -</string>
+    <string name="loading_image">Loading Image</string>
+    <string name="mood_icon">Mood Icon</string>
 </resources>
