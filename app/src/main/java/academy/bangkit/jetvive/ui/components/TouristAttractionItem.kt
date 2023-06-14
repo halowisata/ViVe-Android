@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TouristAttractionItem(
     image: Int,
-    name: String? = null,
+    name: String,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -35,14 +35,14 @@ fun TouristAttractionItem(
     ) {
         Image(
             painter = painterResource(image),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.tourist_attraction_image),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(175.dp)
                 .clip(RoundedCornerShape(15.dp))
         )
         Text(
-            text = name?:"",
+            text = name,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
             modifier = Modifier

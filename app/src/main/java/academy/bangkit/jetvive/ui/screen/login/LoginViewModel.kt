@@ -13,14 +13,14 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val userRepository: UserRepository): ViewModel() {
 
-    private val _loginStatus = MutableStateFlow<UiState<LoginResponse>>(UiState.Loading)
-    val loginStatus: StateFlow<UiState<LoginResponse>> get() = _loginStatus
+    private val _uiState = MutableStateFlow<UiState<LoginResponse>>(UiState.Loading)
+    val uiState: StateFlow<UiState<LoginResponse>> get() = _uiState
 
     fun login(loginRequest: LoginRequest) {
         viewModelScope.launch {
-            _loginStatus.value = UiState.Loading
+            _uiState.value = UiState.Loading
             val uiState = userRepository.login(loginRequest)
-            _loginStatus.value = when(uiState) {
+            _uiState.value = when(uiState) {
                 is UiState.Success -> {
                     userRepository.setLogin(UserEntity(
                         uiState.data.data.accessToken,

@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
@@ -61,6 +63,7 @@ fun SurveyContent(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .verticalScroll(rememberScrollState())
     ) { 
         TopSection()
         FormForm(
@@ -109,8 +112,8 @@ fun FormForm(
                 .fillMaxWidth()
         )
         viewModel.getLogin()
-        val loginData by viewModel.loginData.collectAsState()
-        val addSurveyStatus by viewModel.addSurveyStatus.collectAsState()
+        val uiLoginState by viewModel.uiLoginState.collectAsState()
+        val uiSurveyState by viewModel.uiSurveyState.collectAsState()
 
         var isExpandedMood by remember { mutableStateOf(false) }
         var selectedMoodItem by remember { mutableStateOf("") }
@@ -120,6 +123,32 @@ fun FormForm(
         var selectedFarItem by remember { mutableStateOf("") }
         var isExpandedCity by remember { mutableStateOf(false) }
         var selectedCityItem by remember { mutableStateOf("") }
+
+        val listMoodItems = arrayOf(
+            stringResource(R.string.happy),
+            stringResource(R.string.sad),
+            stringResource(R.string.calm),
+            stringResource(R.string.angry)
+        )
+        val listItems = arrayOf(
+            stringResource(R.string.low),
+            stringResource(R.string.medium),
+            stringResource(R.string.high),
+            stringResource(R.string.surprise_me
+        ))
+        val listFarItems = arrayOf(
+            stringResource(R.string.low),
+            stringResource(R.string.medium),
+            stringResource(R.string.high),
+            stringResource(R.string.surprise_me
+        ))
+        val listCityItems = arrayOf(
+            "Jakarta",
+            "Yogyakarta",
+            "Bandung",
+            "Semarang",
+            "Surabaya"
+        )
 
         val isAnyFieldEmpty = selectedMoodItem.isEmpty()
                 || selectedBudgetItem.isEmpty()
@@ -134,11 +163,11 @@ fun FormForm(
             LoadingDialog()
         }
 
-        LaunchedEffect(addSurveyStatus) {
-            if (addSurveyStatus is UiState.Success) {
+        LaunchedEffect(uiSurveyState) {
+            if (uiSurveyState is UiState.Success) {
                 Toast.makeText(context, R.string.add_survery_successful, Toast.LENGTH_SHORT).show()
                 navigateToHome()
-            } else if (addSurveyStatus is UiState.Error) {
+            } else if (uiSurveyState is UiState.Error) {
                 Toast.makeText(context, R.string.add_survery_failed, Toast.LENGTH_SHORT).show()
                 isLoading = false
             }
@@ -169,12 +198,6 @@ fun FormForm(
                 modifier = Modifier
                     .exposedDropdownSize()
             ) {
-                val listMoodItems = arrayOf(
-                    stringResource(R.string.happy),
-                    stringResource(R.string.sad),
-                    stringResource(R.string.calm),
-                    stringResource(R.string.angry)
-                )
                 listMoodItems.forEach { selectedOption ->
                     DropdownMenuItem(
                         text =  { Text(text = selectedOption) },
@@ -210,7 +233,6 @@ fun FormForm(
                 modifier = Modifier
                     .exposedDropdownSize()
             ) {
-                val listItems = arrayOf("Low", "Medium", "High", "Surprise me!")
                 listItems.forEach { selectedOption ->
                     DropdownMenuItem(
                         text =  { Text(text = selectedOption) },
@@ -246,7 +268,6 @@ fun FormForm(
                 modifier = Modifier
                     .exposedDropdownSize()
             ) {
-                val listFarItems = arrayOf("Low", "Medium", "High", "Surprise me!")
                 listFarItems.forEach { selectedOption ->
                     DropdownMenuItem(
                         text =  { Text(text = selectedOption) },
@@ -282,7 +303,6 @@ fun FormForm(
                 modifier = Modifier
                     .exposedDropdownSize()
             ) {
-                val listCityItems = arrayOf("Semarang", "Jogja", "Bandung", "Jakarta")
                 listCityItems.forEach { selectedOption ->
                     DropdownMenuItem(
                         text =  { Text(text = selectedOption) },
@@ -301,7 +321,7 @@ fun FormForm(
                 onClick = {
                     isLoading = true
                     viewModel.addSurvey(
-                        loginData?.accessToken.toString(),
+                        uiLoginState?.accessToken.toString(),
                         SurveyRequest(
                             mood = selectedMoodItem,
                             budget = selectedBudgetItem,

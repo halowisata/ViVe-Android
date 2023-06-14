@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val userRepository: UserRepository): ViewModel() {
-    private val _registrationStatus = MutableStateFlow<UiState<RegisterResponse>>(UiState.Loading)
-    val registrationStatus: StateFlow<UiState<RegisterResponse>> get() = _registrationStatus
+    private val _uiState = MutableStateFlow<UiState<RegisterResponse>>(UiState.Loading)
+    val uiState: StateFlow<UiState<RegisterResponse>> get() = _uiState
 
     fun register(registerRequest: RegisterRequest) {
         viewModelScope.launch {
-            _registrationStatus.value = UiState.Loading
+            _uiState.value = UiState.Loading
             val uiState = userRepository.register(registerRequest)
-            _registrationStatus.value = when (uiState) {
+            _uiState.value = when (uiState) {
                 is UiState.Success -> UiState.Success(uiState.data)
                 is UiState.Error -> UiState.Error(uiState.errorMessage)
                 UiState.Loading -> UiState.Loading

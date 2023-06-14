@@ -15,7 +15,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 
 @Composable
-fun LoadingDialog() {
+fun LoadingDialog(
+    modifier: Modifier = Modifier
+) {
     Dialog(
         onDismissRequest = {},
         properties = DialogProperties(

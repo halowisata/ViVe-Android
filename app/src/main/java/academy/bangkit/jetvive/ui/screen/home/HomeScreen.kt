@@ -2,10 +2,10 @@ package academy.bangkit.jetvive.ui.screen.home
 
 import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.ViewModelFactory
-import academy.bangkit.jetvive.helper.getEmoji
+import academy.bangkit.jetvive.helper.getMoodEmoji
 import academy.bangkit.jetvive.helper.getPeriod
-import academy.bangkit.jetvive.helper.getSky
-import academy.bangkit.jetvive.helper.getString
+import academy.bangkit.jetvive.helper.getPeriodSky
+import academy.bangkit.jetvive.helper.getMoodString
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.Alert
 import academy.bangkit.jetvive.ui.components.GifImage
@@ -58,13 +58,13 @@ import java.util.Calendar
 @Composable
 fun HomeScreen(
     navigateToProfile: () -> Unit,
-    navigateToForm: () -> Unit,
+    navigateToSurvey: () -> Unit,
     navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     HomeContent(
         navigateToProfile = navigateToProfile,
-        navigateToForm = navigateToForm,
+        navigateToSurvey = navigateToSurvey,
         navigateToDetail = navigateToDetail
     )
 }
@@ -72,7 +72,7 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     navigateToProfile: () -> Unit,
-    navigateToForm: () -> Unit,
+    navigateToSurvey: () -> Unit,
     navigateToDetail: (String) -> Unit,
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
@@ -100,7 +100,7 @@ fun HomeContent(
                         userMood = uiSurveyState.data.data.mood,
                         userBudget = uiSurveyState.data.data.budget,
                         userDestinationCity = uiSurveyState.data.data.destinationCity,
-                        navigateToForm = navigateToForm,
+                        navigateToSurvey = navigateToSurvey,
                         navigateToDetail = navigateToDetail
                     )
                 }
@@ -131,7 +131,7 @@ fun TopSection(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            GifImage(gifImage = getSky(hour))
+            GifImage(gifImage = getPeriodSky(hour))
             Column(
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
@@ -177,7 +177,7 @@ fun MainScreen(
     userMood: String? = null,
     userBudget: String? = null,
     userDestinationCity: String? = null,
-    navigateToForm: () -> Unit,
+    navigateToSurvey: () -> Unit,
     navigateToDetail: (String) -> Unit,
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
@@ -221,13 +221,13 @@ fun MainScreen(
                                             .padding(start = 15.dp)
                                     ) {
                                         Image(
-                                            painter = painterResource(getEmoji(userMood!!)),
+                                            painter = painterResource(getMoodEmoji(userMood!!)),
                                             contentDescription = null,
                                             modifier = Modifier
                                                 .size(20.dp)
                                         )
                                         Text(
-                                            text = stringResource(getString(userMood)),
+                                            text = stringResource(getMoodString(userMood)),
                                             fontWeight = FontWeight.SemiBold,
                                         )
                                     }
@@ -238,7 +238,7 @@ fun MainScreen(
                                                 R.string.change_mood),
                                                 name = stringResource(R.string.alert_name),
                                                 showDialog = showDialog.value,
-                                                onConfirm = { navigateToForm() },
+                                                onConfirm = { navigateToSurvey() },
                                                 onDismiss = { showDialog.value = false }
                                             )
                                         }
@@ -300,7 +300,7 @@ fun HomeContentPreview() {
     JetViVeTheme {
         HomeContent(
             navigateToProfile = {},
-            navigateToForm = {},
+            navigateToSurvey = {},
             navigateToDetail = {}
         )
     }
