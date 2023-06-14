@@ -112,6 +112,7 @@ fun FormForm(
                 .fillMaxWidth()
         )
         viewModel.getLogin()
+
         val uiLoginState by viewModel.uiLoginState.collectAsState()
         val uiSurveyState by viewModel.uiSurveyState.collectAsState()
 
@@ -165,10 +166,10 @@ fun FormForm(
 
         LaunchedEffect(uiSurveyState) {
             if (uiSurveyState is UiState.Success) {
-                Toast.makeText(context, R.string.add_survery_successful, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.add_survey_successful, Toast.LENGTH_SHORT).show()
                 navigateToHome()
             } else if (uiSurveyState is UiState.Error) {
-                Toast.makeText(context, R.string.add_survery_failed, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.add_survey_failed, Toast.LENGTH_SHORT).show()
                 isLoading = false
             }
         }

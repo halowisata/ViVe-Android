@@ -6,6 +6,7 @@ import academy.bangkit.jetvive.data.repository.TouristAttractionRepository
 import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.di.Injection
 import academy.bangkit.jetvive.main.MainViewModel
+import academy.bangkit.jetvive.ui.screen.bookmark.BookmarkViewModel
 import academy.bangkit.jetvive.ui.screen.detail.DetailViewModel
 import academy.bangkit.jetvive.ui.screen.survey.SurveyViewModel
 import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
@@ -45,8 +46,11 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(userRepository, surveyRepository, touristAttractionRepository) as T
             }
+            modelClass.isAssignableFrom(BookmarkViewModel::class.java) -> {
+                BookmarkViewModel(userRepository, touristAttractionRepository) as T
+            }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
-                DetailViewModel(touristAttractionRepository) as T
+                DetailViewModel(userRepository, touristAttractionRepository) as T
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(userRepository) as T

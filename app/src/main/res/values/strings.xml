@@ -94,8 +94,8 @@
     <string name="login_successful">Login successful</string>
     <string name="login_failed">Login failed</string>
     <string name="logout_successful">Logout successful</string>
-    <string name="add_survery_successful">Survey has been sent successfully</string>
-    <string name="add_survery_failed">Failed to send survey</string>
+    <string name="add_survey_successful">Survey has been sent successfully</string>
+    <string name="add_survey_failed">Failed to send survey</string>
     <string name="happy">Happy</string>
     <string name="sad">Sad</string>
     <string name="calm">Calm</string>
@@ -116,4 +116,6 @@
     <string name="name_not_set">- name not set -</string>
     <string name="loading_image">Loading Image</string>
     <string name="mood_icon">Mood Icon</string>
+    <string name="tourist_attraction_has_been_saved_to_bookmark">Tourist attraction has been saved to bookmark</string>
+    <string name="failed_to_save_tourist_attraction_to_bookmark">Failed to save tourist attraction to bookmark</string>
 </resources>

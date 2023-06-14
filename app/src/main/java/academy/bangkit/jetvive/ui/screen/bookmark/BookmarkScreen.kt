@@ -1,12 +1,10 @@
 package academy.bangkit.jetvive.ui.screen.bookmark
 
 import academy.bangkit.jetvive.R
+import academy.bangkit.jetvive.helper.SharedViewModel
 import academy.bangkit.jetvive.helper.ViewModelFactory
-import academy.bangkit.jetvive.model.tourist_attraction.FakeTouristAttractionDataSource
-import academy.bangkit.jetvive.model.tourist_attraction.TouristAttraction
 import academy.bangkit.jetvive.ui.common.UiState
 import academy.bangkit.jetvive.ui.components.TouristAttractionItem
-import academy.bangkit.jetvive.ui.screen.home.HomeViewModel
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -36,32 +35,23 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun BookmarkScreen(
-    navigateToDetail: (String) -> Unit,
-    viewModel: HomeViewModel = viewModel(
-        factory = ViewModelFactory.getInstance(context = LocalContext.current)
-    ),
+    sharedViewModel: SharedViewModel,
+    navigateToDetail: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-//    viewModel.uiTouristAttractionState.collectAsState(initial = UiState.Loading).value.let { uiTouristAttractionState ->
-//        when (uiTouristAttractionState) {
-//            is UiState.Loading -> {
-//                viewModel.getAllTouristAttractions()
-//            }
-//            is UiState.Success -> {
-//                BookmarkContent(
-//                    touristAttractions = uiTouristAttractionState.data,
-//                    navigateToDetail = navigateToDetail
-//                )
-//            }
-//            is UiState.Error -> {}
-//        }
-//    }
+    BookmarkContent(
+        navigateToDetail = navigateToDetail,
+        sharedViewModel = sharedViewModel
+    )
 }
 
 @Composable
 fun BookmarkContent(
-    touristAttractions: List<TouristAttraction>,
-    navigateToDetail: (String) -> Unit,
+    navigateToDetail: () -> Unit,
+    sharedViewModel: SharedViewModel,
+    viewModel: BookmarkViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+    ),
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -69,34 +59,51 @@ fun BookmarkContent(
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(160.dp),
-            contentPadding = PaddingValues(
-                vertical = 16.dp,
-                horizontal = 20.dp
-            ),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            header {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    Text(
-                        text = stringResource(R.string.saved_item),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+        viewModel.getLogin()
+
+        val uiLoginState by viewModel.uiLoginState.collectAsState()
+
+        viewModel.uiSavedTouristAttractionsState.collectAsState(initial = UiState.Loading).value.let { uiSavedTouristAttractionState ->
+            when (uiSavedTouristAttractionState) {
+                is UiState.Loading -> {
+                    viewModel.getSavedTouristAttractions(uiLoginState?.accessToken.toString())
                 }
-            }
-            items(touristAttractions) { touristAttraction ->
-                TouristAttractionItem(
-                    image = R.drawable.jetpack_compose,
-                    name = touristAttraction.name,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .clickable { navigateToDetail("tourist_attraction-1") }
-                )
+                is UiState.Success -> {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(160.dp),
+                        contentPadding = PaddingValues(
+                            vertical = 16.dp,
+                            horizontal = 20.dp
+                        ),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        header {
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(10.dp),
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.saved_item),
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                        items(uiSavedTouristAttractionState.data.data) { touristAttraction ->
+                            TouristAttractionItem(
+                                image = R.drawable.jetpack_compose,
+                                name = touristAttraction.name,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .clickable {
+                                        sharedViewModel.selectedSavedTouristAttractionItem = touristAttraction
+                                        navigateToDetail()
+                                    }
+                            )
+                        }
+                    }
+                }
+                is UiState.Error -> {}
             }
         }
     }
@@ -113,7 +120,7 @@ fun LazyGridScope.header(
 fun BookmarkContentPreview() {
     JetViVeTheme {
         BookmarkContent(
-            touristAttractions = FakeTouristAttractionDataSource.dummyTouristAttractions,
+            sharedViewModel = SharedViewModel(),
             navigateToDetail = {}
         )
     }

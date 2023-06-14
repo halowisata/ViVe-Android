@@ -7,7 +7,8 @@ import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.components.BottomBar
 import academy.bangkit.jetvive.ui.navigation.Screen
 import academy.bangkit.jetvive.ui.screen.bookmark.BookmarkScreen
-import academy.bangkit.jetvive.ui.screen.detail.DetailScreen
+import academy.bangkit.jetvive.ui.screen.detail.DetailBookmarkScreen
+import academy.bangkit.jetvive.ui.screen.detail.DetailHomeScreen
 import academy.bangkit.jetvive.ui.screen.survey.SurveyScreen
 import academy.bangkit.jetvive.ui.screen.home.HomeScreen
 import academy.bangkit.jetvive.ui.screen.login.LoginScreen
@@ -273,7 +274,7 @@ fun JetViVeApp(
                                 AnimatedContentScope.SlideDirection.Right,
                                 animationSpec = tween(700)
                             )
-                        Screen.DetailTouristAttraction.route ->
+                        Screen.DetailHomeTouristAttraction.route ->
                             slideIntoContainer(
                                 AnimatedContentScope.SlideDirection.Down,
                                 animationSpec = tween(700)
@@ -298,7 +299,7 @@ fun JetViVeApp(
                                 AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
-                        Screen.DetailTouristAttraction.route ->
+                        Screen.DetailHomeTouristAttraction.route ->
                             slideOutOfContainer(
                                 AnimatedContentScope.SlideDirection.Up,
                                 animationSpec = tween(700)
@@ -315,7 +316,7 @@ fun JetViVeApp(
                         navController.navigate(Screen.Survey.route)
                     },
                     navigateToDetail = {
-                        navController.navigate(Screen.DetailTouristAttraction.route)
+                        navController.navigate(Screen.DetailHomeTouristAttraction.route)
                     },
                     sharedViewModel = sharedViewModel
                 )
@@ -330,7 +331,7 @@ fun JetViVeApp(
                                 AnimatedContentScope.SlideDirection.Left,
                                 animationSpec = tween(700)
                             )
-                        Screen.DetailTouristAttraction.route ->
+                        Screen.DetailHomeTouristAttraction.route ->
                             slideIntoContainer(
                                 AnimatedContentScope.SlideDirection.Down,
                                 animationSpec = tween(700)
@@ -345,7 +346,7 @@ fun JetViVeApp(
                                 AnimatedContentScope.SlideDirection.Right,
                                 animationSpec = tween(700)
                             )
-                        Screen.DetailTouristAttraction.route ->
+                        Screen.DetailHomeTouristAttraction.route ->
                             slideOutOfContainer(
                                 AnimatedContentScope.SlideDirection.Up,
                                 animationSpec = tween(700)
@@ -355,8 +356,9 @@ fun JetViVeApp(
                 },
             ) {
                 BookmarkScreen(
+                    sharedViewModel = sharedViewModel,
                     navigateToDetail = {
-                        navController.navigate(Screen.DetailTouristAttraction.route)
+                        navController.navigate(Screen.DetailBookmarkTouristAttraction.route)
                     }
                 )
             }
@@ -402,7 +404,7 @@ fun JetViVeApp(
                 )
             }
             composable(
-                route = Screen.DetailTouristAttraction.route,
+                route = Screen.DetailHomeTouristAttraction.route,
                 enterTransition = {
                     when (initialState.destination.route) {
                         Screen.Home.route ->
@@ -434,7 +436,47 @@ fun JetViVeApp(
                     }
                 }
             ) {
-                DetailScreen(
+                DetailHomeScreen(
+                    sharedViewModel = sharedViewModel,
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+            composable(
+                route = Screen.DetailBookmarkTouristAttraction.route,
+                enterTransition = {
+                    when (initialState.destination.route) {
+                        Screen.Home.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Bookmark.route ->
+                            slideIntoContainer(
+                                AnimatedContentScope.SlideDirection.Up,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                },
+                exitTransition = {
+                    when (targetState.destination.route) {
+                        Screen.Home.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Down,
+                                animationSpec = tween(700)
+                            )
+                        Screen.Bookmark.route ->
+                            slideOutOfContainer(
+                                AnimatedContentScope.SlideDirection.Down,
+                                animationSpec = tween(700)
+                            )
+                        else -> null
+                    }
+                }
+            ) {
+                DetailBookmarkScreen(
                     sharedViewModel = sharedViewModel,
                     onBackClick = {
                         navController.navigateUp()

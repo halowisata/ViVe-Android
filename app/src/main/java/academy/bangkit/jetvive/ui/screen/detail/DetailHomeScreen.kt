@@ -1,11 +1,15 @@
 package academy.bangkit.jetvive.ui.screen.detail
 
 import academy.bangkit.jetvive.R
+import academy.bangkit.jetvive.data.source.remote.request.SaveTouristAttractionRequest
 import academy.bangkit.jetvive.helper.SharedViewModel
 import academy.bangkit.jetvive.helper.ViewModelFactory
+import academy.bangkit.jetvive.ui.common.UiState
+import academy.bangkit.jetvive.ui.components.LoadingDialog
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,6 +37,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,7 +60,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun DetailScreen(
+fun DetailHomeScreen(
     sharedViewModel: SharedViewModel,
     onBackClick: () -> Unit,
     viewModel: DetailViewModel = viewModel(
@@ -58,9 +68,9 @@ fun DetailScreen(
     ),
     modifier: Modifier = Modifier
 ) {
-    val selectedItem = sharedViewModel.selectedItem
+    val selectedItem = sharedViewModel.selectedTouristAttractionItem
 
-    DetailContent(
+    DetailHomeContent(
         touristAttractionImage = R.drawable.jetpack_compose,
         touristAttractionName = selectedItem!!.name,
         touristAttractionDescription = selectedItem.description,
@@ -73,7 +83,7 @@ fun DetailScreen(
 }
 
 @Composable
-fun DetailContent(
+fun DetailHomeContent(
     @DrawableRes touristAttractionImage: Int,
     touristAttractionName: String,
     touristAttractionDescription: String,
@@ -82,8 +92,42 @@ fun DetailContent(
     touristAttractionLat: Double,
     touristAttractionLon: Double,
     onBackClick: () -> Unit,
+    viewModel: DetailViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(context = LocalContext.current)
+    ),
     modifier: Modifier = Modifier,
 ) {
+    viewModel.getLogin()
+
+    val uiLoginState by viewModel.uiLoginState.collectAsState()
+    val uiSaveTouristAttractionState by
+        viewModel.uiSaveTouristAttractionState.collectAsState()
+
+    var isLoading by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    if (isLoading) {
+        LoadingDialog()
+    }
+
+    LaunchedEffect(uiSaveTouristAttractionState) {
+        if (uiSaveTouristAttractionState is UiState.Success) {
+            Toast.makeText(
+                context,
+                R.string.tourist_attraction_has_been_saved_to_bookmark,
+                Toast.LENGTH_SHORT
+            ).show()
+        } else if (uiSaveTouristAttractionState is UiState.Error) {
+            Toast.makeText(
+                context,
+                R.string.failed_to_save_tourist_attraction_to_bookmark,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        isLoading = false
+    }
+
     Column {
         Column(
             modifier = Modifier
@@ -116,7 +160,22 @@ fun DetailContent(
                                 .size(25.dp)
                         )
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(
+                        onClick = {
+                            isLoading = true
+                            viewModel.saveTouristAttraction(
+                                uiLoginState?.accessToken.toString(),
+                                SaveTouristAttractionRequest(
+                                    name = touristAttractionName,
+                                    city = touristAttractionCity,
+                                    description = touristAttractionDescription,
+                                    rating = touristAttractionRating,
+                                    lat = touristAttractionLat,
+                                    lon = touristAttractionLon
+                                )
+                            )
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.Default.BookmarkBorder,
                             contentDescription = stringResource(R.string.bookmark),
@@ -179,18 +238,15 @@ fun DetailContent(
                 }
                 Spacer(
                     modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp)
-                    .background(LightGray)
+                        .fillMaxWidth()
+                        .height(4.dp)
+                        .background(LightGray)
                 )
                 Text(
                     text = touristAttractionDescription,
                     modifier = Modifier
                         .padding(vertical = 5.dp)
                 )
-
-                val context = LocalContext.current
-
                 Button(
                     onClick = {
                         val uri = Uri.parse(
@@ -220,9 +276,9 @@ fun DetailContent(
 
 @Preview(showBackground = true)
 @Composable
-fun DetailContentPreview() {
+fun DetailHomeContentPreview() {
     JetViVeTheme {
-        DetailContent(
+        DetailHomeContent(
             touristAttractionImage = R.drawable.jetpack_compose,
             touristAttractionName = stringResource(R.string.tourist_attraction_name),
             touristAttractionDescription = stringResource(R.string.tourist_attraction_description),
