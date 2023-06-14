@@ -143,16 +143,16 @@ fun TopSection(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            GifImage(gifImage = getPeriodSky(hour))
+            GifImage(
+                gifImage = getPeriodSky(hour)
+            )
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 10.dp)
+                    .padding(horizontal = 5.dp)
             ) {
                 Text(
                     text = "${stringResource(R.string.good)} ${stringResource(getPeriod(hour))},",
-                    fontSize = 14.sp,
-                    modifier = Modifier
-                        .padding(vertical = 5.dp)
+                    fontSize = 14.sp
                 )
                 viewModel.uiUserState.collectAsState(
                     initial = UiState.Loading
@@ -305,7 +305,7 @@ fun MainSection(
                     }
                     items(uiTouristAttractionsState.data.data) { touristAttraction ->
                         TouristAttractionItem(
-                            image = R.drawable.jetpack_compose,
+                            image = R.drawable.tourist_attraction_image,
                             name = touristAttraction.name,
                             modifier = Modifier
                                 .clip(RoundedCornerShape(20.dp))

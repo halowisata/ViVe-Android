@@ -5,6 +5,7 @@ import academy.bangkit.jetvive.data.source.remote.request.LogoutRequest
 import academy.bangkit.jetvive.data.source.remote.request.RegisterRequest
 import academy.bangkit.jetvive.data.source.remote.request.SaveTouristAttractionRequest
 import academy.bangkit.jetvive.data.source.remote.request.SurveyRequest
+import academy.bangkit.jetvive.data.source.remote.response.DeleteSavedTouristAttractionResponse
 import academy.bangkit.jetvive.data.source.remote.response.GetSavedTouristAttractionsResponse
 import academy.bangkit.jetvive.data.source.remote.response.GetSurveyResponse
 import academy.bangkit.jetvive.data.source.remote.response.LoginResponse
@@ -16,10 +17,12 @@ import academy.bangkit.jetvive.data.source.remote.response.TouristAttractionsRes
 import academy.bangkit.jetvive.data.source.remote.response.UserResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -63,4 +66,10 @@ interface ApiService {
     suspend fun getSavedTouristAttractions(
         @Header("Authorization") accessToken: String
     ): Response<GetSavedTouristAttractionsResponse>
+
+    @DELETE("save-tourist-attractions/{touristAttractionName}")
+    suspend fun deleteSavedTouristAttraction(
+        @Header("Authorization") accessToken: String,
+        @Path("touristAttractionName") touristAttractionName: String
+    ): Response<DeleteSavedTouristAttractionResponse>
 }

@@ -71,7 +71,7 @@ fun DetailHomeScreen(
     val selectedItem = sharedViewModel.selectedTouristAttractionItem
 
     DetailHomeContent(
-        touristAttractionImage = R.drawable.jetpack_compose,
+        touristAttractionImage = R.drawable.tourist_attraction_image,
         touristAttractionName = selectedItem!!.name,
         touristAttractionDescription = selectedItem.description,
         touristAttractionCity = selectedItem.city,
@@ -136,8 +136,8 @@ fun DetailHomeContent(
         ) {
             Box {
                 Image(
-                    painter = painterResource(R.drawable.jetpack_compose),
-                    contentDescription = null,
+                    painter = painterResource(touristAttractionImage),
+                    contentDescription = stringResource(R.string.tourist_attraction_image),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .height(400.dp)

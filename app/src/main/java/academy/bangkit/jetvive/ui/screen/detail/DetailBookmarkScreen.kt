@@ -1,7 +1,6 @@
 package academy.bangkit.jetvive.ui.screen.detail
 
 import academy.bangkit.jetvive.R
-import academy.bangkit.jetvive.data.source.remote.request.SaveTouristAttractionRequest
 import academy.bangkit.jetvive.helper.SharedViewModel
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.common.UiState
@@ -28,7 +27,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -63,6 +61,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun DetailBookmarkScreen(
     sharedViewModel: SharedViewModel,
+    navigateToBookmark: () -> Unit,
     onBackClick: () -> Unit,
     viewModel: DetailViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
@@ -72,13 +71,14 @@ fun DetailBookmarkScreen(
     val selectedItem = sharedViewModel.selectedSavedTouristAttractionItem
 
     DetailBookmarkContent(
-        touristAttractionImage = R.drawable.jetpack_compose,
+        touristAttractionImage = R.drawable.tourist_attraction_image,
         touristAttractionName = selectedItem!!.name,
         touristAttractionDescription = selectedItem.description,
         touristAttractionCity = selectedItem.city,
         touristAttractionRating = selectedItem.rating,
         touristAttractionLat = selectedItem.lat,
         touristAttractionLon = selectedItem.lon,
+        navigateToBookmark = navigateToBookmark,
         onBackClick = onBackClick
     )
 }
@@ -92,6 +92,7 @@ fun DetailBookmarkContent(
     touristAttractionRating: Double,
     touristAttractionLat: Double,
     touristAttractionLon: Double,
+    navigateToBookmark: () -> Unit,
     onBackClick: () -> Unit,
     viewModel: DetailViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context = LocalContext.current)
@@ -101,8 +102,8 @@ fun DetailBookmarkContent(
     viewModel.getLogin()
 
     val uiLoginState by viewModel.uiLoginState.collectAsState()
-    val uiSaveTouristAttractionState by
-    viewModel.uiSaveTouristAttractionState.collectAsState()
+    val uiDeleteTouristAttractionState by
+    viewModel.uiDeleteTouristAttractionState.collectAsState()
 
     var isLoading by remember { mutableStateOf(false) }
 
@@ -112,17 +113,18 @@ fun DetailBookmarkContent(
         LoadingDialog()
     }
 
-    LaunchedEffect(uiSaveTouristAttractionState) {
-        if (uiSaveTouristAttractionState is UiState.Success) {
+    LaunchedEffect(uiDeleteTouristAttractionState) {
+        if (uiDeleteTouristAttractionState is UiState.Success) {
             Toast.makeText(
                 context,
-                R.string.tourist_attraction_has_been_saved_to_bookmark,
+                R.string.tourist_attraction_has_been_delete_from_bookmark,
                 Toast.LENGTH_SHORT
             ).show()
-        } else if (uiSaveTouristAttractionState is UiState.Error) {
+            navigateToBookmark()
+        } else if (uiDeleteTouristAttractionState is UiState.Error) {
             Toast.makeText(
                 context,
-                R.string.failed_to_save_tourist_attraction_to_bookmark,
+                R.string.failed_to_delete_tourist_attraction_from_bookmark,
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -137,7 +139,7 @@ fun DetailBookmarkContent(
         ) {
             Box {
                 Image(
-                    painter = painterResource(R.drawable.jetpack_compose),
+                    painter = painterResource(touristAttractionImage),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -164,16 +166,9 @@ fun DetailBookmarkContent(
                     IconButton(
                         onClick = {
                             isLoading = true
-                            viewModel.saveTouristAttraction(
+                            viewModel.deleteSavedTouristAttraction(
                                 uiLoginState?.accessToken.toString(),
-                                SaveTouristAttractionRequest(
-                                    name = touristAttractionName,
-                                    city = touristAttractionCity,
-                                    description = touristAttractionDescription,
-                                    rating = touristAttractionRating,
-                                    lat = touristAttractionLat,
-                                    lon = touristAttractionLon
-                                )
+                                touristAttractionName
                             )
                         }
                     ) {
@@ -287,6 +282,7 @@ fun DetailBookmarkContentPreview() {
             touristAttractionRating = 0.0,
             touristAttractionLat = 0.0,
             touristAttractionLon = 0.0,
+            navigateToBookmark = {},
             onBackClick = {}
         )
     }

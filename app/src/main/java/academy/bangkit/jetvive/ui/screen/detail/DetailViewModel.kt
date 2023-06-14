@@ -4,6 +4,7 @@ import academy.bangkit.jetvive.data.repository.TouristAttractionRepository
 import academy.bangkit.jetvive.data.repository.UserRepository
 import academy.bangkit.jetvive.data.source.local.entity.UserEntity
 import academy.bangkit.jetvive.data.source.remote.request.SaveTouristAttractionRequest
+import academy.bangkit.jetvive.data.source.remote.response.DeleteSavedTouristAttractionResponse
 import academy.bangkit.jetvive.data.source.remote.response.PostSavedTouristAttractionResponse
 import academy.bangkit.jetvive.model.tourist_attraction.TouristAttraction
 import academy.bangkit.jetvive.ui.common.UiState
@@ -26,6 +27,13 @@ class DetailViewModel(
         MutableStateFlow(UiState.Loading)
     val uiSaveTouristAttractionState: StateFlow<UiState<PostSavedTouristAttractionResponse>> get() =
         _uiSaveTouristAttractionState
+
+    private val _uiDeleteTouristAttractionState:
+            MutableStateFlow<UiState<DeleteSavedTouristAttractionResponse>> =
+        MutableStateFlow(UiState.Loading)
+    val uiDeleteTouristAttractionState:
+            StateFlow<UiState<DeleteSavedTouristAttractionResponse>> get() =
+        _uiDeleteTouristAttractionState
 
     fun saveTouristAttraction(
         accessToken: String,
@@ -50,6 +58,22 @@ class DetailViewModel(
         viewModelScope.launch {
             userRepository.getLogin().collect { userEntity ->
                 _uiLoginState.value = userEntity
+            }
+        }
+    }
+
+    fun deleteSavedTouristAttraction(accessToken: String, touristAttractionName: String) {
+        viewModelScope.launch {
+            _uiDeleteTouristAttractionState.value = UiState.Loading
+            val uiState =
+                touristAttractionRepository.deleteSavedTouristAttraction(
+                    accessToken,
+                    touristAttractionName
+                )
+            _uiDeleteTouristAttractionState.value = when (uiState) {
+                is UiState.Success -> UiState.Success(uiState.data)
+                is UiState.Error -> UiState.Error(uiState.errorMessage)
+                UiState.Loading -> UiState.Loading
             }
         }
     }

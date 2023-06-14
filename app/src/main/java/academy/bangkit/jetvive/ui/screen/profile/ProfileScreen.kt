@@ -80,7 +80,7 @@ fun ProfileScreen(
             is UiState.Success -> {
                 isLoading = false
                 ProfileContent(
-                    userImage = R.drawable.jetpack_compose,
+                    userImage = R.drawable.user_image,
                     userName = uiUserState.data.data.name,
                     username = uiUserState.data.data.username,
                     userEmail = uiUserState.data.data.email,
@@ -232,6 +232,7 @@ fun TopSection(
             contentDescription = stringResource(R.string.user_image),
             modifier = Modifier
                 .size(150.dp)
+                .padding(20.dp)
         )
         Text(
             text = userName ?: stringResource(R.string.name_not_set),

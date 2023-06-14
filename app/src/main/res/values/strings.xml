@@ -118,4 +118,6 @@
     <string name="mood_icon">Mood Icon</string>
     <string name="tourist_attraction_has_been_saved_to_bookmark">Tourist attraction has been saved to bookmark</string>
     <string name="failed_to_save_tourist_attraction_to_bookmark">Failed to save tourist attraction to bookmark</string>
+    <string name="tourist_attraction_has_been_delete_from_bookmark">Tourist attraction has been delete from bookmark</string>
+    <string name="failed_to_delete_tourist_attraction_from_bookmark">Failed to delete tourist attraction from bookmark</string>
 </resources>

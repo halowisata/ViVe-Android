@@ -477,10 +477,13 @@ fun JetViVeApp(
                 }
             ) {
                 DetailBookmarkScreen(
-                    sharedViewModel = sharedViewModel,
+                    navigateToBookmark = {
+                        navController.navigate(Screen.Bookmark.route)
+                    },
                     onBackClick = {
                         navController.navigateUp()
-                    }
+                    },
+                    sharedViewModel = sharedViewModel,
                 )
             }
         }

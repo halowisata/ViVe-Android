@@ -1,6 +1,7 @@
 package academy.bangkit.jetvive.data.repository
 
 import academy.bangkit.jetvive.data.source.remote.request.SaveTouristAttractionRequest
+import academy.bangkit.jetvive.data.source.remote.response.DeleteSavedTouristAttractionResponse
 import academy.bangkit.jetvive.data.source.remote.response.GetSavedTouristAttractionsResponse
 import academy.bangkit.jetvive.data.source.remote.response.PostSavedTouristAttractionResponse
 import academy.bangkit.jetvive.data.source.remote.response.TouristAttractionsResponse
@@ -64,6 +65,26 @@ class TouristAttractionRepository(private val apiService: ApiService) {
                 UiState.Success(response.body() ?: throw Exception("Empty response body"))
             } else {
                 UiState.Error("Get saved tourist attractions failed")
+            }
+        } catch (exception: Exception) {
+            UiState.Error(exception.message.toString())
+        }
+    }
+
+    suspend fun deleteSavedTouristAttraction(
+        accessToken: String,
+        touristAttractionName: String
+    ): UiState<DeleteSavedTouristAttractionResponse> {
+        return try {
+            val response =
+                apiService.deleteSavedTouristAttraction(
+                    "Bearer $accessToken",
+                    touristAttractionName
+                )
+            if (response.isSuccessful) {
+                UiState.Success(response.body() ?: throw Exception("Empty response body"))
+            } else {
+                UiState.Error("Delete saved tourist attraction failed")
             }
         } catch (exception: Exception) {
             UiState.Error(exception.message.toString())

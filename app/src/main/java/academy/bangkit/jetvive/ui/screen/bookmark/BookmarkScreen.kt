@@ -4,6 +4,7 @@ import academy.bangkit.jetvive.R
 import academy.bangkit.jetvive.helper.SharedViewModel
 import academy.bangkit.jetvive.helper.ViewModelFactory
 import academy.bangkit.jetvive.ui.common.UiState
+import academy.bangkit.jetvive.ui.components.LoadingBar
 import academy.bangkit.jetvive.ui.components.TouristAttractionItem
 import academy.bangkit.jetvive.ui.theme.JetViVeTheme
 import androidx.compose.foundation.clickable
@@ -23,6 +24,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -63,12 +67,19 @@ fun BookmarkContent(
 
         val uiLoginState by viewModel.uiLoginState.collectAsState()
 
+        var isLoading by remember { mutableStateOf(true) }
+
+        if (isLoading) {
+            LoadingBar()
+        }
+
         viewModel.uiSavedTouristAttractionsState.collectAsState(initial = UiState.Loading).value.let { uiSavedTouristAttractionState ->
             when (uiSavedTouristAttractionState) {
                 is UiState.Loading -> {
                     viewModel.getSavedTouristAttractions(uiLoginState?.accessToken.toString())
                 }
                 is UiState.Success -> {
+                    isLoading = false
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(160.dp),
                         contentPadding = PaddingValues(
@@ -91,7 +102,7 @@ fun BookmarkContent(
                         }
                         items(uiSavedTouristAttractionState.data.data) { touristAttraction ->
                             TouristAttractionItem(
-                                image = R.drawable.jetpack_compose,
+                                image = R.drawable.tourist_attraction_image,
                                 name = touristAttraction.name,
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(20.dp))
