@@ -21,8 +21,8 @@ class ProfileViewModel(private val userRepository: UserRepository): ViewModel() 
     private val _loginData = MutableStateFlow<UserEntity?>(null)
     val loginData: StateFlow<UserEntity?> get() = _loginData
 
-    private val _uiState: MutableStateFlow<UiState<UserResponse>> = MutableStateFlow(UiState.Loading)
-    val uiState: StateFlow<UiState<UserResponse>> get() = _uiState
+    private val _userData: MutableStateFlow<UiState<UserResponse>> = MutableStateFlow(UiState.Loading)
+    val userData: StateFlow<UiState<UserResponse>> get() = _userData
 
     fun logout(logoutRequest: LogoutRequest) {
         viewModelScope.launch {
@@ -48,9 +48,9 @@ class ProfileViewModel(private val userRepository: UserRepository): ViewModel() 
 
     fun getUser(accessToken: String) {
         viewModelScope.launch {
-            _uiState.value = UiState.Loading
+            _userData.value = UiState.Loading
             val uiState = userRepository.getUser(accessToken)
-            _uiState.value = when(uiState) {
+            _userData.value = when(uiState) {
                 is UiState.Success -> UiState.Success(uiState.data)
                 is UiState.Error -> UiState.Error(uiState.errorMessage)
                 UiState.Loading -> UiState.Loading

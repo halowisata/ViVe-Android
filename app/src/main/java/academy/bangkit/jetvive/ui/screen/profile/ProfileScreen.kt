@@ -69,8 +69,8 @@ fun ProfileScreen(
     if (isLoading) {
         LoadingDialog()
     }
-    viewModel.uiState.collectAsState().value.let { uiState ->
-        when (uiState) {
+    viewModel.userData.collectAsState().value.let { userData ->
+        when (userData) {
             is UiState.Loading -> {
                 isLoading = true
                 viewModel.getUser(accessToken = loginData?.accessToken.toString())
@@ -79,12 +79,12 @@ fun ProfileScreen(
                 isLoading = false
                 ProfileContent(
                     userImage = R.drawable.jetpack_compose,
-                    userName = uiState.data.data.name,
-                    username = uiState.data.data.username,
-                    userEmail = uiState.data.data.email,
-                    userPhoneNumber = uiState.data.data.phoneNumber,
-                    userAddress = uiState.data.data.address,
-                    userGender = uiState.data.data.gender,
+                    userName = userData.data.data.name,
+                    username = userData.data.data.username,
+                    userEmail = userData.data.data.email,
+                    userPhoneNumber = userData.data.data.phoneNumber,
+                    userAddress = userData.data.data.address,
+                    userGender = userData.data.data.gender,
                     onBackClick = onBackClick,
                     navigateToSignIn = navigateToSignIn,
                     launchSnackbar = launchSnackbar

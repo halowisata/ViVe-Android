@@ -48,6 +48,14 @@ fun getSky(hour: Int) = when (hour) {
     }
 }
 
+fun getEmoji(mood: String) = when (mood) {
+    "Happy" -> R.drawable.mood_happy
+    "Sad" -> R.drawable.mood_sad
+    "Calm" -> R.drawable.mood_calm
+    "Angry" -> R.drawable.mood_angry
+    else -> R.drawable.jetpack_compose
+}
+
 sealed class BackPress {
     object Idle : BackPress()
     object InitialTouch : BackPress()

@@ -2,7 +2,7 @@ package academy.bangkit.jetvive.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class SurveyResponse(
+data class PostSurveyResponse(
     @field:SerializedName("error")
     val error: Boolean,
 
@@ -10,17 +10,17 @@ data class SurveyResponse(
     val message: String,
 
     @field:SerializedName("data")
-    val data: SurveyData
+    val data: PostSurveyData
 )
 
-data class SurveyData(
+data class PostSurveyData(
     @field:SerializedName("id")
     val id: Int,
 
     @field:SerializedName("userId")
     val userId: Int,
 
-    @field:SerializedName("moodId")
+    @field:SerializedName("mood")
     val mood: String,
 
     @field:SerializedName("budget")

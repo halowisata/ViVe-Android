@@ -92,6 +92,7 @@ fun JetViVeApp(
         }
     ) { innerPadding ->
         viewModel.getLogin()
+
         val loginData by viewModel.loginData.collectAsState()
 
         val startDestination = remember {
