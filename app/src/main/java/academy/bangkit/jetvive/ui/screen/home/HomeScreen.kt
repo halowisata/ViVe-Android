@@ -310,7 +310,7 @@ fun MainSection(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(20.dp))
                                 .clickable {
-                                    sharedViewModel.selectedItem = touristAttraction
+                                    sharedViewModel.selectedTouristAttractionItem = touristAttraction
                                     navigateToDetail()
                                 }
                         )

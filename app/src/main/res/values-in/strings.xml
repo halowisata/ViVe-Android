@@ -95,8 +95,8 @@
     <string name="login_successful">Berhasil masuk</string>
     <string name="login_failed">Gagal masuk</string>
     <string name="logout_successful">Berhasil keluar</string>
-    <string name="add_survery_successful">Berhasil mengirimkan survei</string>
-    <string name="add_survery_failed">Gagal mengirimkan survei</string>
+    <string name="add_survey_successful">Berhasil mengirimkan survei</string>
+    <string name="add_survey_failed">Gagal mengirimkan survei</string>
     <string name="happy">Senang</string>
     <string name="sad">Sedih</string>
     <string name="calm">Tenang</string>
@@ -115,4 +115,8 @@
     <string name="age_not_set">- umur belum diatur -</string>
     <string name="gender_not_set">- jenis kelamin belum diatur -</string>
     <string name="name_not_set">- nama belum diatur -</string>
+    <string name="loading_image">Gambar Loading</string>
+    <string name="mood_icon">Ikon Suasana Hati</string>
+    <string name="tourist_attraction_has_been_saved_to_bookmark">Berhasil menyimpan destinasi wisata ke dalam markah</string>
+    <string name="failed_to_save_tourist_attraction_to_bookmark">Gagal menyimpan destinasi wisata ke dalam markah</string>
 </resources>

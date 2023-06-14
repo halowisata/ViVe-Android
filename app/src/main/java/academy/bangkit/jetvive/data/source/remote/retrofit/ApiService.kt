@@ -3,10 +3,13 @@ package academy.bangkit.jetvive.data.source.remote.retrofit
 import academy.bangkit.jetvive.data.source.remote.request.LoginRequest
 import academy.bangkit.jetvive.data.source.remote.request.LogoutRequest
 import academy.bangkit.jetvive.data.source.remote.request.RegisterRequest
+import academy.bangkit.jetvive.data.source.remote.request.SaveTouristAttractionRequest
 import academy.bangkit.jetvive.data.source.remote.request.SurveyRequest
+import academy.bangkit.jetvive.data.source.remote.response.GetSavedTouristAttractionsResponse
 import academy.bangkit.jetvive.data.source.remote.response.GetSurveyResponse
 import academy.bangkit.jetvive.data.source.remote.response.LoginResponse
 import academy.bangkit.jetvive.data.source.remote.response.LogoutResponse
+import academy.bangkit.jetvive.data.source.remote.response.PostSavedTouristAttractionResponse
 import academy.bangkit.jetvive.data.source.remote.response.RegisterResponse
 import academy.bangkit.jetvive.data.source.remote.response.PostSurveyResponse
 import academy.bangkit.jetvive.data.source.remote.response.TouristAttractionsResponse
@@ -49,4 +52,15 @@ interface ApiService {
         @Query("budget") budget: String,
         @Query("city") city: String
     ): Response<TouristAttractionsResponse>
+
+    @POST("save-tourist-attractions")
+    suspend fun saveTouristAttraction(
+        @Header("Authorization") accessToken: String,
+        @Body saveTouristAttractionRequest: SaveTouristAttractionRequest
+    ): Response<PostSavedTouristAttractionResponse>
+
+    @GET("save-tourist-attractions")
+    suspend fun getSavedTouristAttractions(
+        @Header("Authorization") accessToken: String
+    ): Response<GetSavedTouristAttractionsResponse>
 }
