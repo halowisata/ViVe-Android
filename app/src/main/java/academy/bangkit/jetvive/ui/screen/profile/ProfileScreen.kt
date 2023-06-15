@@ -139,7 +139,6 @@ fun ProfileContent(
             userGender = userGender,
             launchSnackbar = launchSnackbar
         )
-        BottomSection()
     }
 }
 
@@ -402,18 +401,6 @@ fun MainSection(
             }
         }
     }
-}
-
-@Composable
-fun BottomSection(
-    modifier: Modifier = Modifier
-) {
-    Image(
-        painter = painterResource(R.drawable.logo_2),
-        contentDescription = null,
-        modifier = Modifier
-            .fillMaxWidth()
-    )
 }
 
 @Preview(showBackground = true)
